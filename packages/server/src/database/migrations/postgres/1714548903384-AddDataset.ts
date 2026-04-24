@@ -4,7 +4,7 @@ export class AddDatasets1714548903384 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS dataset (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "description" varchar NULL,
                 "createdDate" timestamp NOT NULL DEFAULT now(),
@@ -14,7 +14,7 @@ export class AddDatasets1714548903384 implements MigrationInterface {
         )
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS dataset_row (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "datasetId" varchar NOT NULL,
                 "input" text NOT NULL,
                 "output" text NULL,

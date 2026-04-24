@@ -4,7 +4,7 @@ export class AddWorkspace1720230151484 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS workspace (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "description" varchar NULL,
                 "createdDate" timestamp NOT NULL DEFAULT now(),
@@ -14,7 +14,7 @@ export class AddWorkspace1720230151484 implements MigrationInterface {
         )
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS workspace_users (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "workspaceId" varchar NOT NULL,
                 "userId" varchar NOT NULL,
                 "role" varchar NULL,

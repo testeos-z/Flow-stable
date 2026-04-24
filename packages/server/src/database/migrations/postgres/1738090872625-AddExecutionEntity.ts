@@ -4,7 +4,7 @@ export class AddExecutionEntity1738090872625 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS execution (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "executionData" text NOT NULL,
                 "action" text,
                 "state" varchar NOT NULL,

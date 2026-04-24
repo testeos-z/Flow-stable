@@ -4,7 +4,7 @@ export class AddEvaluation1714548873039 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS evaluation (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "chatflowId" text NOT NULL,
                 "chatflowName" text NOT NULL,
@@ -20,7 +20,7 @@ export class AddEvaluation1714548873039 implements MigrationInterface {
         )
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS evaluation_run (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "evaluationId" varchar NOT NULL,
                 "input" text NOT NULL,
                 "expectedOutput" text NULL,

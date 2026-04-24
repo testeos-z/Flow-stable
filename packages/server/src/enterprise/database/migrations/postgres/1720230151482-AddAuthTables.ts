@@ -4,7 +4,7 @@ export class AddAuthTables1720230151482 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS "user" (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar,
                 "role" varchar NOT NULL,
                 "credential" text,
@@ -19,7 +19,7 @@ export class AddAuthTables1720230151482 implements MigrationInterface {
         )
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS "roles" (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar,
                 "description" varchar,
                 "permissions" text,
@@ -28,7 +28,7 @@ export class AddAuthTables1720230151482 implements MigrationInterface {
         )
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS "login_activity" (
-                "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+                "id" uuid NOT NULL DEFAULT gen_random_uuid(),
                 "username" varchar NOT NULL, 
                 "activity_code" integer NOT NULL, 
                 "message" varchar NOT NULL, 

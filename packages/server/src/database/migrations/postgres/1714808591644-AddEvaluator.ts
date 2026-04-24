@@ -4,7 +4,7 @@ export class AddEvaluator1714808591644 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS evaluator (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "type" text NULL,
                 "config" text NULL,

@@ -4,7 +4,7 @@ export class AddVariableEntity1699325775451 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS variable (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "value" text NOT NULL,
                 "type" text NULL,

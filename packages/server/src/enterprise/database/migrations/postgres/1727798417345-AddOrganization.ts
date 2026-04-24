@@ -4,7 +4,7 @@ export class AddOrganization1727798417345 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS organization (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "adminUserId" varchar NULL,
                 "defaultWsId" varchar NULL,

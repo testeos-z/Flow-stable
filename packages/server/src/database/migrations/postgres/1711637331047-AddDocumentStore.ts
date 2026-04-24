@@ -4,7 +4,7 @@ export class AddDocumentStore1711637331047 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS document_store (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "description" varchar,
                 "loaders" text,
@@ -17,7 +17,7 @@ export class AddDocumentStore1711637331047 implements MigrationInterface {
         )
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS document_store_file_chunk (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "docId" uuid NOT NULL,
                 "chunkNo" integer NOT NULL,
                 "storeId" uuid NOT NULL,

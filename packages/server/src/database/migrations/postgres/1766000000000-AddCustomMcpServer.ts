@@ -4,7 +4,7 @@ export class AddCustomMcpServer1766000000000 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS custom_mcp_server (
-                id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                id uuid NOT NULL DEFAULT gen_random_uuid(),
                 "name" varchar NOT NULL,
                 "serverUrl" text NOT NULL,
                 "iconSrc" varchar,

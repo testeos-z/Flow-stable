@@ -20,7 +20,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         // create user table
         await queryRunner.query(`
             create table "user" (
-                "id" uuid default uuid_generate_v4() primary key,
+                "id" uuid default gen_random_uuid() primary key,
                 "name" varchar(100) not null,
                 "email" varchar(255) not null unique,
                 "credential" text null,
@@ -45,7 +45,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         // create organization table
         await queryRunner.query(`
             create table "organization" (
-                "id" uuid default uuid_generate_v4() primary key,
+                "id" uuid default gen_random_uuid() primary key,
                 "name" varchar(100) default '${OrganizationName.DEFAULT_ORGANIZATION}' not null,
                 "customerId" varchar(100) null,
                 "subscriptionId" varchar(100) null,
@@ -64,7 +64,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         // create login_method table
         await queryRunner.query(`
             create table "login_method" (
-                "id" uuid default uuid_generate_v4() primary key,
+                "id" uuid default gen_random_uuid() primary key,
                 "organizationId" uuid null,
                 "name" varchar(100) not null,
                 "config" text not null,
@@ -88,7 +88,7 @@ export class RefactorEnterpriseDatabase1737076223692 implements MigrationInterfa
         // create organization_login_method table
         await queryRunner.query(`
             create table "role" (
-                "id" uuid default uuid_generate_v4() primary key,
+                "id" uuid default gen_random_uuid() primary key,
                 "organizationId" uuid null,
                 "name" varchar(100) not null,
                 "description" text null,
