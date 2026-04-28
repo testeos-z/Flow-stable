@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "skills": {
+        "find-skills": {
+            "source": "vercel-labs/skills",
+            "sourceType": "github",
+            "computedHash": "9e1c8b3103f92fa8092568a44fe64858de7c5c9dc65ce4bea8f168080e889cfd"
+        },
+        "flowiseai": {
+            "source": "membranedev/application-skills",
+            "sourceType": "github",
+            "computedHash": "f357c1b1fd764e6fb5c26d24a0007e68768edd84ff2fb32ccc982af21cc3b551"
+        },
+        "skill-creator": {
+            "source": "anthropics/skills",
+            "sourceType": "github",
+            "computedHash": "5ea13a6d9f0d4bb694405d79acd00cadec0d21bb138c4dd10fcf3c500cb835c2"
+        }
+    }
+}
