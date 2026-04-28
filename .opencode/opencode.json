@@ -1,6 +1,32 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "agent": {
+        "flow-architect": {
+            "description": "Agente experto en a2a-lab (GobernAI). Diseña flujos en FlowiseAI basándose en la lógica de agentes de a2a-lab.acts as translator between a2a-lab agents/flows and Flowise implementations.",
+            "mode": "all",
+            "skill": ".agents/skills/flow-architect",
+            "permission": {
+                "flow-doc_*": "allow",
+                "flow-control_*": "allow",
+                "engram_*": "allow"
+            },
+            "tools": {
+                "bash": true,
+                "glob": true,
+                "grep": true,
+                "read": true,
+                "write": true,
+                "edit": true,
+                "flow-control_list_chatflows": true,
+                "flow-control_get_chatflow": true,
+                "flow-control_create_chatflow": true,
+                "flow-control_update_chatflow": true,
+                "flow-control_delete_chatflow": true,
+                "flow-control_create_prediction": true,
+                "flow-control_create_prediction_with_history": true,
+                "flow-control_create_prediction_with_files": true
+            }
+        },
         "flow-ing": {
             "description": "Agente especializado en control de flujo y orchestration de agentes. Maneja la coordinación entre diferentes agentes, gestión de estado y flujo de ejecución.",
             "mode": "all",
