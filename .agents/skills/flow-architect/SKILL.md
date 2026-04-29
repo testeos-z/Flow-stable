@@ -5,8 +5,9 @@ description: >
     system with three AI flows: FACTUM (technical), ÁGORA (citizen perception), POLITEIA
     (communication strategy). Covers all agents, flows, use cases, Supabase schema, MCPs,
     and vector database.
-    Trigger: When working in a2a-lab — implementing flows, adding agents, touching Supabase,
-    working with MCPs or vector search, onboarding to the codebase, or migrating it.
+    Trigger: When working in a2a-lab — designing/planning flows, adding agents, touching
+    Supabase architecture, working with MCPs or vector search, onboarding to the codebase,
+    or migrating it.
 ---
 
 ## System overview
@@ -30,22 +31,45 @@ Reports stored in ai.a2a_report_files (Supabase Storage)
 
 ## Companion skill — load when designing flows in Flowise
 
-🚀 **`skill(name: "flowise-node-reference")`** — Catalogo completo de los 302 nodos, 100 credenciales, 12+ patrones de diseño y arboles de decision. Cargalo SIEMPRE que necesites disenar, implementar o debuguear flujos en Flowise.
+🚀 **`skill(name: "flowise-node-reference")`** — Catalogo completo de los 302 nodos, 100 credenciales, 12+ patrones de diseño y arboles de decision. Cargalo SIEMPRE que necesites DISEÑAR o planificar flujos para Flowise (la implementación la ejecuta `flow-ing`).
+
+## Role boundaries — DELEGATE, don't execute
+
+**flow-architect is a planner, NOT a builder.** Never execute these actions. Always delegate:
+
+| Action                                      | Delegate to | How                                              |
+| ------------------------------------------- | ----------- | ------------------------------------------------ |
+| Crear, modificar o borrar flujos en Flowise | `flow-ing`  | `task(subagent_type: "flow-ing", prompt: "...")` |
+| Operaciones de servidor o base de datos     | `devops`    | `task(subagent_type: "devops", prompt: "...")`   |
+| Ejecutar queries SQL en Supabase            | `devops`    | `task(subagent_type: "devops", prompt: "...")`   |
+| Aplicar migraciones o cambios de schema     | `devops`    | `task(subagent_type: "devops", prompt: "...")`   |
+
+**What flow-architect DOES:**
+
+-   Diseña la estructura de nodos y edges para cada flujo
+-   Decide qué tipo de flow (CHATFLOW, AGENTFLOW, MULTIAGENT) para cada caso
+-   Selecciona modelos, tools, memory y vector stores según el caso de uso
+-   Planifica la secuencia de agentes y sus dependencias
+-   Documenta la arquitectura de flujos y produce specs para que `flow-ing` implemente
+-   Responde preguntas sobre la arquitectura del ecosistema a2a-lab
+
+**Golden rule**: si la respuesta implica ejecutar algo en Flowise o en el servidor, no lo hagas — delegá.
 
 ## Reference files — load as needed
 
-| Topic         | File                          | Load when...                                                    |
-| ------------- | ----------------------------- | --------------------------------------------------------------- |
-| FACTUM flow   | `references/flow-factum.md`   | Implementing or debugging FACTUM, adding thematic agents        |
-| ÁGORA flow    | `references/flow-agora.md`    | Working with citizen simulation, SINC index, perception metrics |
-| POLITEIA flow | `references/flow-politeia.md` | Communication strategy, framing agents, brief generation        |
-| Case One      | `references/case-one.md`      | Public problem input schema and flow                            |
-| Case Two      | `references/case-two.md`      | Public policy input schema and flow                             |
-| Case Three    | `references/case-three.md`    | Policy improvement input schema and flow                        |
-| Case Four     | `references/case-four.md`     | Pending implementation — routing exists                         |
-| Case Five     | `references/case-five.md`     | Pending implementation — routing exists                         |
-| MCP catalogue | `references/mcp-catalogue.md` | Adding MCPs, calling tools, query language rules                |
-| Vector DB     | `references/vector-db.md`     | Vector search, embeddings, RPC functions, debugging             |
+| Topic            | File                                  | Load when...                                                               |
+| ---------------- | ------------------------------------- | -------------------------------------------------------------------------- |
+| Flow types guide | `references/flow-types-comparison.md` | Deciding between CHATFLOW, AGENTFLOW, MULTIAGENT, SEQUENTIAL, or ASSISTANT |
+| FACTUM flow      | `references/flow-factum.md`           | Implementing or debugging FACTUM, adding thematic agents                   |
+| ÁGORA flow       | `references/flow-agora.md`            | Working with citizen simulation, SINC index, perception metrics            |
+| POLITEIA flow    | `references/flow-politeia.md`         | Communication strategy, framing agents, brief generation                   |
+| Case One         | `references/case-one.md`              | Public problem input schema and flow                                       |
+| Case Two         | `references/case-two.md`              | Public policy input schema and flow                                        |
+| Case Three       | `references/case-three.md`            | Policy improvement input schema and flow                                   |
+| Case Four        | `references/case-four.md`             | Pending implementation — routing exists                                    |
+| Case Five        | `references/case-five.md`             | Pending implementation — routing exists                                    |
+| MCP catalogue    | `references/mcp-catalogue.md`         | Adding MCPs, calling tools, query language rules                           |
+| Vector DB        | `references/vector-db.md`             | Vector search, embeddings, RPC functions, debugging                        |
 
 ## Cross-cutting rules (apply everywhere)
 

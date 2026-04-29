@@ -7,8 +7,8 @@
             "skill": ".agents/skills/flow-architect",
             "permission": {
                 "flow-doc_*": "allow",
-                "flow-control_*": "allow",
-                "engram_*": "allow"
+                "engram_*": "allow",
+                "flow-control_*": "allow"
             },
             "tools": {
                 "bash": true,
@@ -19,12 +19,10 @@
                 "edit": true,
                 "flow-control_list_chatflows": true,
                 "flow-control_get_chatflow": true,
-                "flow-control_create_chatflow": true,
-                "flow-control_update_chatflow": true,
-                "flow-control_delete_chatflow": true,
-                "flow-control_create_prediction": true,
-                "flow-control_create_prediction_with_history": true,
-                "flow-control_create_prediction_with_files": true
+                "flow-control_list_nodes": true,
+                "flow-control_get_nodes_by_category": true,
+                "flow-control_get_node": true,
+                "mcp-flowise_list_chatflows": true
             }
         },
         "flow-ing": {
@@ -34,7 +32,8 @@
                 "flow-doc_*": "allow",
                 "engram_*": "allow",
                 "context7_*": "allow",
-                "flow-control_*": "allow"
+                "flow-control_*": "allow",
+                "mcp-flowise_*": "allow"
             },
             "prompt": "## FLOW-CONTROL AGENT\n\nEres un agente especializado en control de flujo y orchestration de agentes. Tu rol principal es coordinar el trabajo entre múltiples agentes, gestionar el estado de las tareas y mantener el flujo de ejecución organizado.\n\n## CAPACIDADES PRINCIPALES\n\n1. **Orchestration de Agentes**: Coordinar y delegar tareas a otros agentes (sdd-*, devops, build, etc.)\n2. **Gestión de Estado**: Mantener seguimiento del progreso de múltiples tareas\n3. **Control de Flujo**: Definir y ejecutar secuencias de trabajo entre agentes\n4. **Delegación Inteligente**: Saber cuándo delegar vs ejecutar directamente\n\n## HERRAMIENTAS DISPONIBLES\n\n- `delegation` - Lanzar agentes asincrónicamente para trabajo paralelo\n- `delegation_list` - Ver agentes en ejecución\n- `delegation_read` - Obtener resultados de agentes completados\n- `task` - Lanzar agentes sincrónicos cuando necesitas el resultado inmediatamente\n- `todowrite` - Seguimiento de tareas y estado\n- Todas las herramientas básicas: bash, read, write, edit, glob, grep, webfetch\n\n## MCPs DISPONIBLES\n\n- **context7**: Documentación actualizada de librerías y frameworks\n- **engram**: Memoria persistente para recordar decisiones entre sesiones\n- **flow-doc**: Documentación de FlowiseAI\n- **gh_grep**: Búsqueda en repositorios GitHub\n- **flow-control**: Control de Flowise (chatflows, nodos, predicciones)\n\n## FLUJO DE TRABAJO\n\n1. Analiza la solicitud del usuario\n2. Determina qué agentes necesitan ejecutarse y en qué orden\n3. Usa `delegation` para trabajo paralelo o `task` para trabajo secuencial\n4. Coordina los resultados y sintetiza la respuesta final\n5. Usa `todowrite` para mantener registro del progreso cuando hay múltiples pasos\n\n## REGLAS DE DELEGACIÓN\n\n| Situación | Acción |\n|-----------|--------|\n| Trabajo paralelo independiente | delegation |\n| Necesitas resultado antes de continuar | task |\n| Trabajo simple que ya sabes hacer | Ejecutar directamente |\n| Exploración del codebase | delegation |\n| Lectura de archivos para decisión | Leer directamente (1-3 archivos) |\n| Múltiples archivos para entender | delegate a un agente explore |\n\n## SKILLS RELACIONADOS\n\nUsa `skill(name: \"...\")` para cargar conocimiento especializado:\n- `skill(name: \"flow-ing\")` — Este agente ya viene contigo\n- `skill(name: \"sdd-*\")` — Todos los agentes SDD (spec, design, apply, verify, etc.)",
             "tools": {
@@ -49,7 +48,21 @@
                 "task": true,
                 "todowrite": true,
                 "webfetch": true,
-                "write": true
+                "write": true,
+                "flow-control_list_chatflows": true,
+                "flow-control_get_chatflow": true,
+                "flow-control_create_chatflow": true,
+                "flow-control_update_chatflow": true,
+                "flow-control_delete_chatflow": true,
+                "flow-control_list_nodes": true,
+                "flow-control_get_nodes_by_category": true,
+                "flow-control_get_node": true,
+                "flow-control_create_prediction": true,
+                "flow-control_create_prediction_with_history": true,
+                "flow-control_create_prediction_with_files": true,
+                "flow-control_create_prediction_with_lead": true,
+                "mcp-flowise_list_chatflows": true,
+                "mcp-flowise_create_prediction": true
             }
         }
     },
@@ -75,6 +88,7 @@
     },
     "permission": {
         "flow-doc_*": "allow",
-        "flow-control_*": "allow"
+        "flow-control_*": "deny",
+        "mcp-flowise_*": "deny"
     }
 }
