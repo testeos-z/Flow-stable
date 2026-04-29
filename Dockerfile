@@ -6,7 +6,7 @@ FROM node:20-slim as builder
 WORKDIR /app
 
 # Copiar configuración de dependencias del paquete específico
-COPY packages/api-documentation/package.json packages/api-documentation/package-lock.json* ./
+COPY packages/api-documentation/package*.json ./
 RUN npm install
 
 # Copiar el código del paquete y compilar
