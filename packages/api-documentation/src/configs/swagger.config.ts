@@ -23,7 +23,7 @@ const swaggerUiOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:3000/api/v1',
+                url: process.env.FLOWISE_URL || 'http://localhost:3000/api/v1',
                 description: 'Flowise Server'
             }
         ]

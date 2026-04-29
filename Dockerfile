@@ -1,45 +1,29 @@
-# Build local monorepo image
-# docker build --no-cache -t  flowise .
+# Dockerfile principal para desplegar ÚNICAMENTE api-documentation
+# Rama exclusiva para documentación de API
 
-# Run image
-# docker run -d -p 3000:3000 flowise
+# Etapa 1: Builder
+FROM node:20-slim as builder
+WORKDIR /app
 
-FROM node:20-alpine
+# Copiar configuración de dependencias del paquete específico
+COPY packages/api-documentation/package.json packages/api-documentation/package-lock.json* ./
+RUN npm install
 
-# Install system dependencies and build tools
-RUN apk update && \
-    apk add --no-cache \
-        libc6-compat \
-        python3 \
-        make \
-        g++ \
-        build-base \
-        cairo-dev \
-        pango-dev \
-        chromium \
-        curl && \
-    npm install -g pnpm
+# Copiar el código del paquete y compilar
+COPY packages/api-documentation/ .
+RUN npm run build
 
-ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+# Etapa 2: Runner
+FROM node:20-slim as runner
+WORKDIR /app
 
-ENV NODE_OPTIONS=--max-old-space-size=8192
+# Copiar solo lo necesario desde el builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/src/yml/swagger.yml ./src/yml/swagger.yml
+COPY --from=builder /app/package.json ./package.json
 
-WORKDIR /usr/src/flowise
+# Railway inyecta PORT automáticamente, escuchamos en el que asigne
+EXPOSE 6655
 
-# Copy app source
-COPY . .
-
-# Install dependencies and build
-RUN pnpm install && \
-    pnpm build
-
-# Give the node user ownership of the application files
-RUN chown -R node:node .
-
-# Switch to non-root user (node user already exists in node:20-alpine)
-USER node
-
-EXPOSE 3000
-
-CMD [ "pnpm", "start" ]
+CMD ["node", "dist/index.js"]
