@@ -28,6 +28,10 @@ Reports stored in ai.a2a_report_files (Supabase Storage)
 
 **Path aliases**: `@/*` → `src/*`, `@utils/*` → `src/utils/*`, `@supabase/*` → `supabase/*`
 
+## Companion skill — load when designing flows in Flowise
+
+🚀 **`skill(name: "flowise-node-reference")`** — Catalogo completo de los 302 nodos, 100 credenciales, 12+ patrones de diseño y arboles de decision. Cargalo SIEMPRE que necesites disenar, implementar o debuguear flujos en Flowise.
+
 ## Reference files — load as needed
 
 | Topic         | File                          | Load when...                                                    |
