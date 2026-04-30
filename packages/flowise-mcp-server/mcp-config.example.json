@@ -1,0 +1,16 @@
+{
+    "mcpServers": {
+        "flowise": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "--add-host=host.docker.internal:host-gateway",
+                "--env-file",
+                "/path/to/your/.env",
+                "flowise-mcp-server"
+            ]
+        }
+    }
+}

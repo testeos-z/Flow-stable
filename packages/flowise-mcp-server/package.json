@@ -1,0 +1,49 @@
+{
+    "name": "flowise-mcp-server",
+    "version": "1.0.0",
+    "description": "MCP server for Flowise AI workflows",
+    "main": "dist/index.js",
+    "bin": {
+        "flowise-mcp-server": "dist/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "dev": "tsc && node dist/index.js",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "docker:build": "docker build -t flowise-mcp-server .",
+        "docker:run": "docker run -i --rm --add-host=host.docker.internal:host-gateway --env-file .env flowise-mcp-server"
+    },
+    "keywords": [
+        "mcp",
+        "flowise",
+        "ai",
+        "chatflow",
+        "model-context-protocol",
+        "llm"
+    ],
+    "author": "wksbx",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wksbx/flowise-mcp-server.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wksbx/flowise-mcp-server/issues"
+    },
+    "homepage": "https://github.com/wksbx/flowise-mcp-server#readme",
+    "packageManager": "pnpm@10.16.1",
+    "type": "module",
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.26.0",
+        "flowise-sdk": "^1.0.9",
+        "zod": "^4.3.5"
+    },
+    "devDependencies": {
+        "@types/node": "^25.0.9",
+        "typescript": "^5.9.3",
+        "vitest": "^3.0.0"
+    }
+}
