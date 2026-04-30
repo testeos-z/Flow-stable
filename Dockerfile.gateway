@@ -1,0 +1,42 @@
+# Dockerfile para desplegar ÚNICAMENTE a2alabgateway
+# Basado en Bun para alto rendimiento en streaming
+
+# ---- Etapa 1: Instalar TODAS las dependencias (para build) ----
+FROM oven/bun:1 AS builder-deps
+WORKDIR /app
+COPY packages/a2alabgateway/package.json ./
+RUN bun install
+
+# ---- Etapa 2: Build ----
+FROM oven/bun:1 AS builder
+WORKDIR /app
+COPY --from=builder-deps /app/node_modules ./node_modules
+COPY packages/a2alabgateway/src ./src
+COPY packages/a2alabgateway/tsconfig.json ./
+COPY packages/a2alabgateway/package.json ./
+COPY packages/a2alabgateway/bunstart.build.ts ./
+RUN bun run build
+
+# ---- Etapa 3: Instalar solo dependencias de PRODUCCIÓN ----
+FROM oven/bun:1 AS prod-deps
+WORKDIR /app
+COPY packages/a2alabgateway/package.json ./
+RUN bun install --production
+
+# ---- Etapa 4: Runner (Imagen final optimizada) ----
+FROM oven/bun:1-slim AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Railway inyecta la variable PORT automáticamente
+# Nuestro código ya escucha en process.env.PORT || 4100
+EXPOSE 4100
+
+# Copiamos solo lo necesario para la ejecución
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./package.json
+
+# Comando de inicio optimizado
+CMD ["bun", "run", "dist/server.js"]

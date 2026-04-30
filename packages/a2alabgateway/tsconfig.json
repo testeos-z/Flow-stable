@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022"],
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "outDir": "dist",
+        "rootDir": "src",
+        "noEmit": false,
+        "strict": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowImportingTsExtensions": false,
+        "verbatimModuleSyntax": false,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "types": ["bun-types"]
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist"]
+}

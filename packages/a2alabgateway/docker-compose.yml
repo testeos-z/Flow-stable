@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+    a2alabgateway:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: a2alabgateway:local
+        container_name: a2alabgateway
+        restart: unless-stopped
+        ports:
+            - '4100:4100'
+        environment:
+            - NODE_ENV=production
+            - PORT=4100
+            - JWT_SECRET=${JWT_SECRET}
+            - TARGET_API_URL=${TARGET_API_URL}
+        env_file:
+            - .env
