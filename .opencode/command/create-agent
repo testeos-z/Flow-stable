@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Create Agent in Flowise — OpenCode Command
+# Usage: opencode /create-agent health_agent_core
+# or: opencode /create-agent environment_agent
+
+# This command orchestrates the full agent creation workflow in Flowise
+
+AGENT_NAME="${1:-health_agent_core}"
+
+echo "🚀 Creating Flowise Agent: $AGENT_NAME"
+echo ""
+echo "This command will guide you through creating a modular agent in Flowise."
+echo "Make sure you have read: flowise-node-reference/references/05-node-flow-compatibility.md"
+echo ""
+echo "Steps:"
+echo "  1. Gather agent information (identity, purpose, context)"
+echo "  2. Prepare the system prompt (use AGENT_CREATION_TEMPLATE.md as reference)"
+echo "  3. Choose model and verify credential"
+echo "  4. Create flowData JSON with nodes and edges"
+echo "  5. Deploy chatflow to Flowise"
+echo "  6. Validate and test"
+echo "  7. Document in memory"
+echo ""
+echo "────────────────────────────────────────────────────────────────"
+echo ""
+
+# Display the template path
+TEMPLATE_PATH=".agents/prompts/AGENT_CREATION_TEMPLATE.md"
+
+if [ -f "$TEMPLATE_PATH" ]; then
+    echo "✅ Template found at: $TEMPLATE_PATH"
+    echo ""
+    echo "Key sections to complete:"
+    echo "  § 2.1: Agent Identity (name, provider, model, credential)"
+    echo "  § 2.2: Agent Purpose (role, specialization, indicators)"
+    echo "  § 2.3: Agent Context (connections, tools, memory, output)"
+    echo "  § 3  : System Prompt (complete, structured, with all sections)"
+    echo "  § 4  : Flowise Configuration (nodes: Chat Model, Tool Agent, Memory, Tools)"
+    echo "  § 5  : Execution Plan (6 steps)"
+    echo "  § 6  : Creation Checklist (13 items)"
+    echo ""
+else
+    echo "⚠️  Template NOT found at: $TEMPLATE_PATH"
+    echo "Create it using: /update-agent-skills"
+    exit 1
+fi
+
+echo "Agent to create: $AGENT_NAME"
+echo ""
+echo "Next steps:"
+echo "  1. Fill out AGENT_CREATION_TEMPLATE.md sections 2-3 for your agent"
+echo "  2. Use flow-control_create_chatflow() to deploy"
+echo "  3. Validate using flowise-node-reference/references/05-node-flow-compatibility.md"
+echo "  4. Save to memory: engram_mem_save() with agent ID and architecture"
+echo ""
+echo "Shortcut for health_agent_core:"
+echo "  → See § 8 in AGENT_CREATION_TEMPLATE.md (already populated)"
+echo "  → Copy system prompt from § 8.4"
+echo "  → Execute: /create-agent-execute health_agent_core"
+echo ""

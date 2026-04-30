@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# Update Agent Skills Documentation — OpenCode Command
+# Usage: opencode /update-agent-skills
+# This command refreshes all agent-related documentation and skills
+
+echo "📚 Updating Agent Skills Documentation"
+echo ""
+
+DOCS_PATH=".agents/skills/flowise-node-reference/references"
+
+echo "Checking documentation files..."
+echo ""
+
+# Array of required files
+declare -a FILES=(
+    "00-node-catalogue.md"
+    "01-credential-map.md"
+    "02-design-patterns.md"
+    "03-decision-trees.md"
+    "04-flowdata-schema.md"
+    "05-node-flow-compatibility.md"
+)
+
+# Check each file
+for file in "${FILES[@]}"; do
+    if [ -f "$DOCS_PATH/$file" ]; then
+        echo "  ✅ $file"
+    else
+        echo "  ❌ $file (MISSING)"
+    fi
+done
+
+echo ""
+echo "Checking agent templates..."
+echo ""
+
+TEMPLATE_PATH=".agents/prompts/AGENT_CREATION_TEMPLATE.md"
+if [ -f "$TEMPLATE_PATH" ]; then
+    echo "  ✅ AGENT_CREATION_TEMPLATE.md"
+else
+    echo "  ❌ AGENT_CREATION_TEMPLATE.md (MISSING)"
+fi
+
+echo ""
+echo "Summary of skills and documentation:"
+echo ""
+echo "Flowise Node Reference Skill:"
+echo "  • 302 nodos catalogados"
+echo "  • 5 reference documents"
+echo "  • NEW: 05-node-flow-compatibility.md (¡aclara CHATFLOW vs AGENTFLOW!)"
+echo ""
+
+echo "Agent Creation Commands:"
+echo "  • /create-agent [agent_name]"
+echo "  • /create-agent-execute [agent_name]"
+echo "  • /update-agent-skills"
+echo ""
+
+echo "Available agents (in template):"
+echo "  • health_agent_core (fully specified)"
+echo "  • environment_agent (from user)"
+echo ""
+
+echo "Documentation includes:"
+echo "  § 1  Pre-requisites"
+echo "  § 2  Agent Information (Identity, Purpose, Context)"
+echo "  § 3  System Prompt Template (15 sections)"
+echo "  § 4  Flowise Configuration (Nodes, Edges, Validation)"
+echo "  § 5  Execution Plan (6 steps)"
+echo "  § 6  Checklist (13 items)"
+echo "  § 7  Troubleshooting (5 errors + solutions)"
+echo "  § 8  Case: health_agent_core (complete example)"
+echo "  § 9  References"
+echo ""
+
+echo "Next steps:"
+echo "  1. Use /create-agent health_agent_core to see all steps"
+echo "  2. Review AGENT_CREATION_TEMPLATE.md"
+echo "  3. Review flowise-node-reference/references/05-node-flow-compatibility.md"
+echo "  4. Execute /create-agent-execute health_agent_core to build it"
+echo ""
+
+echo "✅ Agent skills documentation updated"
+echo ""

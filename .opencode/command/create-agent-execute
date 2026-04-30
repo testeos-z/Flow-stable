@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Execute Agent Creation in Flowise — OpenCode Command
+# Usage: opencode /create-agent-execute health_agent_core
+# This command actually creates the agent using the template data
+
+AGENT_NAME="${1:-health_agent_core}"
+TEMPLATE_PATH=".agents/prompts/AGENT_CREATION_TEMPLATE.md"
+
+echo "🔧 Executing agent creation: $AGENT_NAME"
+echo ""
+
+# Validate template exists
+if [ ! -f "$TEMPLATE_PATH" ]; then
+    echo "❌ Template not found at: $TEMPLATE_PATH"
+    exit 1
+fi
+
+echo "Pre-flight checks:"
+echo "  ☐ Agent Identity filled (§ 2.1)"
+echo "  ☐ System Prompt complete (§ 3)"
+echo "  ☐ Flowise Configuration ready (§ 4)"
+echo "  ☐ Model and credential verified"
+echo "  ☐ Read 05-node-flow-compatibility.md"
+echo ""
+
+# Map agent name to configuration
+case "$AGENT_NAME" in
+    health_agent_core)
+        PROVIDER="OpenRouter"
+        MODEL="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
+        CREDENTIAL_ID="2c5d28de-e4a1-4368-93ff-aa7233a9257e"
+        TEMPLATE_SECTION="§ 8"
+        FLOW_TYPE="CHATFLOW"
+        FINAL_NODE="Tool Agent"
+        ;;
+    environment_agent)
+        PROVIDER="OpenRouter"
+        MODEL="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
+        CREDENTIAL_ID="2c5d28de-e4a1-4368-93ff-aa7233a9257e"
+        TEMPLATE_SECTION="User-provided"
+        FLOW_TYPE="CHATFLOW"
+        FINAL_NODE="Tool Agent"
+        ;;
+    *)
+        echo "❓ Unknown agent: $AGENT_NAME"
+        echo ""
+        echo "Known agents:"
+        echo "  • health_agent_core (§ 8 in template)"
+        echo "  • environment_agent (user-provided)"
+        echo ""
+        echo "To create a new agent:"
+        echo "  1. Fill AGENT_CREATION_TEMPLATE.md"
+        echo "  2. Add case in this script"
+        echo "  3. Run: /create-agent-execute your_agent_name"
+        exit 1
+        ;;
+esac
+
+echo "Configuration for $AGENT_NAME:"
+echo "  Provider:        $PROVIDER"
+echo "  Model:           $MODEL"
+echo "  Credential ID:   $CREDENTIAL_ID"
+echo "  Template §:      $TEMPLATE_SECTION"
+echo "  Flow Type:       $FLOW_TYPE"
+echo "  Final Node:      $FINAL_NODE"
+echo ""
+
+echo "Steps to execute:"
+echo "  1️⃣  Extract system prompt from template (§ $TEMPLATE_SECTION)"
+echo "  2️⃣  Create flowData JSON with:"
+echo "       - Chat Model node (provider: $PROVIDER, model: $MODEL)"
+echo "       - Tool Agent node (system message = full prompt)"
+echo "       - Buffer Memory node"
+echo "       - Calculator node (optional tools)"
+echo "       - Edges: Chat Model → Tool Agent (model input)"
+echo "       - Edges: Buffer Memory → Tool Agent (memory input)"
+echo "       - Edges: Calculator → Tool Agent (tools input)"
+echo "  3️⃣  Call flow-control_create_chatflow()"
+echo "  4️⃣  Validate response (should return chatflow ID)"
+echo "  5️⃣  Test agent with sample input"
+echo "  6️⃣  Save to memory: engram_mem_save() with ID + architecture"
+echo ""
+
+echo "Validation checklist:"
+echo "  ✓ Type = CHATFLOW (not AGENTFLOW)"
+echo "  ✓ Final node = Tool Agent (not LLM node)"
+echo "  ✓ System message = complete prompt"
+echo "  ✓ Credential connected"
+echo "  ✓ Memory connected"
+echo "  ✓ All edges present"
+echo ""
+
+echo "Ready to proceed?"
+echo "  Run: flow-control_create_chatflow() with flowData from AGENT_CREATION_TEMPLATE.md"
+echo ""
+echo "⚠️  DO NOT use LLM node from Agent Flows as final node — error guaranteed!"
+echo "✅ Use Tool Agent from Agents category — correct for CHATFLOW"
+echo ""

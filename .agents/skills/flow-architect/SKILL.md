@@ -95,6 +95,49 @@ Never hardcode a language in YAML prompts.
 
 **Vector search**: Uses `match_knowledge_madeira` + `match_knowledge_global` in parallel. Embedding dim = **1024** (HuggingFace). Flow filter disabled — use `namespace` to scope.
 
+## Flowise flowData JSON schema (OBLIGATORIO)
+
+Cuando diseñes flows para Flowise via API o planificación, el `flowData` debe cumplir siempre con este tipado exacto:
+
+```typescript
+interface IReactFlowObject {
+    nodes: IReactFlowNode[]
+    edges: IReactFlowEdge[]
+    viewport: { x: number; y: number; zoom: number }
+}
+
+interface IReactFlowNode {
+    id: string
+    position: { x: number; y: number }
+    positionAbsolute: { x: number; y: number }
+    type: string // 'customNode'
+    data: INodeData
+    z: number
+    handleBounds: { source: any; target: any }
+    width: number
+    height: number
+    selected: boolean
+    dragging: boolean
+}
+
+interface IReactFlowEdge {
+    id: string
+    source: string
+    sourceHandle: string
+    target: string
+    targetHandle: string
+    type: string // 'buttonedge'
+    data: { isHumanInput: boolean; sourceColor: string; targetColor: string }
+}
+```
+
+**Errores comunes que rompe el canvas:**
+
+-   `Cannot read properties of undefined (reading 'length')` → falta `viewport` o `nodes` no es array
+-   Canvas no renderiza → faltan campos obligatorios en los nodos (`positionAbsolute`, `width`, `height`, `selected`, `dragging`)
+
+**Regla**: Cuando delegues a `flow-ing`, incluí la estructura completa del flowData con todos los campos. No usar estructuras reducidas aunque funcionen en la API — el canvas necesita todos los campos.
+
 ## Supabase schemas
 
 | Schema      | Purpose                                         |

@@ -5,9 +5,14 @@ description: >
     39 tools, 11 MCP tools, and design patterns for building flows.
     Covers Chat Models, Embeddings, Memory, Vector Stores, Document Loaders,
     Tools, Sequential Agents, Agent Flows, Chains, Retrievers, and more.
-    Trigger: When designing or implementing flows in Flowise, selecting nodes,
-    understanding credential requirements, choosing the right tool/model/vector
-    store, or deciding between flow architectures (RAG, Agent, Sequential, etc.).
+
+    RESTRICTED ACCESS: Solo para agentes flow-ing y flow-architect.
+    Otros agentes no deben cargar ni consultar este skill.
+
+    Trigger: When flow-ing or flow-architect agents are designing, creating, updating,
+    or inspecting flows in Flowise. When selecting nodes, understanding credential
+    requirements, choosing the right tool/model/vector store, or deciding between
+    flow architectures (RAG, Agent, Sequential, etc.).
 ---
 
 # Flowise Node Reference
@@ -16,20 +21,25 @@ Guía completa para diseñar flujos en Flowise. Este skill cataloga TODOS los no
 
 ## Reference files — load as needed
 
-| File                               | Contents                                                                        | Load when...                                                                              |
-| ---------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `references/00-node-catalogue.md`  | Catálogo completo: 302 nodos por categoría con descripción y cuándo usarlos     | Necesitás saber qué nodos existen en una categoría o entender qué hace un nodo específico |
-| `references/01-credential-map.md`  | Mapa completo: 100 credenciales, qué nodos las requieren, cuáles son opcionales | Estás diseñando un flujo y necesitás saber qué credenciales configurar                    |
-| `references/02-design-patterns.md` | 12+ patrones de diseño: RAG, Agent, Sequential, MCP, búsqueda web, etc.         | Necesitás armar un flujo para un caso de uso concreto                                     |
-| `references/03-decision-trees.md`  | Árboles de decisión para elegir modelos, tools, memory, vector stores           | Estás indeciso entre varias opciones y querés la mejor según el caso                      |
+| File                                       | Contents                                                                                                          | Load when...                                                                                                   |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `references/00-node-catalogue.md`          | Catálogo completo: 302 nodos por categoría con descripción y cuándo usarlos                                       | Necesitás saber qué nodos existen en una categoría o entender qué hace un nodo específico                      |
+| `references/01-credential-map.md`          | Mapa completo: 100 credenciales, qué nodos las requieren, cuáles son opcionales                                   | Estás diseñando un flujo y necesitás saber qué credenciales configurar                                         |
+| `references/02-design-patterns.md`         | 12+ patrones de diseño: RAG, Agent, Sequential, MCP, búsqueda web, etc.                                           | Necesitás armar un flujo para un caso de uso concreto                                                          |
+| `references/03-decision-trees.md`          | Árboles de decisión para elegir modelos, tools, memory, vector stores                                             | Estás indeciso entre varias opciones y querés la mejor según el caso                                           |
+| `references/04-flowdata-schema.md`         | Anatomía del flowData: nodes, edges, viewport, handle IDs, inputParams, inputAnchors, outputAnchors               | Necesitás crear o editar un flow por API y entender la estructura JSON del canvas                              |
+| `references/05-node-flow-compatibility.md` | **Compatibilidad de nodos con tipos de flujos**: CHATFLOW vs AGENTFLOW. Resuelve errores "Ending node must be..." | ⚠️ **ANTES DE CREAR UN FLOW** — identifica qué tipo de flujo necesitás y qué nodos son válidos como nodo final |
 
 ## Quick start — cómo usar este skill
 
-1. **Identificá el caso de uso** → cargá `references/03-decision-trees.md`
+**🔴 ANTES QUE NADA**: Si estás recibiendo errores como `"Ending node must be either a Chain or Agent or Engine"`, lee `references/05-node-flow-compatibility.md` PRIMERO.
+
+1. **Identificá qué tipo de flujo necesitás** → cargá `references/05-node-flow-compatibility.md` (CHATFLOW vs AGENTFLOW)
 2. **Elegí el patrón de diseño** → cargá `references/02-design-patterns.md`
 3. **Seleccioná nodos específicos** → cargá `references/00-node-catalogue.md`
 4. **Verificá credenciales** → cargá `references/01-credential-map.md`
-5. **Validá con MCP tools** → usá `flow-control_get_node()` para ver detalles en tiempo real
+5. **Entendé la estructura del flowData** → cargá `references/04-flowdata-schema.md` (antes de crear/editar un flow por API)
+6. **Validá con MCP tools** → usá `flow-control_get_node()` para ver detalles en tiempo real
 
 ## Dynamic MCP tools complementarias
 
