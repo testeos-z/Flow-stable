@@ -1,0 +1,132 @@
+- generic [ref=e35]:
+      - banner [ref=e36]:
+            - generic [ref=e37]:
+                  - generic [ref=e38]:
+                        - link "GobernAI" [ref=e40] [cursor=pointer]:
+                              - /url: /chatflows
+                              - img "GobernAI" [ref=e42]
+                        - button [ref=e43] [cursor=pointer]:
+                              - img [ref=e45]
+                  - checkbox [ref=e48] [cursor=pointer]
+                  - button [ref=e51] [cursor=pointer]:
+                        - img [ref=e53]
+      - navigation "mailbox folders" [ref=e56]:
+            - list [ref=e61]:
+                  - button "Chatflows" [ref=e62] [cursor=pointer]:
+                        - img [ref=e64]
+                        - heading "Chatflows" [level=5] [ref=e70]
+                  - button "Agentflows" [ref=e71] [cursor=pointer]:
+                        - img [ref=e73]
+                        - paragraph [ref=e81]: Agentflows
+                  - button "Executions" [ref=e82] [cursor=pointer]:
+                        - img [ref=e84]
+                        - paragraph [ref=e89]: Executions
+                  - button "Assistants" [ref=e90] [cursor=pointer]:
+                        - img [ref=e92]
+                        - paragraph [ref=e97]: Assistants
+                  - button "Marketplaces" [ref=e98] [cursor=pointer]:
+                        - img [ref=e100]
+                        - paragraph [ref=e104]: Marketplaces
+                  - button "Tools" [ref=e105] [cursor=pointer]:
+                        - img [ref=e107]
+                        - paragraph [ref=e110]: Tools
+                  - button "Credentials" [ref=e111] [cursor=pointer]:
+                        - img [ref=e113]
+                        - paragraph [ref=e118]: Credentials
+                  - button "Variables" [ref=e119] [cursor=pointer]:
+                        - img [ref=e121]
+                        - paragraph [ref=e125]: Variables
+                  - button "API Keys" [ref=e126] [cursor=pointer]:
+                        - img [ref=e128]
+                        - paragraph [ref=e131]: API Keys
+                  - button "Document Stores" [ref=e132] [cursor=pointer]:
+                        - img [ref=e134]
+                        - paragraph [ref=e139]: Document Stores
+      - main [ref=e140]:
+            - generic [ref=e143]:
+                  - generic [ref=e145]:
+                        - generic [ref=e147]:
+                              - heading "Chatflows" [level=1] [ref=e148]
+                              - paragraph [ref=e149]: Build single-agent systems, chatbots and simple LLM flows
+                        - generic [ref=e150]:
+                              - generic [ref=e151]:
+                                    - img [ref=e153]
+                                    - searchbox "Search Name or Category [ Ctrl + F ]" [ref=e156]
+                                    - group
+                              - group [ref=e157]:
+                                    - button "Card View" [pressed] [ref=e158] [cursor=pointer]:
+                                          - img [ref=e159]
+                                    - button "List View" [ref=e164] [cursor=pointer]:
+                                          - img [ref=e165]
+                              - button "Add New" [ref=e166] [cursor=pointer]:
+                                    - img [ref=e168]
+                                    - text: Add New
+                  - generic [ref=e169]:
+                        - generic [ref=e172] [cursor=pointer]:
+                              - paragraph [ref=e175]: Education Agent - Madeira
+                              - generic [ref=e176]:
+                                    - generic "Chat Prompt" [ref=e177]
+                                    - generic "OpenRouter" [ref=e178]
+                                    - generic "Madeira MCP Tools" [ref=e179]
+                                    - paragraph [ref=e180]: + 2 More
+                        - generic [ref=e183] [cursor=pointer]:
+                              - paragraph [ref=e186]: Education Agent - Simple
+                              - generic [ref=e187]:
+                                    - generic "Chat Prompt" [ref=e188]
+                                    - generic "OpenRouter" [ref=e189]
+                                    - generic "Madeira MCP Tools" [ref=e190]
+                        - paragraph [ref=e196] [cursor=pointer]: Test - Minimal
+                        - generic [ref=e199] [cursor=pointer]:
+                              - paragraph [ref=e202]: health_agent_v2
+                              - generic [ref=e203]:
+                                    - generic "OpenRouter" [ref=e204]
+                                    - generic "Buffer Memory" [ref=e205]
+                                    - generic "Calculator" [ref=e206]
+                                    - paragraph [ref=e207]: + 2 More
+                        - generic [ref=e210] [cursor=pointer]:
+                              - paragraph [ref=e213]: environment_agent
+                              - generic [ref=e214]:
+                                    - generic "OpenRouter" [ref=e215]
+                                    - generic "Buffer Memory" [ref=e216]
+                                    - generic "Calculator" [ref=e217]
+                                    - paragraph [ref=e218]: + 1 More
+                        - generic [ref=e221] [cursor=pointer]:
+                              - paragraph [ref=e224]: prueba educacion
+                              - generic [ref=e225]:
+                                    - generic "OpenRouter" [ref=e226]
+                                    - generic "Tool Agent" [ref=e227]
+                                    - generic "Buffer Memory" [ref=e228]
+                                    - paragraph [ref=e229]: + 1 More
+                        - generic [ref=e232] [cursor=pointer]:
+                              - paragraph [ref=e235]: prueba economico
+                              - generic [ref=e236]:
+                                    - generic "Tool Agent" [ref=e237]
+                                    - generic "OpenRouter" [ref=e238]
+                                    - generic "Buffer Memory" [ref=e239]
+                                    - paragraph [ref=e240]: + 1 More
+                        - generic [ref=e243] [cursor=pointer]:
+                              - paragraph [ref=e246]: RAG
+                              - generic [ref=e247]:
+                                    - generic "Calculator" [ref=e248]
+                                    - generic "Buffer Memory" [ref=e249]
+                                    - generic "ReAct Agent for Chat Models" [ref=e250]
+                                    - paragraph [ref=e251]: + 1 More
+                  - generic [ref=e252]:
+                        - generic [ref=e253]:
+                              - paragraph [ref=e254]: 'Items per page:'
+                              - generic [ref=e256]:
+                                    - combobox [ref=e257] [cursor=pointer]: '12'
+                                    - textbox: '12'
+                                    - img
+                                    - group
+                        - paragraph [ref=e258]: Items 1 to 8 of 8
+                        - navigation "pagination navigation" [ref=e259]:
+                              - list [ref=e260]:
+                                    - listitem [ref=e261]:
+                                          - button "Go to previous page" [disabled]:
+                                                - img
+                                    - listitem [ref=e262]:
+                                          - button "page 1" [ref=e263] [cursor=pointer]: '1'
+                                    - listitem [ref=e264]:
+                                          - button "Go to next page" [disabled]:
+                                                - img

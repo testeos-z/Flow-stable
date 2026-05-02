@@ -2,13 +2,15 @@
     "$schema": "https://opencode.ai/config.json",
     "agent": {
         "flow-architect": {
-            "description": "Agente experto en a2a-lab (GobernAI). Diseña flujos en FlowiseAI basándose en la lógica de agentes de a2a-lab.acts as translator between a2a-lab agents/flows and Flowise implementations.",
+            "description": "Agente experto en a2a-lab (GobernAI). READ-ONLY orquestador. Diseña flujos, delega a specialists, ensambla flowData, pero NO escribe en Flowise. Único executor: flow-ing.",
             "mode": "all",
             "skill": ".agents/skills/flow-architect",
             "permission": {
                 "flow-doc_*": "allow",
                 "engram_*": "allow",
-                "flow-control_*": "allow"
+                "flow-control_*": "deny",
+                "flow-validation_*": "allow",
+                "mcp-flowise_*": "allow"
             },
             "tools": {
                 "bash": true,
@@ -22,20 +24,39 @@
                 "flow-control_list_nodes": true,
                 "flow-control_get_nodes_by_category": true,
                 "flow-control_get_node": true,
-                "mcp-flowise_list_chatflows": true
+                "flow-control_create_custom_mcp_server": true,
+                "flow-control_list_custom_mcp_servers": true,
+                "flow-control_get_custom_mcp_server": true,
+                "flow-control_update_custom_mcp_server": true,
+                "flow-control_delete_custom_mcp_server": true,
+                "flow-control_authorize_custom_mcp_server": true,
+                "flow-control_get_custom_mcp_server_tools": true,
+                "mcp-flowise_list_chatflows": true,
+                "mcp-flowise_get_chatflow": true,
+                "mcp-flowise_list_nodes": true,
+                "mcp-flowise_get_node": true,
+                "flow-validation_validate_flow_data": true,
+                "flow-validation_validate_flow_graph": true,
+                "flow-validation_fix_flow_data": true,
+                "flow-validation_full_flow_validation": true,
+                "flow-validation_validate_chatflow": true,
+                "flow-validation_list_credentials": true,
+                "flow-validation_resolve_credential": true
             }
         },
         "flow-ing": {
-            "description": "Agente especializado en control de flujo y orchestration de agentes. Maneja la coordinación entre diferentes agentes, gestión de estado y flujo de ejecución.",
+            "description": "ÚNICO AGENTE CON PERMISO DE ESCRITURA EN FLOWISE. Ejecuta testing pipeline antes de cualquier operación de escritura. Valida con Zod, corre smoke tests, y solo entonces crea/actualiza/borra flows.",
             "mode": "all",
+            "skill": ".agents/skills/flow-ing",
             "permission": {
                 "flow-doc_*": "allow",
                 "engram_*": "allow",
                 "context7_*": "allow",
                 "flow-control_*": "allow",
-                "mcp-flowise_*": "allow"
+                "mcp-flowise_*": "allow",
+                "flow-validation_*": "allow"
             },
-            "prompt": "## FLOW-CONTROL AGENT\n\nEres un agente especializado en control de flujo y orchestration de agentes. Tu rol principal es coordinar el trabajo entre múltiples agentes, gestionar el estado de las tareas y mantener el flujo de ejecución organizado.\n\n## CAPACIDADES PRINCIPALES\n\n1. **Orchestration de Agentes**: Coordinar y delegar tareas a otros agentes (sdd-*, devops, build, etc.)\n2. **Gestión de Estado**: Mantener seguimiento del progreso de múltiples tareas\n3. **Control de Flujo**: Definir y ejecutar secuencias de trabajo entre agentes\n4. **Delegación Inteligente**: Saber cuándo delegar vs ejecutar directamente\n\n## HERRAMIENTAS DISPONIBLES\n\n- `delegation` - Lanzar agentes asincrónicamente para trabajo paralelo\n- `delegation_list` - Ver agentes en ejecución\n- `delegation_read` - Obtener resultados de agentes completados\n- `task` - Lanzar agentes sincrónicos cuando necesitas el resultado inmediatamente\n- `todowrite` - Seguimiento de tareas y estado\n- Todas las herramientas básicas: bash, read, write, edit, glob, grep, webfetch\n\n## MCPs DISPONIBLES\n\n- **context7**: Documentación actualizada de librerías y frameworks\n- **engram**: Memoria persistente para recordar decisiones entre sesiones\n- **flow-doc**: Documentación de FlowiseAI\n- **gh_grep**: Búsqueda en repositorios GitHub\n- **flow-control**: Control de Flowise (chatflows, nodos, predicciones)\n\n## FLUJO DE TRABAJO\n\n1. Analiza la solicitud del usuario\n2. Determina qué agentes necesitan ejecutarse y en qué orden\n3. Usa `delegation` para trabajo paralelo o `task` para trabajo secuencial\n4. Coordina los resultados y sintetiza la respuesta final\n5. Usa `todowrite` para mantener registro del progreso cuando hay múltiples pasos\n\n## REGLAS DE DELEGACIÓN\n\n| Situación | Acción |\n|-----------|--------|\n| Trabajo paralelo independiente | delegation |\n| Necesitas resultado antes de continuar | task |\n| Trabajo simple que ya sabes hacer | Ejecutar directamente |\n| Exploración del codebase | delegation |\n| Lectura de archivos para decisión | Leer directamente (1-3 archivos) |\n| Múltiples archivos para entender | delegate a un agente explore |\n\n## SKILLS RELACIONADOS\n\nUsa `skill(name: \"...\")` para cargar conocimiento especializado:\n- `skill(name: \"flow-ing\")` — Este agente ya viene contigo\n- `skill(name: \"sdd-*\")` — Todos los agentes SDD (spec, design, apply, verify, etc.)",
+            "prompt": "## FLOW-ING: Executor & Validator\\n\\nEres el ÚNICO agente con permiso de escritura en Flowise.\\n\\nREGLAS:\\n1. NUNCA permitas que otro agente escriba en Flowise\\n2. SIEMPRE ejecuta testing pipeline antes de guardar\\n3. Si tests fallan → reporta errores, NO guardes\\n4. Si tests pasan → guarda en Flowise\\n\\nCapacidades: create_chatflow, update_chatflow, delete_chatflow, test_chatflow, validate_chatflow\\nMCPs: flow-control, mcp-flowise, flow-validation (test_chatflow, validate_chatflow, list_credentials, resolve_credential)",
             "tools": {
                 "bash": true,
                 "delegation": true,
@@ -62,13 +83,26 @@
                 "flow-control_create_prediction_with_files": true,
                 "flow-control_create_prediction_with_lead": true,
                 "mcp-flowise_list_chatflows": true,
-                "mcp-flowise_create_prediction": true
+                "mcp-flowise_create_prediction": true,
+                "flow-validation_validate_flow_data": true,
+                "flow-validation_validate_flow_graph": true,
+                "flow-validation_fix_flow_data": true,
+                "flow-validation_full_flow_validation": true,
+                "flow-validation_test_chatflow": true,
+                "flow-validation_validate_chatflow": true,
+                "flow-validation_list_credentials": true,
+                "flow-validation_resolve_credential": true
             }
         }
     },
     "mcp": {
         "flow-control": {
             "command": ["/var/home/snor/Documents/jobs/GobernAI/Flow-stable/load-env.sh"],
+            "enabled": true,
+            "type": "local"
+        },
+        "flow-validation": {
+            "command": ["node", "/var/home/snor/Documents/jobs/GobernAI/Flow-stable/packages/flowise-mcp-server/dist/index.js"],
             "enabled": true,
             "type": "local"
         },
@@ -89,6 +123,7 @@
     "permission": {
         "flow-doc_*": "allow",
         "flow-control_*": "deny",
-        "mcp-flowise_*": "deny"
+        "mcp-flowise_*": "deny",
+        "flow-validation_*": "allow"
     }
 }

@@ -17,7 +17,13 @@ import {
     handleDeleteChatflow,
     handleListNodes,
     handleGetNodesByCategory,
-    handleGetNode
+    handleGetNode,
+    handleDiagnoseChatflow,
+    handleRepairChatflow,
+    handleTestChatflow,
+    handleValidateChatflow,
+    handleListCredentials,
+    handleResolveCredential
 } from './handlers.js'
 
 const require = createRequire(import.meta.url)
@@ -197,6 +203,80 @@ server.tool(
         nodeName: z.string().describe("The name of the node (e.g., 'chatOpenAI', 'conversationalAgent')")
     },
     async ({ nodeName }) => handleGetNode(flowiseApi, nodeName)
+)
+
+// Tool: Diagnose Chatflow
+server.tool(
+    'diagnose_chatflow',
+    'Diagnose a chatflow by checking for missing fields (viewport, node metadata) directly in the database. ' +
+        'Use this when a chatflow crashes the canvas or was created via API. ' +
+        'Returns a report of issues found. Requires FLOWISE_DB_* env vars.',
+    {
+        chatflowId: z.string().describe('The ID of the chatflow to diagnose')
+    },
+    async ({ chatflowId }) => handleDiagnoseChatflow(chatflowId)
+)
+
+// Tool: Repair Chatflow
+server.tool(
+    'repair_chatflow',
+    'Repair a chatflow by applying automatic fixes (viewport, node metadata) and updating the database directly. ' +
+        'This bypasses the Flowise API which strips viewport on save. ' +
+        'Returns a list of fields that were repaired. Requires FLOWISE_DB_* env vars.',
+    {
+        chatflowId: z.string().describe('The ID of the chatflow to repair')
+    },
+    async ({ chatflowId }) => handleRepairChatflow(chatflowId)
+)
+
+// Tool: Test Chatflow
+server.tool(
+    'test_chatflow',
+    'Run smoke and integration tests on a chatflow. Creates a temporary copy, runs predictions, ' +
+        'and reports results. Useful for validating flows before production use.',
+    {
+        chatflowId: z.string().describe('The ID of the chatflow to test')
+    },
+    async ({ chatflowId }) => handleTestChatflow(flowiseApi, chatflowId)
+)
+
+// Tool: Validate Chatflow
+server.tool(
+    'validate_chatflow',
+    'Validate flowData structure without saving. Checks for structural issues, ' +
+        'missing viewport, invalid credentials, and common errors. Use this BEFORE creating or updating a flow.',
+    {
+        flowData: z
+            .object({
+                nodes: z.array(z.any()).describe('Array of node objects'),
+                edges: z.array(z.any()).describe('Array of edge objects')
+            })
+            .describe('The flow configuration to validate')
+    },
+    async (params) => handleValidateChatflow(params)
+)
+
+// Tool: List Credentials
+server.tool(
+    'list_credentials',
+    'List available credentials in the registry. Returns credential types, names, and UUIDs. ' +
+        'Use this to get the correct UUID for a credential type (e.g., "openRouterApi" → UUID).',
+    {
+        env: z.string().optional().default('dev').describe('Environment (dev, qa, prod)')
+    },
+    async ({ env }) => handleListCredentials(env)
+)
+
+// Tool: Resolve Credential
+server.tool(
+    'resolve_credential',
+    'Resolve a credential type name to its UUID. If given a UUID, returns it as-is. ' +
+        'Use this when you need to convert "openRouterApi" to its actual UUID.',
+    {
+        type: z.string().describe('Credential type name (e.g., "openRouterApi") or UUID'),
+        env: z.string().optional().default('dev').describe('Environment (dev, qa, prod)')
+    },
+    async ({ type, env }) => handleResolveCredential(type, env)
 )
 
 // Start the server

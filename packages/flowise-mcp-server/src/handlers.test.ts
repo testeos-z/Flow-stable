@@ -234,12 +234,17 @@ describe('handlers', () => {
                 flowData: { nodes: [], edges: [] }
             })
 
-            expect(mockApi.request).toHaveBeenCalledWith('POST', '/chatflows', {
-                name: 'New Flow',
-                flowData: JSON.stringify({ nodes: [], edges: [] }),
-                type: 'CHATFLOW',
-                chatbotConfig: undefined
-            })
+            // fixFlowData injects viewport and ensures valid structure
+            const callArgs = vi.mocked(mockApi.request).mock.calls[0]
+            const body = callArgs[2] as { name: string; flowData: string; type: string }
+            expect(callArgs[0]).toBe('POST')
+            expect(callArgs[1]).toBe('/chatflows')
+            const flowData = JSON.parse(body.flowData)
+            expect(flowData.nodes).toEqual([])
+            expect(flowData.edges).toEqual([])
+            expect(flowData.viewport).toEqual({ x: 0, y: 0, zoom: 1 })
+            expect(body.name).toBe('New Flow')
+            expect(body.type).toBe('CHATFLOW')
             expect(result.content[0].text).toContain('new-123')
         })
 
@@ -253,12 +258,18 @@ describe('handlers', () => {
                 chatbotConfig: { theme: 'dark' }
             })
 
-            expect(mockApi.request).toHaveBeenCalledWith('POST', '/chatflows', {
-                name: 'Agent Flow',
-                flowData: JSON.stringify({ nodes: [{ id: '1' }], edges: [] }),
-                type: 'AGENTFLOW',
-                chatbotConfig: JSON.stringify({ theme: 'dark' })
-            })
+            // fixFlowData injects viewport and node defaults
+            const callArgs = vi.mocked(mockApi.request).mock.calls[0]
+            const body = callArgs[2] as { name: string; flowData: string; type: string; chatbotConfig: string }
+            expect(callArgs[0]).toBe('POST')
+            expect(callArgs[1]).toBe('/chatflows')
+            const flowData = JSON.parse(body.flowData)
+            expect(flowData.nodes).toHaveLength(1)
+            expect(flowData.nodes[0].id).toBe('1')
+            expect(flowData.viewport).toEqual({ x: 0, y: 0, zoom: 1 })
+            expect(body.name).toBe('Agent Flow')
+            expect(body.type).toBe('AGENTFLOW')
+            expect(body.chatbotConfig).toBe(JSON.stringify({ theme: 'dark' }))
         })
     })
 
@@ -285,9 +296,15 @@ describe('handlers', () => {
                 flowData: newFlowData
             })
 
-            expect(mockApi.request).toHaveBeenCalledWith('PUT', '/chatflows/123', {
-                flowData: JSON.stringify(newFlowData)
-            })
+            // fixFlowData injects viewport and node defaults
+            const callArgs = vi.mocked(mockApi.request).mock.calls[0]
+            const body = callArgs[2] as { flowData: string }
+            expect(callArgs[0]).toBe('PUT')
+            expect(callArgs[1]).toBe('/chatflows/123')
+            const flowData = JSON.parse(body.flowData)
+            expect(flowData.nodes).toHaveLength(1)
+            expect(flowData.nodes[0].id).toBe('new')
+            expect(flowData.viewport).toEqual({ x: 0, y: 0, zoom: 1 })
         })
 
         it('should update multiple fields', async () => {

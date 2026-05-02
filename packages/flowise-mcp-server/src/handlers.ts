@@ -3,6 +3,10 @@
  */
 
 import type { FlowiseApiClient } from './flowise-api.js'
+import { fixFlowData } from './flow-validation.js'
+import { diagnoseChatflow, repairChatflow } from './chatflow-db.js'
+import { testChatflow, flowHasTools } from './testing.js'
+import { listCredentials, validateCredential, resolveCredential } from './credentials.js'
 
 // Response type for MCP tools - uses index signature for compatibility with MCP SDK
 export interface ToolResponse {
@@ -42,6 +46,19 @@ export function errorResponse(message: string): ToolResponse {
         content: [{ type: 'text', text: message }],
         isError: true
     }
+}
+
+/**
+ * Validates and fixes flowData before sending to Flowise backend.
+ * Throws with clear error messages if flowData cannot be fixed.
+ */
+function validateAndFixFlowData(flowData: { nodes: unknown[]; edges: unknown[] }) {
+    const result = fixFlowData(JSON.stringify(flowData))
+    if (!result.valid) {
+        const messages = result.errors.map((e) => `${e.path}: ${e.message}`).join('; ')
+        throw new Error(`Invalid flowData: ${messages}`)
+    }
+    return result.data!
 }
 
 /**
@@ -182,9 +199,10 @@ export async function handleCreateChatflow(
     }
 ): Promise<ToolResponse> {
     try {
+        const fixedFlowData = validateAndFixFlowData(params.flowData)
         const chatflow = await api.request('POST', '/chatflows', {
             name: params.name,
-            flowData: JSON.stringify(params.flowData),
+            flowData: JSON.stringify(fixedFlowData),
             type: params.type || 'CHATFLOW',
             chatbotConfig: params.chatbotConfig ? JSON.stringify(params.chatbotConfig) : undefined
         })
@@ -210,7 +228,10 @@ export async function handleUpdateChatflow(
     try {
         const updateData: Record<string, unknown> = {}
         if (params.name) updateData.name = params.name
-        if (params.flowData) updateData.flowData = JSON.stringify(params.flowData)
+        if (params.flowData) {
+            const fixedFlowData = validateAndFixFlowData(params.flowData)
+            updateData.flowData = JSON.stringify(fixedFlowData)
+        }
         if (params.chatbotConfig) updateData.chatbotConfig = JSON.stringify(params.chatbotConfig)
 
         const chatflow = await api.request('PUT', `/chatflows/${params.chatflowId}`, updateData)
@@ -270,5 +291,142 @@ export async function handleGetNode(api: FlowiseApiClient, nodeName: string): Pr
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error)
         return errorResponse(`Error getting node: ${message}`)
+    }
+}
+
+/**
+ * Diagnose a chatflow by checking for missing fields in the database.
+ * This bypasses the Flowise API and checks the raw database record.
+ */
+export async function handleDiagnoseChatflow(chatflowId: string): Promise<ToolResponse> {
+    try {
+        const result = await diagnoseChatflow(chatflowId)
+        return successResponse(result)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error diagnosing chatflow: ${message}`)
+    }
+}
+
+/**
+ * Repair a chatflow by applying fixFlowData and updating the database directly.
+ * This bypasses the Flowise API which strips viewport on save.
+ */
+export async function handleRepairChatflow(chatflowId: string): Promise<ToolResponse> {
+    try {
+        const result = await repairChatflow(chatflowId)
+        return successResponse(result)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error repairing chatflow: ${message}`)
+    }
+}
+
+/**
+ * Test a chatflow by running smoke and integration tests.
+ */
+export async function handleTestChatflow(api: FlowiseApiClient, chatflowId: string): Promise<ToolResponse> {
+    try {
+        const result = await testChatflow(api, chatflowId)
+        return successResponse(result)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error testing chatflow: ${message}`)
+    }
+}
+
+/**
+ * Validate flowData structure without saving.
+ * Returns validation errors if any.
+ */
+export async function handleValidateChatflow(params: { flowData: { nodes: unknown[]; edges: unknown[] } }): Promise<ToolResponse> {
+    try {
+        const result = fixFlowData(JSON.stringify(params.flowData))
+
+        if (!result.valid) {
+            return successResponse({
+                valid: false,
+                errors: result.errors,
+                message: 'flowData has structural issues'
+            })
+        }
+
+        // Check for common credential issues
+        const credentialErrors: string[] = []
+        const nodes = result.data?.nodes || []
+
+        for (const node of nodes) {
+            const nodeData = (node as any)?.data
+            if (nodeData?.credential) {
+                const validation = validateCredential(nodeData.credential)
+                if (!validation.valid) {
+                    credentialErrors.push(`Node ${nodeData.name || nodeData.id}: ${validation.error}`)
+                }
+            }
+        }
+
+        if (credentialErrors.length > 0) {
+            return successResponse({
+                valid: false,
+                errors: credentialErrors,
+                message: 'Credential validation failed'
+            })
+        }
+
+        return successResponse({
+            valid: true,
+            message: 'flowData is valid',
+            nodeCount: nodes.length,
+            edgeCount: result.data?.edges?.length || 0,
+            hasTools: flowHasTools(result.data)
+        })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error validating chatflow: ${message}`)
+    }
+}
+
+/**
+ * List available credentials in the registry.
+ */
+export async function handleListCredentials(env?: string): Promise<ToolResponse> {
+    try {
+        const credentials = listCredentials(env)
+        return successResponse({
+            environment: env || 'dev',
+            count: credentials.length,
+            credentials: credentials.map((c) => ({
+                type: c.type,
+                name: c.name,
+                uuid: c.uuid,
+                description: c.description
+            }))
+        })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error listing credentials: ${message}`)
+    }
+}
+
+/**
+ * Resolve a credential type to UUID.
+ */
+export async function handleResolveCredential(type: string, env?: string): Promise<ToolResponse> {
+    try {
+        const result = resolveCredential(type, env)
+
+        if (result.error) {
+            return errorResponse(result.error)
+        }
+
+        return successResponse({
+            type,
+            uuid: result.uuid,
+            resolved: result.resolved,
+            environment: env || 'dev'
+        })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error resolving credential: ${message}`)
     }
 }

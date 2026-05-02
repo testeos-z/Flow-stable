@@ -557,3 +557,42 @@ Valores razonables para flows nuevos: `"zoom": 1.0` y `"x": 0, "y": 0`.
 6. **Generar `inputAnchors`** desde los inputs que tienen tipo (model, memory, tools)
 7. **Copiar `inputParams`** del constructor para cada campo configurable
 8. **Asignar `id`** único y `position` en el canvas
+
+---
+
+## Validación Automática con MCP Tools
+
+**IMPORTANTE**: Antes de guardar o modificar cualquier flow, SIEMPRE usar las herramientas de validación del MCP `flowise-mcp-server`.
+
+### Herramientas disponibles
+
+| Tool                   | Propósito                                            | Cuándo usar                     |
+| ---------------------- | ---------------------------------------------------- | ------------------------------- |
+| `validate_flow_data`   | Valida estructura (nodes, edges, viewport)           | BEFORE save o render            |
+| `validate_flow_graph`  | Valida conectividad (orphans, ciclos, desconectados) | AFTER estructura válida         |
+| `fix_flow_data`        | Repara issues comunes (missing viewport, defaults)   | BEFORE save                     |
+| `full_flow_validation` | Schema + graph + optional fix                        | Antes de cualquier modificación |
+
+### Ejemplo de uso en agente
+
+```typescript
+// 1. Validar estructura ANTES de modificar
+call full_flow_validation(flowData: string, fix: false, checkGraph: true)
+// Retorna: { valid, errors, warnings, graph }
+
+// 2. Si hay errores que se pueden arreglar:
+call fix_flow_data(flowData: string)
+// Retorna: { valid: true, fixed: true, flowData: "..." }
+
+// 3. Validar conectividad DESPUÉS de structural válida
+call validate_flow_graph(nodes: [...], edges: [...])
+// Retorna: { valid, orphanNodes, cycles, disconnectedNodes, unreachableNodes }
+```
+
+### Errores que evita la validación
+
+-   Canvas no renderiza → `viewport` faltante
+-   `Cannot read properties of undefined (reading 'length')` → `nodes` no es array
+-   Nodos huérfanos → sin conexiones en el graph
+-   Ciclos infinitos → graph con ciclos detectados
+-   Ejecución fallida → edges con source/target inexistentes
