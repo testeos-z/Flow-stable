@@ -3,50 +3,16 @@
  */
 
 import type { FlowiseApiClient } from './flowise-api.js'
-import { fixFlowData } from './flow-validation.js'
+import { fixFlowData, validateAgentFlowData, validateAgentFlowSemantics, validateFlowDataSchema } from './flow-validation.js'
 import { diagnoseChatflow, repairChatflow } from './chatflow-db.js'
 import { testChatflow, flowHasTools } from './testing.js'
 import { listCredentials, validateCredential, resolveCredential } from './credentials.js'
 
-// Response type for MCP tools - uses index signature for compatibility with MCP SDK
-export interface ToolResponse {
-    [key: string]: unknown
-    content: Array<{ type: 'text'; text: string }>
-    isError?: boolean
-}
+// Re-export shared types and helpers from handler-helpers for backwards compatibility
+export { type ToolResponse, type FlowiseSdkClient, successResponse, errorResponse } from './handlers/handler-helpers.js'
 
-// Flowise SDK client interface (subset we use)
-export interface FlowiseSdkClient {
-    createPrediction: (params: {
-        chatflowId: string
-        question: string
-        chatId?: string
-        overrideConfig?: Record<string, unknown>
-        streaming?: boolean
-        history?: Array<{ message: string; type: 'apiMessage' | 'userMessage' }>
-        uploads?: Array<{ data?: string; type: string; name: string; mime: string }>
-        leadEmail?: string
-    }) => Promise<unknown>
-}
-
-/**
- * Helper to create a successful tool response
- */
-export function successResponse(data: unknown): ToolResponse {
-    return {
-        content: [{ type: 'text', text: JSON.stringify(data, null, 2) }]
-    }
-}
-
-/**
- * Helper to create an error tool response
- */
-export function errorResponse(message: string): ToolResponse {
-    return {
-        content: [{ type: 'text', text: message }],
-        isError: true
-    }
-}
+import { successResponse, errorResponse } from './handlers/handler-helpers.js'
+import type { ToolResponse, FlowiseSdkClient } from './handlers/handler-helpers.js'
 
 /**
  * Validates and fixes flowData before sending to Flowise backend.
@@ -58,6 +24,25 @@ function validateAndFixFlowData(flowData: { nodes: unknown[]; edges: unknown[] }
         const messages = result.errors.map((e) => `${e.path}: ${e.message}`).join('; ')
         throw new Error(`Invalid flowData: ${messages}`)
     }
+
+    // Auto-detect flow type from nodes and validate against the correct schema
+    const nodes = result.data!.nodes
+    const isAgentFlow = nodes.some((n: any) => n.type === 'agentFlow')
+
+    if (isAgentFlow) {
+        const agentFlowResult = validateAgentFlowData(JSON.stringify(result.data))
+        if (!agentFlowResult.valid) {
+            const messages = agentFlowResult.errors.map((e) => `${e.path}: ${e.message}`).join('; ')
+            throw new Error(`Invalid AGENTFLOW: ${messages}`)
+        }
+    } else {
+        const chatFlowResult = validateFlowDataSchema(JSON.stringify(result.data))
+        if (!chatFlowResult.valid) {
+            const messages = chatFlowResult.errors.map((e) => `${e.path}: ${e.message}`).join('; ')
+            throw new Error(`Invalid CHATFLOW: ${messages}`)
+        }
+    }
+
     return result.data!
 }
 
@@ -339,7 +324,10 @@ export async function handleTestChatflow(api: FlowiseApiClient, chatflowId: stri
  * Validate flowData structure without saving.
  * Returns validation errors if any.
  */
-export async function handleValidateChatflow(params: { flowData: { nodes: unknown[]; edges: unknown[] } }): Promise<ToolResponse> {
+export async function handleValidateChatflow(params: {
+    flowData: { nodes: unknown[]; edges: unknown[] }
+    type?: 'CHATFLOW' | 'MULTIAGENT' | 'ASSISTANT'
+}): Promise<ToolResponse> {
     try {
         const result = fixFlowData(JSON.stringify(params.flowData))
 
@@ -387,9 +375,48 @@ export async function handleValidateChatflow(params: { flowData: { nodes: unknow
 }
 
 /**
+ * Validate AGENTFLOW structure and semantics.
+ */
+export async function handleValidateAgentflow(params: { flowData: { nodes: unknown[]; edges: unknown[] } }): Promise<ToolResponse> {
+    try {
+        // Step 1: Schema validation
+        const schemaResult = validateAgentFlowData(JSON.stringify(params.flowData))
+
+        if (!schemaResult.valid) {
+            return successResponse({
+                valid: false,
+                errors: schemaResult.errors,
+                message: 'AGENTFLOW has structural issues'
+            })
+        }
+
+        // Step 2: Semantic validation
+        const semanticErrors = validateAgentFlowSemantics(schemaResult.data!.nodes, schemaResult.data!.edges)
+
+        if (semanticErrors.length > 0) {
+            return successResponse({
+                valid: false,
+                errors: semanticErrors,
+                message: 'AGENTFLOW has semantic issues'
+            })
+        }
+
+        return successResponse({
+            valid: true,
+            message: 'AGENTFLOW is valid',
+            nodeCount: schemaResult.data!.nodes.length,
+            edgeCount: schemaResult.data!.edges.length
+        })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        return errorResponse(`Error validating agentflow: ${message}`)
+    }
+}
+
+/**
  * List available credentials in the registry.
  */
-export async function handleListCredentials(env?: string): Promise<ToolResponse> {
+export async function handleListCredentialTypes(env?: string): Promise<ToolResponse> {
     try {
         const credentials = listCredentials(env)
         return successResponse({

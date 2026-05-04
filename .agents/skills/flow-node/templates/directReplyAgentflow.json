@@ -1,0 +1,46 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 120,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Direct Reply",
+        "name": "directReplyAgentflow",
+        "version": "1.0",
+        "type": "DirectReply",
+        "category": "Agent Flows",
+        "description": "Directly reply to the user with a message",
+        "color": "#4DDBBB",
+        "baseClasses": ["DirectReply"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/DirectReply/DirectReply.js",
+        "icon": "DirectReply.png",
+        "hideInput": false,
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Message",
+                "name": "directReplyMessage",
+                "type": "string",
+                "rows": 4,
+                "acceptVariable": true,
+                "id": "directReplyAgentflow-directReplyMessage"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "directReplyAgentflow-output",
+                "name": "directReplyAgentflow",
+                "label": "Direct Reply",
+                "type": "DirectReply",
+                "baseClasses": ["DirectReply"]
+            }
+        ],
+        "outputs": {}
+    }
+}

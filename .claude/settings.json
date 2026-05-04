@@ -1,0 +1,26 @@
+{
+    "mcpServers": {
+        "flow-control": {
+            "command": "/var/home/snor/Documents/jobs/GobernAI/Flow-stable/load-env.sh"
+        },
+        "flow-validation": {
+            "command": "node",
+            "args": ["/var/home/snor/Documents/jobs/GobernAI/Flow-stable/packages/flowise-mcp-server/dist/index.js"]
+        },
+        "flow-doc": {
+            "url": "https://docs.flowiseai.com/~gitbook/mcp"
+        },
+        "mcp-flowise": {
+            "command": "uvx",
+            "args": ["--from", "git+https://github.com/matthewhand/mcp-flowise", "mcp-flowise"],
+            "env": {
+                "FLOWISE_API_KEY": "nxGr_Ot5E19ueMfxhIK3-l4DzMhGcESmeoJHlil84dw",
+                "FLOWISE_API_ENDPOINT": "https://flow-stable-flow.up.railway.app"
+            }
+        }
+    },
+    "permissions": {
+        "allow": ["mcp__flow-doc__*", "mcp__flow-validation__*"],
+        "deny": ["mcp__flow-control__*", "mcp__mcp-flowise__*"]
+    }
+}

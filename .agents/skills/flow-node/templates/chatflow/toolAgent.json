@@ -1,0 +1,82 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 300,
+    "height": 320,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "ToolAgent",
+        "name": "toolAgent",
+        "version": "2.0",
+        "type": "AgentExecutor",
+        "category": "Agents",
+        "description": "Agent that picks and uses tools to answer questions",
+        "icon": "agent.svg",
+        "baseClasses": ["AgentExecutor", "BaseChain", "Runnable"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agents/ToolAgent/ToolAgent.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "System Message",
+                "name": "systemMessage",
+                "type": "string",
+                "default": "You are a helpful AI assistant.",
+                "rows": 4,
+                "optional": true,
+                "id": "toolAgent-systemMessage"
+            },
+            {
+                "label": "Max Iterations",
+                "name": "maxIterations",
+                "type": "number",
+                "default": 5,
+                "optional": true,
+                "id": "toolAgent-maxIterations"
+            },
+            {
+                "label": "Return Direct",
+                "name": "returnDirect",
+                "type": "boolean",
+                "default": false,
+                "optional": true,
+                "id": "toolAgent-returnDirect"
+            }
+        ],
+        "inputAnchors": [
+            {
+                "label": "Tool Calling Chat Model",
+                "name": "model",
+                "type": "BaseChatModel",
+                "id": "toolAgent-model"
+            },
+            {
+                "label": "Tools",
+                "name": "tools",
+                "type": "Tool",
+                "list": true,
+                "id": "toolAgent-tools"
+            },
+            {
+                "label": "Memory",
+                "name": "memory",
+                "type": "BaseChatMemory",
+                "optional": true,
+                "id": "toolAgent-memory"
+            }
+        ],
+        "outputAnchors": [
+            {
+                "id": "toolAgent-output",
+                "name": "toolAgent",
+                "label": "AgentExecutor",
+                "type": "AgentExecutor",
+                "baseClasses": ["AgentExecutor", "BaseChain", "Runnable"]
+            }
+        ],
+        "outputs": {}
+    }
+}

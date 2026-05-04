@@ -1,0 +1,47 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 120,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Iteration",
+        "name": "iterationAgentflow",
+        "version": "1.0",
+        "type": "Iteration",
+        "category": "Agent Flows",
+        "description": "Execute the nodes within the iteration block through N iterations",
+        "color": "#9C89B8",
+        "baseClasses": ["Iteration"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/Iteration/Iteration.js",
+        "icon": "Iteration.png",
+        "hideInput": false,
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Array Input",
+                "name": "iterationInput",
+                "type": "string",
+                "description": "The input array to iterate over",
+                "acceptVariable": true,
+                "rows": 4,
+                "id": "iterationAgentflow-iterationInput"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "iterationAgentflow-output",
+                "name": "iterationAgentflow",
+                "label": "Iteration",
+                "type": "Iteration",
+                "baseClasses": ["Iteration"]
+            }
+        ],
+        "outputs": {}
+    }
+}

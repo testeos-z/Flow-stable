@@ -1,0 +1,169 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 420,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "HTTP",
+        "name": "httpAgentflow",
+        "version": "1.1",
+        "type": "HTTP",
+        "category": "Agent Flows",
+        "description": "Send a HTTP request",
+        "color": "#FF7F7F",
+        "baseClasses": ["HTTP"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/HTTP/HTTP.js",
+        "icon": "HTTP.png",
+        "hideInput": false,
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Method",
+                "name": "method",
+                "type": "options",
+                "options": [
+                    { "label": "GET", "name": "GET" },
+                    { "label": "POST", "name": "POST" },
+                    { "label": "PUT", "name": "PUT" },
+                    { "label": "DELETE", "name": "DELETE" },
+                    { "label": "PATCH", "name": "PATCH" }
+                ],
+                "default": "GET",
+                "id": "httpAgentflow-method"
+            },
+            {
+                "label": "URL",
+                "name": "url",
+                "type": "string",
+                "acceptVariable": true,
+                "id": "httpAgentflow-url"
+            },
+            {
+                "label": "Headers",
+                "name": "headers",
+                "type": "array",
+                "acceptVariable": true,
+                "optional": true,
+                "id": "httpAgentflow-headers",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "string",
+                        "default": ""
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "default": "",
+                        "acceptVariable": true
+                    }
+                ]
+            },
+            {
+                "label": "Query Params",
+                "name": "queryParams",
+                "type": "array",
+                "acceptVariable": true,
+                "optional": true,
+                "id": "httpAgentflow-queryParams",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "string",
+                        "default": ""
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "default": "",
+                        "acceptVariable": true
+                    }
+                ]
+            },
+            {
+                "label": "Body Type",
+                "name": "bodyType",
+                "type": "options",
+                "options": [
+                    { "label": "JSON", "name": "json" },
+                    { "label": "Raw", "name": "raw" },
+                    { "label": "Form Data", "name": "formData" },
+                    { "label": "x-www-form-urlencoded", "name": "xWwwFormUrlencoded" }
+                ],
+                "optional": true,
+                "id": "httpAgentflow-bodyType"
+            },
+            {
+                "label": "Body",
+                "name": "body",
+                "type": "string",
+                "acceptVariable": true,
+                "rows": 4,
+                "optional": true,
+                "id": "httpAgentflow-body",
+                "show": {
+                    "bodyType": ["raw", "json"]
+                }
+            },
+            {
+                "label": "Body",
+                "name": "body",
+                "type": "array",
+                "acceptVariable": true,
+                "optional": true,
+                "id": "httpAgentflow-body",
+                "show": {
+                    "bodyType": ["xWwwFormUrlencoded", "formData"]
+                },
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "string",
+                        "default": ""
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "default": "",
+                        "acceptVariable": true
+                    }
+                ]
+            },
+            {
+                "label": "Response Type",
+                "name": "responseType",
+                "type": "options",
+                "options": [
+                    { "label": "JSON", "name": "json" },
+                    { "label": "Text", "name": "text" },
+                    { "label": "Array Buffer", "name": "arraybuffer" },
+                    { "label": "Raw (Base64)", "name": "base64" }
+                ],
+                "optional": true,
+                "id": "httpAgentflow-responseType"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "httpAgentflow-output",
+                "name": "httpAgentflow",
+                "label": "HTTP",
+                "type": "HTTP",
+                "baseClasses": ["HTTP"]
+            }
+        ],
+        "outputs": {}
+    }
+}

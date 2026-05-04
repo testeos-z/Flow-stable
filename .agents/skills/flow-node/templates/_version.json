@@ -1,0 +1,133 @@
+{
+    "version": "1.0",
+    "flowiseVersion": "2.2.7",
+    "generatedAt": "2026-05-04T00:00:00.000Z",
+    "description": "Version manifest for flow-node AgentFlow and ChatFlow node templates. Checksums enable staleness detection when Flowise component constructors are updated.",
+    "templates": {
+        "agentAgentflow.json": {
+            "componentName": "agentAgentflow",
+            "componentVersion": "3.2",
+            "sha256": "914e0d917f347488ec1c232bdc3840122c4100a2b633d58ce1a508629ef07c3b"
+        },
+        "llmAgentflow.json": {
+            "componentName": "llmAgentflow",
+            "componentVersion": "1.1",
+            "sha256": "fbaae5e1f7bb6e6edc681bccd5b18536d26e365f591e4452ec577a651c66a37b"
+        },
+        "startAgentflow.json": {
+            "componentName": "startAgentflow",
+            "componentVersion": "1.1",
+            "sha256": "33665b52145b5fe4654b4b2c66337aa03e757557e62bcd0c08b50fd170de4fac"
+        },
+        "conditionAgentflow.json": {
+            "componentName": "conditionAgentflow",
+            "componentVersion": "1.0",
+            "sha256": "a60b8c0bca70f0efd5dd4b2a1d7483cf95021f8929e73902fe0d84987baad347"
+        },
+        "conditionAgentAgentflow.json": {
+            "componentName": "conditionAgentAgentflow",
+            "componentVersion": "2.0",
+            "sha256": "dccab05e45d957e868c445fd00beb4c8ce21b8b7eb871c52c55f3830c892b5b4"
+        },
+        "customFunctionAgentflow.json": {
+            "componentName": "customFunctionAgentflow",
+            "componentVersion": "1.1",
+            "sha256": "00a3028ef4d6229a0ba46b65e42ecddad286facb5c9d0f7926ee61e5bed6e18f"
+        },
+        "directReplyAgentflow.json": {
+            "componentName": "directReplyAgentflow",
+            "componentVersion": "1.0",
+            "sha256": "15f4ed8260de19a24e35f763bc2128a9a2b1bf9424e44889b1f8260172b51406"
+        },
+        "executeFlowAgentflow.json": {
+            "componentName": "executeFlowAgentflow",
+            "componentVersion": "1.2",
+            "sha256": "bf014454dfabcd1189b0dfccc3a23ab1dbb61cbce43a605fd9d7c3dbe04a1954"
+        },
+        "humanInputAgentflow.json": {
+            "componentName": "humanInputAgentflow",
+            "componentVersion": "1.0",
+            "sha256": "ede0b21c53d2fe3f867a73609c5b14fbd86b2de954f6ccd3d0714bbae28e2cd1"
+        },
+        "httpAgentflow.json": {
+            "componentName": "httpAgentflow",
+            "componentVersion": "1.1",
+            "sha256": "b971d3559aa87fa108e21c52dd45b988079200fa42fd56835dfdaf6fd0ae5d60"
+        },
+        "iterationAgentflow.json": {
+            "componentName": "iterationAgentflow",
+            "componentVersion": "1.0",
+            "sha256": "e22d775ad1ab77e7d8de27482e808809f78a9931a706d7c53cf528720b82fb42"
+        },
+        "loopAgentflow.json": {
+            "componentName": "loopAgentflow",
+            "componentVersion": "1.2",
+            "sha256": "69d996c8566d107a5345057e959f3ae9aa6275212892b30c15c618d0867ce411"
+        },
+        "retrieverAgentflow.json": {
+            "componentName": "retrieverAgentflow",
+            "componentVersion": "1.1",
+            "sha256": "4671429e1464a5c1ef5416199cbf35360ed4d9d04969a85f03f9405cf3423b92"
+        },
+        "stickyNoteAgentflow.json": {
+            "componentName": "stickyNoteAgentflow",
+            "componentVersion": "1.0",
+            "sha256": "15beb506efd6114c1adbf7a6f3a592cf29f3cc5e5c4f14b33a5055b49d696a66"
+        },
+        "toolAgentflow.json": {
+            "componentName": "toolAgentflow",
+            "componentVersion": "1.2",
+            "sha256": "0bd0f9e6554791c4769ad63c01a70fe3487a8695d238b02d6d7a22fc4a66fb0f"
+        }
+    },
+    "chatflowTemplates": {
+        "bufferMemory.json": {
+            "templateName": "bufferMemory",
+            "flowiseVersion": "2.2.7",
+            "checksum": "c7f3f0ef4770dfb3c47697a611a342fbca900cabc8f28666a3660ff3c8d4f294",
+            "lastUpdated": "2026-05-03"
+        },
+        "huggingFaceInferenceEmbedding.json": {
+            "templateName": "huggingFaceInferenceEmbedding",
+            "flowiseVersion": "2.2.7",
+            "checksum": "4feceab5291f7bd407f4f6e6d0e62a188a532d0f8c3e3ba3c0a04e538d17656d",
+            "lastUpdated": "2026-05-03"
+        },
+        "supabase.json": {
+            "templateName": "supabase",
+            "flowiseVersion": "2.2.7",
+            "checksum": "91be2f6bf6e3e49405172bedeac87c72f7e017e2c7ed7fe920ebbc1112596379",
+            "lastUpdated": "2026-05-03"
+        },
+        "retrieverTool.json": {
+            "templateName": "retrieverTool",
+            "flowiseVersion": "2.2.7",
+            "checksum": "4263ea4cb3ed5c6b34fb28fc10ff42d79bdf32317c236f75bf15b5719a2076cf",
+            "lastUpdated": "2026-05-03"
+        },
+        "chatOpenRouter.json": {
+            "templateName": "chatOpenRouter",
+            "flowiseVersion": "2.2.7",
+            "checksum": "7704521fe70f0f8df152075faee83fecbdc574eebce9f1a5cd1c63820047a26f",
+            "lastUpdated": "2026-05-03"
+        },
+        "chatOpenAI.json": {
+            "templateName": "chatOpenAI",
+            "flowiseVersion": "2.2.7",
+            "checksum": "30c8051d0498d857675ab685616c574531c9297c2acc7046683b9668cc9a48b9",
+            "lastUpdated": "2026-05-03"
+        },
+        "chatAnthropic.json": {
+            "templateName": "chatAnthropic",
+            "flowiseVersion": "2.2.7",
+            "checksum": "41b589f50d34f45f5c3dd19191c466c43a4a73227767a12ecc9ec32b8b42ce57",
+            "lastUpdated": "2026-05-03"
+        },
+        "toolAgent.json": {
+            "templateName": "toolAgent",
+            "flowiseVersion": "2.2.7",
+            "checksum": "5c38412857814cee723a940b3539c1cfceb3d9af057bd177b293ccad4609350a",
+            "lastUpdated": "2026-05-03"
+        }
+    }
+}

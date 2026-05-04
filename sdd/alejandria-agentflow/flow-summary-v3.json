@@ -1,0 +1,35 @@
+{
+    "flowId": "22c88a76-c742-4be1-a0d3-1777369fc46b",
+    "name": "Alejandría v3",
+    "type": "AGENTFLOW",
+    "nodes": [
+        { "id": "start_v3", "type": "Start", "label": "Start" },
+        { "id": "agent_v3", "type": "Agent", "label": "Alejandría Router" },
+        { "id": "reply_v3", "type": "DirectReply", "label": "Reply" }
+    ],
+    "edges": ["start_v3 -> agent_v3", "agent_v3 -> reply_v3"],
+    "model": "google/gemini-2.5-flash-lite",
+    "credential": "openRouterApi (ddeb2757-f8e2-4ed7-9647-5a113332b432)",
+    "tools": {
+        "mcpServers": [
+            { "name": "UE_DATA_DEV", "id": "6a41ee83-d05a-4ada-864a-f4deb7518e6c", "tools": 4 },
+            { "name": "MADEIRA_DATA", "id": "02c92a00-a4d5-49fb-a422-6db30f690cbc", "tools": 10 },
+            { "name": "PT_DATA", "id": "7769853d-151c-4156-b56d-98bd9385b814", "tools": 4 },
+            { "name": "OpenAlex", "id": "bdc984ac-6d56-421c-b0a4-93b7ee59c14a", "tools": 10 },
+            { "name": "nyc-data", "id": "28b8c50b-9b39-42ef-805e-b79777988119", "tools": 5 }
+        ],
+        "vectorStores": [
+            { "name": "global", "table": "knowledge.global", "rpc": "match_global_flowise", "records": 435267 },
+            { "name": "madeira", "table": "knowledge.madeira", "rpc": "match_madeira_flowise", "records": 164330 },
+            { "name": "nyc", "table": "knowledge.nyc", "rpc": "match_nyc_flowise", "records": 18834 }
+        ]
+    },
+    "status": "functional — smoke test passes for simple queries",
+    "design": "3-node monolith: single Agent handles routing, tool selection, vector search, and synthesis instead of v2's 10-node pipeline",
+    "canvas": "https://flow-stable-flow.up.railway.app/canvas/22c88a76-c742-4be1-a0d3-1777369fc46b",
+    "knownIssues": [
+        "Template resolution bug: {{variable}} in llmMessages/agentMessages may not resolve in AgentFlow",
+        "Tool calling with complex queries produces finish_reason: errorerror — likely MCP token expiry",
+        "V1 (50306854) and V2 (c7a2f9be) preserved, never modified"
+    ]
+}

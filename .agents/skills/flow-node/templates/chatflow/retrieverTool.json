@@ -1,0 +1,76 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 220,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Retriever Tool",
+        "name": "retrieverTool",
+        "version": "3.0",
+        "type": "RetrieverTool",
+        "category": "Tools",
+        "description": "Use a retriever as allowed tool for agent",
+        "icon": "retrievertool.svg",
+        "baseClasses": ["RetrieverTool", "DynamicTool", "Tool"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/RetrieverTool/RetrieverTool.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Retriever Name",
+                "name": "name",
+                "type": "string",
+                "placeholder": "search_state_of_union",
+                "id": "retrieverTool-name"
+            },
+            {
+                "label": "Retriever Description",
+                "name": "description",
+                "type": "string",
+                "description": "When should agent uses to retrieve documents",
+                "rows": 3,
+                "placeholder": "Searches and returns documents regarding the state-of-the-union.",
+                "id": "retrieverTool-description"
+            },
+            {
+                "label": "Return Source Documents",
+                "name": "returnSourceDocuments",
+                "type": "boolean",
+                "optional": true,
+                "id": "retrieverTool-returnSourceDocuments"
+            },
+            {
+                "label": "Additional Metadata Filter",
+                "name": "retrieverToolMetadataFilter",
+                "type": "json",
+                "description": "Add additional metadata filter on top of the existing filter from vector store",
+                "optional": true,
+                "additionalParams": true,
+                "acceptVariable": true,
+                "id": "retrieverTool-retrieverToolMetadataFilter"
+            }
+        ],
+        "inputAnchors": [
+            {
+                "label": "Retriever",
+                "name": "retriever",
+                "type": "BaseRetriever",
+                "id": "retrieverTool-retriever"
+            }
+        ],
+        "outputAnchors": [
+            {
+                "id": "retrieverTool-output",
+                "name": "retrieverTool",
+                "label": "Retriever Tool",
+                "type": "RetrieverTool",
+                "baseClasses": ["RetrieverTool", "DynamicTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

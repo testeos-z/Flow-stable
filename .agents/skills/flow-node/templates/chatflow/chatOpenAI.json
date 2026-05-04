@@ -1,0 +1,205 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 300,
+    "height": 420,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "OpenAI",
+        "name": "chatOpenAI",
+        "version": "8.3",
+        "type": "ChatOpenAI",
+        "category": "Chat Models",
+        "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+        "icon": "openai.svg",
+        "baseClasses": ["ChatOpenAI", "BaseChatModel", "BaseLanguageModel"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/chatmodels/ChatOpenAI/ChatOpenAI.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["openAIApi"],
+                "id": "chatOpenAI-credential"
+            },
+            {
+                "label": "Model Name",
+                "name": "modelName",
+                "type": "asyncOptions",
+                "loadMethod": "listModels",
+                "default": "gpt-4o-mini",
+                "id": "chatOpenAI-modelName"
+            },
+            {
+                "label": "Temperature",
+                "name": "temperature",
+                "type": "number",
+                "step": 0.1,
+                "default": 0.9,
+                "optional": true,
+                "id": "chatOpenAI-temperature"
+            },
+            {
+                "label": "Streaming",
+                "name": "streaming",
+                "type": "boolean",
+                "default": true,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-streaming"
+            },
+            {
+                "label": "Allow Image Uploads",
+                "name": "allowImageUploads",
+                "type": "boolean",
+                "description": "Allow image input. Refer to the <a target=\"_blank\" href=\"https://docs.flowiseai.com/using-flowise/uploads#image\">docs</a> for more details.",
+                "default": false,
+                "optional": true,
+                "id": "chatOpenAI-allowImageUploads"
+            },
+            {
+                "label": "Reasoning",
+                "name": "reasoning",
+                "type": "boolean",
+                "description": "Whether the model supports reasoning. Only applicable for reasoning models (gpt-5 and o-series models only)",
+                "default": false,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-reasoning"
+            },
+            {
+                "label": "Reasoning Effort",
+                "name": "reasoningEffort",
+                "type": "options",
+                "options": [
+                    { "label": "Low", "name": "low" },
+                    { "label": "Medium", "name": "medium" },
+                    { "label": "High", "name": "high" },
+                    { "label": "X-High", "name": "xhigh", "description": "X-High is supported for all models after gpt-5.1-codex-max" }
+                ],
+                "additionalParams": true,
+                "show": { "reasoning": true },
+                "id": "chatOpenAI-reasoningEffort"
+            },
+            {
+                "label": "Reasoning Summary",
+                "name": "reasoningSummary",
+                "type": "options",
+                "options": [
+                    { "label": "Auto", "name": "auto" },
+                    { "label": "Concise", "name": "concise" },
+                    { "label": "Detailed", "name": "detailed" }
+                ],
+                "additionalParams": true,
+                "show": { "reasoning": true },
+                "id": "chatOpenAI-reasoningSummary"
+            },
+            {
+                "label": "Max Tokens",
+                "name": "maxTokens",
+                "type": "number",
+                "step": 1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-maxTokens"
+            },
+            {
+                "label": "Top Probability",
+                "name": "topP",
+                "type": "number",
+                "step": 0.1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-topP"
+            },
+            {
+                "label": "Frequency Penalty",
+                "name": "frequencyPenalty",
+                "type": "number",
+                "step": 0.1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-frequencyPenalty"
+            },
+            {
+                "label": "Presence Penalty",
+                "name": "presencePenalty",
+                "type": "number",
+                "step": 0.1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-presencePenalty"
+            },
+            {
+                "label": "Timeout",
+                "name": "timeout",
+                "type": "number",
+                "step": 1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-timeout"
+            },
+            {
+                "label": "Strict Tool Calling",
+                "name": "strictToolCalling",
+                "type": "boolean",
+                "description": "Whether the model supports the `strict` argument when passing in tools. If not specified, the `strict` argument will not be passed to OpenAI.",
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatOpenAI-strictToolCalling"
+            },
+            {
+                "label": "Stop Sequence",
+                "name": "stopSequence",
+                "type": "string",
+                "rows": 4,
+                "optional": true,
+                "description": "List of stop words to use when generating. Use comma to separate multiple stop words.",
+                "additionalParams": true,
+                "id": "chatOpenAI-stopSequence"
+            },
+            {
+                "label": "Base Path",
+                "name": "basepath",
+                "type": "string",
+                "optional": true,
+                "description": "Override the default base URL for the API, e.g., \"https://api.example.com/v2/\"",
+                "additionalParams": true,
+                "id": "chatOpenAI-basepath"
+            },
+            {
+                "label": "Base Options",
+                "name": "baseOptions",
+                "type": "json",
+                "optional": true,
+                "description": "Default headers to include with every request to the API.",
+                "additionalParams": true,
+                "id": "chatOpenAI-baseOptions"
+            }
+        ],
+        "inputAnchors": [
+            {
+                "label": "Cache",
+                "name": "cache",
+                "type": "BaseCache",
+                "optional": true,
+                "id": "chatOpenAI-cache"
+            }
+        ],
+        "outputAnchors": [
+            {
+                "id": "chatOpenAI-output",
+                "name": "chatOpenAI",
+                "label": "OpenAI",
+                "type": "ChatOpenAI",
+                "baseClasses": ["ChatOpenAI", "BaseChatModel", "BaseLanguageModel"]
+            }
+        ],
+        "outputs": {}
+    }
+}

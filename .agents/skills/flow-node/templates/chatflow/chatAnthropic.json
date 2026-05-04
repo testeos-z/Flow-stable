@@ -1,0 +1,175 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 300,
+    "height": 420,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Anthropic Claude",
+        "name": "chatAnthropic",
+        "version": "8.0",
+        "type": "ChatAnthropic",
+        "category": "Chat Models",
+        "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+        "icon": "Anthropic.svg",
+        "baseClasses": ["ChatAnthropic", "BaseChatModel", "BaseLanguageModel"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/chatmodels/ChatAnthropic/ChatAnthropic.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["anthropicApi"],
+                "id": "chatAnthropic-credential"
+            },
+            {
+                "label": "Model Name",
+                "name": "modelName",
+                "type": "asyncOptions",
+                "loadMethod": "listModels",
+                "default": "claude-haiku-4-5",
+                "id": "chatAnthropic-modelName"
+            },
+            {
+                "label": "Temperature",
+                "name": "temperature",
+                "type": "number",
+                "step": 0.1,
+                "default": 0.9,
+                "optional": true,
+                "id": "chatAnthropic-temperature"
+            },
+            {
+                "label": "Streaming",
+                "name": "streaming",
+                "type": "boolean",
+                "default": true,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatAnthropic-streaming"
+            },
+            {
+                "label": "Allow Image Uploads",
+                "name": "allowImageUploads",
+                "type": "boolean",
+                "description": "Allow image input. Refer to the <a target=\"_blank\" href=\"https://docs.flowiseai.com/using-flowise/uploads#image\">docs</a> for more details.",
+                "default": false,
+                "optional": true,
+                "id": "chatAnthropic-allowImageUploads"
+            },
+            {
+                "label": "Extended Thinking",
+                "name": "extendedThinking",
+                "type": "boolean",
+                "description": "Enable extended thinking for reasoning model such as Claude Sonnet 3.7 and Claude 4",
+                "optional": true,
+                "additionalParams": true,
+                "hide": {
+                    "modelName": ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]
+                },
+                "id": "chatAnthropic-extendedThinking"
+            },
+            {
+                "label": "Budget Tokens",
+                "name": "budgetTokens",
+                "type": "number",
+                "step": 1,
+                "default": "1024",
+                "description": "Maximum number of tokens Claude is allowed use for its internal reasoning process",
+                "optional": true,
+                "additionalParams": true,
+                "show": { "extendedThinking": true },
+                "hide": {
+                    "modelName": ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]
+                },
+                "id": "chatAnthropic-budgetTokens"
+            },
+            {
+                "label": "Adaptive Thinking",
+                "name": "adaptiveThinking",
+                "type": "boolean",
+                "description": "Claude evaluates the complexity of each request and determines whether and how much to use extended thinking.",
+                "default": false,
+                "optional": true,
+                "additionalParams": true,
+                "show": {
+                    "modelName": ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]
+                },
+                "id": "chatAnthropic-adaptiveThinking"
+            },
+            {
+                "label": "Thinking Effort",
+                "name": "thinkingEffort",
+                "type": "options",
+                "optional": true,
+                "options": [
+                    { "label": "Low", "name": "low" },
+                    { "label": "Medium", "name": "medium" },
+                    { "label": "High", "name": "high" },
+                    {
+                        "label": "Max",
+                        "name": "max",
+                        "description": "Absolute maximum capability with no constraints on token spending. Opus 4.6 and newer only"
+                    }
+                ],
+                "additionalParams": true,
+                "show": {
+                    "adaptiveThinking": true,
+                    "modelName": ["claude-opus-4-7", "claude-opus-4-6", "claude-sonnet-4-6"]
+                },
+                "id": "chatAnthropic-thinkingEffort"
+            },
+            {
+                "label": "Max Tokens",
+                "name": "maxTokensToSample",
+                "type": "number",
+                "step": 1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatAnthropic-maxTokensToSample"
+            },
+            {
+                "label": "Top P",
+                "name": "topP",
+                "type": "number",
+                "step": 0.1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatAnthropic-topP"
+            },
+            {
+                "label": "Top K",
+                "name": "topK",
+                "type": "number",
+                "step": 0.1,
+                "optional": true,
+                "additionalParams": true,
+                "id": "chatAnthropic-topK"
+            }
+        ],
+        "inputAnchors": [
+            {
+                "label": "Cache",
+                "name": "cache",
+                "type": "BaseCache",
+                "optional": true,
+                "id": "chatAnthropic-cache"
+            }
+        ],
+        "outputAnchors": [
+            {
+                "id": "chatAnthropic-output",
+                "name": "chatAnthropic",
+                "label": "Anthropic Claude",
+                "type": "ChatAnthropic",
+                "baseClasses": ["ChatAnthropic", "BaseChatModel", "BaseLanguageModel"]
+            }
+        ],
+        "outputs": {}
+    }
+}

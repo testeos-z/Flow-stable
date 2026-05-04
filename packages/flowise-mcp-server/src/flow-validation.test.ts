@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { ZodNodeData, validateFlowDataSchema, fixFlowData, fullValidation } from './flow-validation.js'
+import {
+    ZodNodeData,
+    validateFlowDataSchema,
+    validateAgentFlowData,
+    validateAgentFlowSemantics,
+    fixFlowData,
+    fullValidation
+} from './flow-validation.js'
 
 // ===========================================
 // ZodNodeData Schema Tests
@@ -414,5 +421,279 @@ describe('fullValidation', () => {
         const result = fullValidation(flowData, { fix: false, checkGraph: true })
         expect(result.valid).toBe(true)
         expect(result.errors).toHaveLength(0)
+    })
+})
+
+// ===========================================
+// AgentFlow Schema Tests
+// ===========================================
+
+function makeAgentFlowNode(overrides: any = {}) {
+    return {
+        id: overrides.id || 'agent_0',
+        position: { x: 0, y: 0 },
+        positionAbsolute: { x: 0, y: 0 },
+        type: 'agentFlow',
+        data: {
+            label: 'Test',
+            name: 'test',
+            type: overrides.dataType || 'Agent',
+            category: 'Agent Flows',
+            inputs: overrides.inputs || { agentModelConfig: { modelName: 'gpt-4' } },
+            inputAnchors: [],
+            outputAnchors: [],
+            inputParams: [],
+            baseClasses: [],
+            filePath: '/test.js',
+            outputs: {},
+            ...overrides.data
+        },
+        width: 260,
+        height: 72,
+        selected: false,
+        dragging: false,
+        z: 0
+    }
+}
+
+describe('ZodAgentFlowObject', () => {
+    it('validates a well-formed AGENTFLOW', () => {
+        const flowData = JSON.stringify({
+            nodes: [
+                makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+                makeAgentFlowNode({ id: 'agent_0', dataType: 'Agent' }),
+                makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+            ],
+            edges: [
+                { id: 'e1', source: 'start_0', target: 'agent_0', type: 'agentFlow' },
+                { id: 'e2', source: 'agent_0', target: 'end_0', type: 'agentFlow' }
+            ],
+            viewport: { x: 0, y: 0, zoom: 1 }
+        })
+        const result = validateAgentFlowData(flowData)
+        expect(result.valid).toBe(true)
+        expect(result.errors).toHaveLength(0)
+    })
+
+    it('rejects AGENTFLOW with CHATFLOW node category', () => {
+        const flowData = JSON.stringify({
+            nodes: [
+                {
+                    id: 'node_0',
+                    position: { x: 0, y: 0 },
+                    type: 'agentFlow',
+                    data: {
+                        label: 'Tool Agent',
+                        name: 'toolAgent',
+                        type: 'Agent',
+                        category: 'Agents', // Invalid for AGENTFLOW
+                        inputs: {},
+                        inputAnchors: [],
+                        outputAnchors: [],
+                        inputParams: [],
+                        baseClasses: [],
+                        filePath: '/test.js',
+                        outputs: {}
+                    }
+                }
+            ],
+            edges: [],
+            viewport: { x: 0, y: 0, zoom: 1 }
+        })
+        const result = validateAgentFlowData(flowData)
+        expect(result.valid).toBe(false)
+    })
+
+    it('rejects AGENTFLOW with invalid node type', () => {
+        const flowData = JSON.stringify({
+            nodes: [
+                {
+                    id: 'node_0',
+                    position: { x: 0, y: 0 },
+                    type: 'agentFlow',
+                    data: {
+                        label: 'Chain',
+                        name: 'chain',
+                        type: 'LLMChain', // Invalid for AGENTFLOW
+                        category: 'Agent Flows',
+                        inputs: {},
+                        inputAnchors: [],
+                        outputAnchors: [],
+                        inputParams: [],
+                        baseClasses: [],
+                        filePath: '/test.js',
+                        outputs: {}
+                    }
+                }
+            ],
+            edges: [],
+            viewport: { x: 0, y: 0, zoom: 1 }
+        })
+        const result = validateAgentFlowData(flowData)
+        expect(result.valid).toBe(false)
+    })
+
+    it('rejects AGENTFLOW with missing viewport', () => {
+        const flowData = JSON.stringify({
+            nodes: [
+                makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+                makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+            ],
+            edges: []
+            // viewport missing
+        })
+        const result = validateAgentFlowData(flowData)
+        expect(result.valid).toBe(false)
+        expect(result.errors.some((e) => e.path === 'viewport')).toBe(true)
+    })
+})
+
+// ===========================================
+// AgentFlow Semantic Tests
+// ===========================================
+
+describe('validateAgentFlowSemantics', () => {
+    it('returns error for zero Start nodes', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'agent_0', dataType: 'Agent' }),
+            makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+        ]
+        const edges = [{ id: 'e1', source: 'agent_0', target: 'end_0', type: 'agentFlow' }]
+        const errors = validateAgentFlowSemantics(nodes as any, edges as any)
+        expect(errors.some((e) => e.message.includes('exactly 1 Start node'))).toBe(true)
+    })
+
+    it('returns error for multiple Start nodes', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'start_1', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+        ]
+        const edges: any[] = []
+        const errors = validateAgentFlowSemantics(nodes as any, edges)
+        expect(errors.some((e) => e.message.includes('exactly 1 Start node'))).toBe(true)
+    })
+
+    it('returns error for missing ending node', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'agent_0', dataType: 'Agent' })
+        ]
+        const edges = [{ id: 'e1', source: 'start_0', target: 'agent_0', type: 'agentFlow' }]
+        const errors = validateAgentFlowSemantics(nodes as any, edges as any)
+        expect(errors.some((e) => e.message.includes('ending node'))).toBe(true)
+    })
+
+    it('returns error for Condition with one outgoing edge', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'cond_0', dataType: 'Condition', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+        ]
+        const edges = [
+            { id: 'e1', source: 'start_0', target: 'cond_0', type: 'agentFlow' },
+            { id: 'e2', source: 'cond_0', target: 'end_0', type: 'agentFlow' }
+        ]
+        const errors = validateAgentFlowSemantics(nodes as any, edges as any)
+        expect(errors.some((e) => e.message.includes('at least 2 outgoing edges'))).toBe(true)
+    })
+
+    it('accepts Loop pointing backward', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'agent_0', dataType: 'Agent' }),
+            makeAgentFlowNode({ id: 'loop_0', dataType: 'Loop', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+        ]
+        const edges = [
+            { id: 'e1', source: 'start_0', target: 'agent_0', type: 'agentFlow' },
+            { id: 'e2', source: 'agent_0', target: 'end_0', type: 'agentFlow' },
+            { id: 'e3', source: 'loop_0', target: 'agent_0', type: 'agentFlow' } // Backward — valid
+        ]
+        const errors = validateAgentFlowSemantics(nodes as any, edges as any)
+        expect(errors.some((e) => e.message.includes('earlier node'))).toBe(false)
+    })
+
+    it('returns error for Loop pointing forward', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'agent_0', dataType: 'Agent' }),
+            makeAgentFlowNode({ id: 'loop_0', dataType: 'Loop', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+        ]
+        const edges = [
+            { id: 'e1', source: 'start_0', target: 'agent_0', type: 'agentFlow' },
+            { id: 'e2', source: 'agent_0', target: 'loop_0', type: 'agentFlow' },
+            { id: 'e3', source: 'loop_0', target: 'end_0', type: 'agentFlow' } // Forward — invalid
+        ]
+        const errors = validateAgentFlowSemantics(nodes as any, edges as any)
+        expect(errors.some((e) => e.message.includes('earlier node'))).toBe(true)
+    })
+
+    it('returns error for Agent without modelName', () => {
+        const nodes = [
+            makeAgentFlowNode({ id: 'start_0', dataType: 'Start', data: { inputs: {} } }),
+            makeAgentFlowNode({ id: 'agent_0', dataType: 'Agent', data: { inputs: { agentModelConfig: {} } } }),
+            makeAgentFlowNode({ id: 'end_0', dataType: 'DirectReply', data: { inputs: {} } })
+        ]
+        const edges = [
+            { id: 'e1', source: 'start_0', target: 'agent_0', type: 'agentFlow' },
+            { id: 'e2', source: 'agent_0', target: 'end_0', type: 'agentFlow' }
+        ]
+        const errors = validateAgentFlowSemantics(nodes as any, edges as any)
+        expect(errors.some((e) => e.message.includes('agentModelConfig with modelName'))).toBe(true)
+    })
+})
+
+// ===========================================
+// fixFlowData Type Preservation Tests
+// ===========================================
+
+describe('fixFlowData type preservation', () => {
+    it('preserves existing agentFlow type', () => {
+        const flowData = JSON.stringify({
+            nodes: [
+                {
+                    id: 'start_0',
+                    position: { x: 0, y: 0 },
+                    type: 'agentFlow',
+                    data: {
+                        label: 'Start',
+                        name: 'start',
+                        type: 'Start',
+                        inputs: {}
+                    }
+                }
+            ],
+            edges: [],
+            viewport: { x: 0, y: 0, zoom: 1 }
+        })
+        const result = fixFlowData(flowData)
+        expect(result.valid).toBe(true)
+        const node = result.data!.nodes[0] as any
+        expect(node.type).toBe('agentFlow')
+    })
+
+    it('injects customNode only when type is missing', () => {
+        const flowData = JSON.stringify({
+            nodes: [
+                {
+                    id: 'node_0',
+                    position: { x: 0, y: 0 },
+                    data: {
+                        label: 'Test',
+                        name: 'test',
+                        type: 'ChatOpenRouter',
+                        inputs: {}
+                    }
+                }
+            ],
+            edges: [],
+            viewport: { x: 0, y: 0, zoom: 1 }
+        })
+        const result = fixFlowData(flowData)
+        expect(result.valid).toBe(true)
+        const node = result.data!.nodes[0] as any
+        expect(node.type).toBe('customNode')
     })
 })

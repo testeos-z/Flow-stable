@@ -1,0 +1,18 @@
+{
+    "name": "@agents/flow-node-schemas",
+    "version": "1.0.0",
+    "description": "Zod schemas for flow-node strict validation",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "test": "vitest run",
+        "test:watch": "vitest"
+    },
+    "devDependencies": {
+        "tsx": "^4.21.0",
+        "vitest": "^3.0.0"
+    },
+    "peerDependencies": {
+        "zod": "^3.25.76 || ^4"
+    }
+}

@@ -1,0 +1,180 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 450,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Condition Agent",
+        "name": "conditionAgentAgentflow",
+        "version": "2.0",
+        "type": "ConditionAgent",
+        "category": "Agent Flows",
+        "description": "Utilize an agent to split flows based on dynamic conditions",
+        "color": "#ff8fab",
+        "baseClasses": ["ConditionAgent"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/ConditionAgent/ConditionAgent.js",
+        "icon": "ConditionAgent.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listModels": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Model",
+                "name": "conditionAgentModel",
+                "type": "asyncOptions",
+                "loadMethod": "listModels",
+                "loadConfig": true,
+                "id": "conditionAgentAgentflow-conditionAgentModel"
+            },
+            {
+                "label": "Instructions",
+                "name": "conditionAgentInstructions",
+                "type": "string",
+                "description": "A general instructions of what the condition agent should do",
+                "rows": 4,
+                "acceptVariable": true,
+                "placeholder": "Determine if the user is interested in learning about AI",
+                "id": "conditionAgentAgentflow-conditionAgentInstructions"
+            },
+            {
+                "label": "Input",
+                "name": "conditionAgentInput",
+                "type": "string",
+                "description": "Input to be used for the condition agent",
+                "rows": 4,
+                "acceptVariable": true,
+                "default": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"question\" data-label=\"question\">{{ question }}</span> </p>",
+                "id": "conditionAgentAgentflow-conditionAgentInput"
+            },
+            {
+                "label": "Scenarios",
+                "name": "conditionAgentScenarios",
+                "description": "Define the scenarios that will be used as the conditions to split the flow",
+                "type": "array",
+                "id": "conditionAgentAgentflow-conditionAgentScenarios",
+                "array": [
+                    {
+                        "label": "Scenario",
+                        "name": "scenario",
+                        "type": "string",
+                        "placeholder": "User is asking for a pizza"
+                    }
+                ],
+                "minItems": 1,
+                "default": [{ "scenario": "" }, { "scenario": "" }]
+            },
+            {
+                "label": "Enable Memory",
+                "name": "conditionAgentEnableMemory",
+                "type": "boolean",
+                "description": "Enable memory for the conversation thread",
+                "default": true,
+                "optional": true,
+                "id": "conditionAgentAgentflow-conditionAgentEnableMemory"
+            },
+            {
+                "label": "Memory Type",
+                "name": "conditionAgentMemoryType",
+                "type": "options",
+                "options": [
+                    {
+                        "label": "All Messages",
+                        "name": "allMessages",
+                        "description": "Retrieve all messages from the conversation"
+                    },
+                    {
+                        "label": "Window Size",
+                        "name": "windowSize",
+                        "description": "Uses a fixed window size to surface the last N messages"
+                    },
+                    {
+                        "label": "Conversation Summary",
+                        "name": "conversationSummary",
+                        "description": "Summarizes the whole conversation"
+                    },
+                    {
+                        "label": "Conversation Summary Buffer",
+                        "name": "conversationSummaryBuffer",
+                        "description": "Summarize conversations once token limit is reached. Default to 2000"
+                    }
+                ],
+                "optional": true,
+                "default": "allMessages",
+                "id": "conditionAgentAgentflow-conditionAgentMemoryType",
+                "show": {
+                    "conditionAgentEnableMemory": true
+                }
+            },
+            {
+                "label": "Window Size",
+                "name": "conditionAgentMemoryWindowSize",
+                "type": "number",
+                "default": "20",
+                "description": "Uses a fixed window size to surface the last N messages",
+                "id": "conditionAgentAgentflow-conditionAgentMemoryWindowSize",
+                "show": {
+                    "conditionAgentMemoryType": "windowSize"
+                }
+            },
+            {
+                "label": "Max Token Limit",
+                "name": "conditionAgentMemoryMaxTokenLimit",
+                "type": "number",
+                "default": "2000",
+                "description": "Summarize conversations once token limit is reached. Default to 2000",
+                "id": "conditionAgentAgentflow-conditionAgentMemoryMaxTokenLimit",
+                "show": {
+                    "conditionAgentMemoryType": "conversationSummaryBuffer"
+                }
+            },
+            {
+                "label": "Override System Prompt",
+                "name": "conditionAgentOverrideSystemPrompt",
+                "type": "boolean",
+                "description": "Override initial system prompt for Condition Agent",
+                "optional": true,
+                "id": "conditionAgentAgentflow-conditionAgentOverrideSystemPrompt"
+            },
+            {
+                "label": "Condition Agent System Prompt",
+                "name": "conditionAgentSystemPrompt",
+                "type": "string",
+                "rows": 4,
+                "optional": true,
+                "acceptVariable": true,
+                "description": "Expert use only. Modifying this can significantly alter agent behavior. Leave default if unsure",
+                "id": "conditionAgentAgentflow-conditionAgentSystemPrompt",
+                "show": {
+                    "conditionAgentOverrideSystemPrompt": true
+                }
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "conditionAgentAgentflow-output-0",
+                "name": "0",
+                "label": "0",
+                "type": "ConditionAgent",
+                "baseClasses": ["ConditionAgent"],
+                "description": "Condition 0"
+            },
+            {
+                "id": "conditionAgentAgentflow-output-1",
+                "name": "1",
+                "label": "1",
+                "type": "ConditionAgent",
+                "baseClasses": ["ConditionAgent"],
+                "description": "Else"
+            }
+        ],
+        "outputs": {}
+    }
+}

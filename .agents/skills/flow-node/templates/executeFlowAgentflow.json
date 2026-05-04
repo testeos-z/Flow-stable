@@ -1,0 +1,116 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 350,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Execute Flow",
+        "name": "executeFlowAgentflow",
+        "version": "1.2",
+        "type": "ExecuteFlow",
+        "category": "Agent Flows",
+        "description": "Execute another flow",
+        "color": "#a3b18a",
+        "baseClasses": ["ExecuteFlow"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/ExecuteFlow/ExecuteFlow.js",
+        "icon": "ExecuteFlow.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listFlows": true,
+            "listRuntimeStateKeys": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Select Flow",
+                "name": "executeFlowSelectedFlow",
+                "type": "asyncOptions",
+                "loadMethod": "listFlows",
+                "id": "executeFlowAgentflow-executeFlowSelectedFlow"
+            },
+            {
+                "label": "Input",
+                "name": "executeFlowInput",
+                "type": "string",
+                "rows": 4,
+                "acceptVariable": true,
+                "id": "executeFlowAgentflow-executeFlowInput"
+            },
+            {
+                "label": "Override Config",
+                "name": "executeFlowOverrideConfig",
+                "description": "Override the config passed to the flow",
+                "type": "json",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "executeFlowAgentflow-executeFlowOverrideConfig"
+            },
+            {
+                "label": "Base URL",
+                "name": "executeFlowBaseURL",
+                "type": "string",
+                "description": "Base URL to Flowise. By default, it is the URL of the incoming request. Useful when you need to execute flow through an alternative route.",
+                "placeholder": "http://localhost:3000",
+                "optional": true,
+                "id": "executeFlowAgentflow-executeFlowBaseURL"
+            },
+            {
+                "label": "Return Response As",
+                "name": "executeFlowReturnResponseAs",
+                "type": "options",
+                "options": [
+                    {
+                        "label": "User Message",
+                        "name": "userMessage"
+                    },
+                    {
+                        "label": "Assistant Message",
+                        "name": "assistantMessage"
+                    }
+                ],
+                "default": "userMessage",
+                "id": "executeFlowAgentflow-executeFlowReturnResponseAs"
+            },
+            {
+                "label": "Update Flow State",
+                "name": "executeFlowUpdateState",
+                "description": "Update runtime state during the execution of the workflow",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "executeFlowAgentflow-executeFlowUpdateState",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "asyncOptions",
+                        "loadMethod": "listRuntimeStateKeys"
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "acceptNodeOutputAsVariable": true
+                    }
+                ]
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "executeFlowAgentflow-output",
+                "name": "executeFlowAgentflow",
+                "label": "Execute Flow",
+                "type": "ExecuteFlow",
+                "baseClasses": ["ExecuteFlow"]
+            }
+        ],
+        "outputs": {}
+    }
+}

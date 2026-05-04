@@ -1,0 +1,95 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 200,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Custom Function",
+        "name": "customFunctionAgentflow",
+        "version": "1.1",
+        "type": "CustomFunction",
+        "category": "Agent Flows",
+        "description": "Execute custom function",
+        "color": "#E4B7FF",
+        "baseClasses": ["CustomFunction"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/CustomFunction/CustomFunction.js",
+        "icon": "CustomFunction.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listRuntimeStateKeys": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Input Variables",
+                "name": "customFunctionInputVariables",
+                "description": "Input variables can be used in the function with prefix $. For example: $foo",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "customFunctionAgentflow-customFunctionInputVariables",
+                "array": [
+                    {
+                        "label": "Variable Name",
+                        "name": "variableName",
+                        "type": "string"
+                    },
+                    {
+                        "label": "Variable Value",
+                        "name": "variableValue",
+                        "type": "string",
+                        "acceptVariable": true
+                    }
+                ]
+            },
+            {
+                "label": "Javascript Function",
+                "name": "customFunctionJavascriptFunction",
+                "type": "code",
+                "codeExample": "/*\n* You can use any libraries imported in Flowise\n* You can use properties specified in Input Variables with the prefix $. For example: $foo\n* You can get default flow config: $flow.sessionId, $flow.chatId, $flow.chatflowId, $flow.input, $flow.state\n* You can get global variables: $vars.<variable-name>\n* Must return a string value at the end of function\n*/\n\nconst fetch = require('node-fetch');\nconst url = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true';\nconst options = {\n    method: 'GET',\n    headers: {\n        'Content-Type': 'application/json'\n    }\n};\ntry {\n    const response = await fetch(url, options);\n    const text = await response.text();\n    return text;\n} catch (error) {\n    console.error(error);\n    return '';\n}",
+                "description": "The function to execute. Must return a string or an object that can be converted to a string.",
+                "id": "customFunctionAgentflow-customFunctionJavascriptFunction"
+            },
+            {
+                "label": "Update Flow State",
+                "name": "customFunctionUpdateState",
+                "description": "Update runtime state during the execution of the workflow",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "customFunctionAgentflow-customFunctionUpdateState",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "asyncOptions",
+                        "loadMethod": "listRuntimeStateKeys"
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "acceptNodeOutputAsVariable": true
+                    }
+                ]
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "customFunctionAgentflow-output",
+                "name": "customFunctionAgentflow",
+                "label": "Custom Function",
+                "type": "CustomFunction",
+                "baseClasses": ["CustomFunction"]
+            }
+        ],
+        "outputs": {}
+    }
+}

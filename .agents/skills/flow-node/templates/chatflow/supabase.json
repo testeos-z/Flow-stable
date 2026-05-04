@@ -1,0 +1,154 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 280,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Supabase",
+        "name": "supabase",
+        "version": "4.0",
+        "type": "Supabase",
+        "category": "Vector Stores",
+        "description": "Upsert embedded data and perform similarity or mmr search upon query using Supabase via pgvector extension",
+        "icon": "supabase.svg",
+        "baseClasses": ["Supabase", "VectorStoreRetriever", "BaseRetriever"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/Supabase/Supabase.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "id": "supabase-supabaseProjUrl"
+            },
+            {
+                "label": "Table Name",
+                "name": "tableName",
+                "type": "string",
+                "id": "supabase-tableName"
+            },
+            {
+                "label": "Query Name",
+                "name": "queryName",
+                "type": "string",
+                "id": "supabase-queryName"
+            },
+            {
+                "label": "Supabase Metadata Filter",
+                "name": "supabaseMetadataFilter",
+                "type": "json",
+                "optional": true,
+                "additionalParams": true,
+                "acceptVariable": true,
+                "id": "supabase-supabaseMetadataFilter"
+            },
+            {
+                "label": "Supabase RPC Filter",
+                "name": "supabaseRPCFilter",
+                "type": "string",
+                "rows": 4,
+                "placeholder": "filter(\"metadata->a::int\", \"gt\", 5)\n.filter(\"metadata->c::int\", \"gt\", 7)\n.filter(\"metadata->>stuff\", \"eq\", \"right\");",
+                "description": "Query builder-style filtering. If this is set, will override the metadata filter. Refer <a href=\"https://js.langchain.com/v0.1/docs/integrations/vectorstores/supabase/#metadata-query-builder-filtering\" target=\"_blank\">here</a> for more information",
+                "optional": true,
+                "additionalParams": true,
+                "id": "supabase-supabaseRPCFilter"
+            },
+            {
+                "label": "Top K",
+                "name": "topK",
+                "description": "Number of top results to fetch. Default to 4",
+                "placeholder": "4",
+                "type": "number",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabase-topK"
+            },
+            {
+                "label": "Search Type",
+                "name": "searchType",
+                "type": "options",
+                "default": "similarity",
+                "options": [
+                    { "label": "Similarity", "name": "similarity" },
+                    { "label": "Max Marginal Relevance", "name": "mmr" }
+                ],
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabase-searchType"
+            },
+            {
+                "label": "Fetch K (for MMR Search)",
+                "name": "fetchK",
+                "description": "Number of initial documents to fetch for MMR reranking. Default to 20. Used only when the search type is MMR",
+                "placeholder": "20",
+                "type": "number",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabase-fetchK"
+            },
+            {
+                "label": "Lambda (for MMR Search)",
+                "name": "lambda",
+                "description": "Number between 0 and 1 that determines the degree of diversity among the results, where 0 corresponds to maximum diversity and 1 to minimum diversity. Used only when the search type is MMR",
+                "placeholder": "0.5",
+                "type": "number",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabase-lambda"
+            },
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["supabaseApi"],
+                "id": "supabase-credential"
+            }
+        ],
+        "inputAnchors": [
+            {
+                "label": "Document",
+                "name": "document",
+                "type": "Document",
+                "list": true,
+                "optional": true,
+                "id": "supabase-document"
+            },
+            {
+                "label": "Embeddings",
+                "name": "embeddings",
+                "type": "Embeddings",
+                "id": "supabase-embeddings"
+            },
+            {
+                "label": "Record Manager",
+                "name": "recordManager",
+                "type": "RecordManager",
+                "description": "Keep track of the record to prevent duplication",
+                "optional": true,
+                "id": "supabase-recordManager"
+            }
+        ],
+        "outputAnchors": [
+            {
+                "id": "supabase-retriever",
+                "name": "retriever",
+                "label": "Supabase Retriever",
+                "type": "Supabase",
+                "baseClasses": ["Supabase", "VectorStoreRetriever", "BaseRetriever"]
+            },
+            {
+                "id": "supabase-vectorStore",
+                "name": "vectorStore",
+                "label": "Supabase Vector Store",
+                "type": "SupabaseVectorStore",
+                "baseClasses": ["Supabase", "SupabaseVectorStore"]
+            }
+        ],
+        "outputs": {}
+    }
+}

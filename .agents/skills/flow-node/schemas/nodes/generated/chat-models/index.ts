@@ -1,0 +1,33 @@
+/**
+ * Chat Models — Auto-generated index
+ * 28 nodes
+ */
+
+export { OpenAISchema, validateOpenAI } from './openai.js'
+export { AzureOpenAISchema, validateAzureOpenAI } from './azure-openai.js'
+export { AnthropicClaudeSchema, validateAnthropicClaude } from './anthropic-claude.js'
+export { GoogleGeminiSchema, validateGoogleGemini } from './google-gemini.js'
+export { GoogleVertexAISchema, validateGoogleVertexAI } from './google-vertexai.js'
+export { OllamaSchema, validateOllama } from './ollama.js'
+export { AWSBedrockSchema, validateAWSBedrock } from './aws-bedrock.js'
+export { MistralAISchema, validateMistralAI } from './mistralai.js'
+export { GroqSchema, validateGroq } from './groq.js'
+export { DeepseekSchema, validateDeepseek } from './deepseek.js'
+export { xAIGrokSchema, validatexAIGrok } from './xai-grok.js'
+export { CohereSchema, validateCohere } from './cohere.js'
+export { TogetherAISchema, validateTogetherAI } from './togetherai.js'
+export { FireworksAISchema, validateFireworksAI } from './fireworks-ai.js'
+export { HuggingFaceSchema, validateHuggingFace } from './huggingface.js'
+export { OpenRouterSchema, validateOpenRouter } from './openrouter.js'
+export { PerplexitySchema, validatePerplexity } from './perplexity.js'
+export { CerebrasSchema, validateCerebras } from './cerebras.js'
+export { LocalAISchema, validateLocalAI } from './localai.js'
+export { LiteLLMSchema, validateLiteLLM } from './litellm.js'
+export { SambaNovaSchema, validateSambaNova } from './sambanova.js'
+export { NvidiaNIMSchema, validateNvidiaNIM } from './nvidia-nim.js'
+export { CometSchema, validateComet } from './comet.js'
+export { IBMWatsonxSchema, validateIBMWatsonx } from './ibm-watsonx.js'
+export { AlibabaTongyiSchema, validateAlibabaTongyi } from './alibaba-tongyi.js'
+export { BaiduWenxinSchema, validateBaiduWenxin } from './baidu-wenxin.js'
+export { CloudflareWorkersAISchema, validateCloudflareWorkersAI } from './cloudflare-workers-ai.js'
+export { NemoGuardrailsSchema, validateNemoGuardrails } from './nemo-guardrails.js'

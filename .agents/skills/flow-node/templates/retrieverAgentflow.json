@@ -1,0 +1,101 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 250,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Retriever",
+        "name": "retrieverAgentflow",
+        "version": "1.1",
+        "type": "Retriever",
+        "category": "Agent Flows",
+        "description": "Retrieve information from vector database",
+        "color": "#b8bedd",
+        "baseClasses": ["Retriever"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/Retriever/Retriever.js",
+        "icon": "Retriever.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listRuntimeStateKeys": true,
+            "listStores": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Knowledge (Document Stores)",
+                "name": "retrieverKnowledgeDocumentStores",
+                "type": "array",
+                "description": "Document stores to retrieve information from. Document stores must be upserted in advance.",
+                "id": "retrieverAgentflow-retrieverKnowledgeDocumentStores",
+                "array": [
+                    {
+                        "label": "Document Store",
+                        "name": "documentStore",
+                        "type": "asyncOptions",
+                        "loadMethod": "listStores"
+                    }
+                ]
+            },
+            {
+                "label": "Retriever Query",
+                "name": "retrieverQuery",
+                "type": "string",
+                "placeholder": "Enter your query here",
+                "rows": 4,
+                "acceptVariable": true,
+                "id": "retrieverAgentflow-retrieverQuery"
+            },
+            {
+                "label": "Output Format",
+                "name": "outputFormat",
+                "type": "options",
+                "options": [
+                    { "label": "Text", "name": "text" },
+                    { "label": "Text with Metadata", "name": "textWithMetadata" }
+                ],
+                "default": "text",
+                "id": "retrieverAgentflow-outputFormat"
+            },
+            {
+                "label": "Update Flow State",
+                "name": "retrieverUpdateState",
+                "description": "Update runtime state during the execution of the workflow",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "retrieverAgentflow-retrieverUpdateState",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "asyncOptions",
+                        "loadMethod": "listRuntimeStateKeys"
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "acceptNodeOutputAsVariable": true
+                    }
+                ]
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "retrieverAgentflow-output",
+                "name": "retrieverAgentflow",
+                "label": "Retriever",
+                "type": "Retriever",
+                "baseClasses": ["Retriever"]
+            }
+        ],
+        "outputs": {}
+    }
+}

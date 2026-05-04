@@ -1,16 +1,30 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "agent": {
+        "flow-node": {
+            "description": "Knowledge bank of complete AgentFlow node templates. Returns full IReactFlowNode JSON with correct inputParams, inputAnchors, outputAnchors for 15 AgentFlow node types. Solves empty inputParams on API-created nodes. Trigger: When an agent needs to create, fix, or validate an AgentFlow node JSON.",
+            "mode": "all",
+            "skill": ".agents/skills/flow-node",
+            "permission": {
+                "flow-doc_*": "allow",
+                "engram_*": "allow"
+            },
+            "tools": {
+                "bash": true,
+                "glob": true,
+                "grep": true,
+                "read": true,
+                "write": true,
+                "edit": true
+            }
+        },
         "flow-architect": {
             "description": "Agente experto en a2a-lab (GobernAI). READ-ONLY orquestador. Diseña flujos, delega a specialists, ensambla flowData, pero NO escribe en Flowise. Único executor: flow-ing.",
             "mode": "all",
             "skill": ".agents/skills/flow-architect",
             "permission": {
                 "flow-doc_*": "allow",
-                "engram_*": "allow",
-                "flow-control_*": "deny",
-                "flow-validation_*": "allow",
-                "mcp-flowise_*": "allow"
+                "engram_*": "allow"
             },
             "tools": {
                 "bash": true,
@@ -24,24 +38,30 @@
                 "flow-control_list_nodes": true,
                 "flow-control_get_nodes_by_category": true,
                 "flow-control_get_node": true,
-                "flow-control_create_custom_mcp_server": true,
+                "flow-control_validate_chatflow": true,
+                "flow-control_validate_agentflow": true,
+                "flow-control_validate_flow_data": true,
+                "flow-control_validate_flow_graph": true,
+                "flow-control_fix_flow_data": true,
+                "flow-control_full_flow_validation": true,
+                "flow-control_list_credential_types": true,
+                "flow-control_resolve_credential": true,
+                "flow-control_list_credentials": true,
+                "flow-control_get_credential": true,
+                "flow-control_flow_list_tools": true,
+                "flow-control_flow_get_tool": true,
                 "flow-control_list_custom_mcp_servers": true,
                 "flow-control_get_custom_mcp_server": true,
-                "flow-control_update_custom_mcp_server": true,
-                "flow-control_delete_custom_mcp_server": true,
-                "flow-control_authorize_custom_mcp_server": true,
                 "flow-control_get_custom_mcp_server_tools": true,
-                "mcp-flowise_list_chatflows": true,
-                "mcp-flowise_get_chatflow": true,
-                "mcp-flowise_list_nodes": true,
-                "mcp-flowise_get_node": true,
-                "flow-validation_validate_flow_data": true,
-                "flow-validation_validate_flow_graph": true,
-                "flow-validation_fix_flow_data": true,
-                "flow-validation_full_flow_validation": true,
-                "flow-validation_validate_chatflow": true,
-                "flow-validation_list_credentials": true,
-                "flow-validation_resolve_credential": true
+                "flow-control_get_mcp_server_config": true,
+                "flow-control_list_variables": true,
+                "flow-control_list_api_keys": true,
+                "flow-control_list_assistants": true,
+                "flow-control_get_assistant": true,
+                "flow-control_get_assistant_chat_models": true,
+                "flow-control_get_assistant_doc_stores": true,
+                "flow-control_get_assistant_tools": true,
+                "flow-control_generate_assistant_instruction": true
             }
         },
         "flow-ing": {
@@ -51,12 +71,9 @@
             "permission": {
                 "flow-doc_*": "allow",
                 "engram_*": "allow",
-                "context7_*": "allow",
-                "flow-control_*": "allow",
-                "mcp-flowise_*": "allow",
-                "flow-validation_*": "allow"
+                "context7_*": "allow"
             },
-            "prompt": "## FLOW-ING: Executor & Validator\\n\\nEres el ÚNICO agente con permiso de escritura en Flowise.\\n\\nREGLAS:\\n1. NUNCA permitas que otro agente escriba en Flowise\\n2. SIEMPRE ejecuta testing pipeline antes de guardar\\n3. Si tests fallan → reporta errores, NO guardes\\n4. Si tests pasan → guarda en Flowise\\n\\nCapacidades: create_chatflow, update_chatflow, delete_chatflow, test_chatflow, validate_chatflow\\nMCPs: flow-control, mcp-flowise, flow-validation (test_chatflow, validate_chatflow, list_credentials, resolve_credential)",
+            "prompt": "## FLOW-ING: Executor & Validator\n\nEres el ÚNICO agente con permiso de escritura en Flowise.\n\nREGLAS:\n1. NUNCA permitas que otro agente escriba en Flowise\n2. SIEMPRE ejecuta testing pipeline antes de guardar\n3. Si tests fallan → reporta errores, NO guardes\n4. Si tests pasan → guarda en Flowise\n\nCapacidades: create_chatflow, update_chatflow, delete_chatflow, test_chatflow, validate_chatflow\nMCP: flow-control (todas las tools)",
             "tools": {
                 "bash": true,
                 "delegation": true,
@@ -75,23 +92,63 @@
                 "flow-control_create_chatflow": true,
                 "flow-control_update_chatflow": true,
                 "flow-control_delete_chatflow": true,
-                "flow-control_list_nodes": true,
-                "flow-control_get_nodes_by_category": true,
-                "flow-control_get_node": true,
                 "flow-control_create_prediction": true,
                 "flow-control_create_prediction_with_history": true,
                 "flow-control_create_prediction_with_files": true,
                 "flow-control_create_prediction_with_lead": true,
-                "mcp-flowise_list_chatflows": true,
-                "mcp-flowise_create_prediction": true,
-                "flow-validation_validate_flow_data": true,
-                "flow-validation_validate_flow_graph": true,
-                "flow-validation_fix_flow_data": true,
-                "flow-validation_full_flow_validation": true,
-                "flow-validation_test_chatflow": true,
-                "flow-validation_validate_chatflow": true,
-                "flow-validation_list_credentials": true,
-                "flow-validation_resolve_credential": true
+                "flow-control_list_nodes": true,
+                "flow-control_get_nodes_by_category": true,
+                "flow-control_get_node": true,
+                "flow-control_validate_chatflow": true,
+                "flow-control_validate_agentflow": true,
+                "flow-control_validate_flow_data": true,
+                "flow-control_validate_flow_graph": true,
+                "flow-control_fix_flow_data": true,
+                "flow-control_full_flow_validation": true,
+                "flow-control_test_chatflow": true,
+                "flow-control_diagnose_chatflow": true,
+                "flow-control_repair_chatflow": true,
+                "flow-control_list_credential_types": true,
+                "flow-control_resolve_credential": true,
+                "flow-control_list_credentials": true,
+                "flow-control_get_credential": true,
+                "flow-control_create_credential": true,
+                "flow-control_update_credential": true,
+                "flow-control_delete_credential": true,
+                "flow-control_flow_list_tools": true,
+                "flow-control_flow_get_tool": true,
+                "flow-control_flow_create_tool": true,
+                "flow-control_flow_update_tool": true,
+                "flow-control_flow_delete_tool": true,
+                "flow-control_list_custom_mcp_servers": true,
+                "flow-control_get_custom_mcp_server": true,
+                "flow-control_create_custom_mcp_server": true,
+                "flow-control_update_custom_mcp_server": true,
+                "flow-control_delete_custom_mcp_server": true,
+                "flow-control_get_custom_mcp_server_tools": true,
+                "flow-control_authorize_custom_mcp_server": true,
+                "flow-control_get_mcp_server_config": true,
+                "flow-control_enable_mcp_server": true,
+                "flow-control_update_mcp_server_config": true,
+                "flow-control_disable_mcp_server": true,
+                "flow-control_refresh_mcp_token": true,
+                "flow-control_list_variables": true,
+                "flow-control_create_variable": true,
+                "flow-control_update_variable": true,
+                "flow-control_delete_variable": true,
+                "flow-control_list_api_keys": true,
+                "flow-control_create_api_key": true,
+                "flow-control_update_api_key": true,
+                "flow-control_delete_api_key": true,
+                "flow-control_list_assistants": true,
+                "flow-control_get_assistant": true,
+                "flow-control_create_assistant": true,
+                "flow-control_update_assistant": true,
+                "flow-control_delete_assistant": true,
+                "flow-control_get_assistant_chat_models": true,
+                "flow-control_get_assistant_doc_stores": true,
+                "flow-control_get_assistant_tools": true,
+                "flow-control_generate_assistant_instruction": true
             }
         }
     },
@@ -101,29 +158,14 @@
             "enabled": true,
             "type": "local"
         },
-        "flow-validation": {
-            "command": ["node", "/var/home/snor/Documents/jobs/GobernAI/Flow-stable/packages/flowise-mcp-server/dist/index.js"],
-            "enabled": true,
-            "type": "local"
-        },
         "flow-doc": {
             "type": "remote",
             "url": "https://docs.flowiseai.com/~gitbook/mcp",
             "enabled": true
-        },
-        "mcp-flowise": {
-            "command": ["uvx", "--from", "git+https://github.com/matthewhand/mcp-flowise", "mcp-flowise"],
-            "env": {
-                "FLOWISE_API_KEY": "nxGr_Ot5E19ueMfxhIK3-l4DzMhGcESmeoJHlil84dw",
-                "FLOWISE_API_ENDPOINT": "https://flow-stable-flow.up.railway.app"
-            },
-            "type": "local"
         }
     },
     "permission": {
         "flow-doc_*": "allow",
-        "flow-control_*": "deny",
-        "mcp-flowise_*": "deny",
-        "flow-validation_*": "allow"
+        "flow-control_*": "allow"
     }
 }

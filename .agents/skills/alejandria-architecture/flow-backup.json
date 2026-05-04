@@ -1,0 +1,50 @@
+{
+    "flow_id": "50306854-0f6a-4283-bb1f-64c0cb0d82d3",
+    "name": "Alejandria",
+    "type": "AGENTFLOW",
+    "backup_date": "2026-05-02T21:12:37.459138",
+    "models": {
+        "llm_nodes": {
+            "llmAgentflow_0_Router": "deepseek/deepseek-v4-flash",
+            "llmAgentflow_1_Linguista_PRE": "deepseek/deepseek-v4-flash",
+            "llmAgentflow_2_Sintesis": "deepseek/deepseek-v4-flash"
+        },
+        "agent_nodes": {
+            "agentAgentflow_0_Bibliotecario": "minimax/minimax-m2.5",
+            "agentAgentflow_1_Source_Worker": "minimax/minimax-m2.5"
+        }
+    },
+    "credentials": {
+        "openrouter": "ddeb2757-f8e2-4ed7-9647-5a113332b432",
+        "supabase": "0df85d26-749b-4fac-9a88-7399663a3099",
+        "huggingface_emb": "aae7223f-da1b-47d5-bb26-1a2f1b2a3d5b"
+    },
+    "supabase_project": "qklwlyoenlffxnwrkxuc",
+    "nodes": [
+        "startAgentflow_0",
+        "llmAgentflow_0",
+        "llmAgentflow_1",
+        "agentAgentflow_0",
+        "agentAgentflow_1",
+        "conditionAgentflow_0",
+        "customFunctionAgentflow_0",
+        "llmAgentflow_2",
+        "directReplyAgentflow_0",
+        "directReplyAgentflow_1"
+    ],
+    "edges_count": 9,
+    "status": "models_updated_branching_fixed_tools_pending",
+    "tools_status": {
+        "retriever_tools": "not_created",
+        "mcp_tools": "not_created",
+        "agent_tools_connected": false
+    },
+    "test_results": {
+        "prediction_executed": true,
+        "nodes_executed": 10,
+        "model_calls_verified": true,
+        "branching_works": true,
+        "fallback_triggered": true,
+        "issue": "Agents return empty arrays because no RetrieverTools/MCP tools connected"
+    }
+}

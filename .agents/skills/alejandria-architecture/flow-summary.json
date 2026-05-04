@@ -1,0 +1,66 @@
+{
+    "flow_id": "50306854-0f6a-4283-bb1f-64c0cb0d82d3",
+    "name": "Alejandria",
+    "type": "AGENTFLOW",
+    "last_updated": "2026-05-02T21:12:37.459301",
+    "ale_agf_status": {
+        "ALE-AGF-1_models_configured": true,
+        "ALE-AGF-2_retriever_tools": false,
+        "ALE-AGF-3_mcp_tools": false,
+        "ALE-AGF-4_tools_connected_to_agents": false,
+        "ALE-AGF-5_branching_fixed": true,
+        "ALE-AGF-6_fallback_reply_node": true,
+        "ALE-AGF-7_tests_passed": true,
+        "ALE-AGF-8_production_ready": false,
+        "score": "4/8",
+        "missing": ["RetrieverTools", "MCP tools", "Tool connections"]
+    },
+    "models": {
+        "llm": "deepseek/deepseek-v4-flash",
+        "agent": "minimax/minimax-m2.5"
+    },
+    "rpc_functions": ["match_global_flowise", "match_madeira_flowise", "match_nyc_flowise"],
+    "required_tools": [
+        {
+            "name": "search_global_knowledge",
+            "type": "RetrieverTool",
+            "status": "not_created"
+        },
+        {
+            "name": "search_nyc_knowledge",
+            "type": "RetrieverTool",
+            "status": "not_created"
+        },
+        {
+            "name": "search_madeira_knowledge",
+            "type": "RetrieverTool",
+            "status": "not_created"
+        },
+        {
+            "name": "OPENALEX_PROD",
+            "type": "CustomMcpTool",
+            "status": "not_created"
+        },
+        {
+            "name": "PT_DATA",
+            "type": "CustomMcpTool",
+            "status": "not_created"
+        },
+        {
+            "name": "MADEIRA_DATA",
+            "type": "CustomMcpTool",
+            "status": "not_created"
+        },
+        {
+            "name": "UE_DATA_DEV",
+            "type": "CustomMcpTool",
+            "status": "not_created"
+        }
+    ],
+    "next_steps": [
+        "Create 3 RetrieverTool nodes in Flowise UI for Supabase vector stores",
+        "Create 4 CustomMcpTool nodes for MCP endpoints",
+        "Connect all tools to agentAgentflow_0 and agentAgentflow_1",
+        "Test with actual queries to verify tool calls and data retrieval"
+    ]
+}

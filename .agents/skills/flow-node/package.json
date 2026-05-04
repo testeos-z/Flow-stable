@@ -1,0 +1,18 @@
+{
+    "name": "@agents/flow-node",
+    "version": "1.0.0",
+    "description": "Node JSON factory and strict validator for Flowise nodes",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "generate": "npx tsx scripts/generate-node-schemas.ts",
+        "check-drift": "npx tsx scripts/check-drift.ts",
+        "generate:check": "npx tsx scripts/generate-node-schemas.ts && npx tsx scripts/check-drift.ts",
+        "test:ci": "npx vitest run --reporter=verbose",
+        "test:ci:schemas": "cd schemas && npx vitest run --reporter=verbose"
+    },
+    "devDependencies": {
+        "tsx": "^4.21.0",
+        "vitest": "^3.0.0"
+    }
+}

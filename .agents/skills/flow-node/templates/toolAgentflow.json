@@ -1,0 +1,101 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 200,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Tool",
+        "name": "toolAgentflow",
+        "version": "1.2",
+        "type": "Tool",
+        "category": "Agent Flows",
+        "description": "Tools allow LLM to interact with external systems",
+        "color": "#d4a373",
+        "baseClasses": ["Tool"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/Tool/Tool.js",
+        "icon": "Tool.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listTools": true,
+            "listToolInputArgs": true,
+            "listRuntimeStateKeys": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Tool",
+                "name": "toolAgentflowSelectedTool",
+                "type": "asyncOptions",
+                "loadMethod": "listTools",
+                "loadConfig": true,
+                "id": "toolAgentflow-toolAgentflowSelectedTool"
+            },
+            {
+                "label": "Tool Input Arguments",
+                "name": "toolInputArgs",
+                "type": "array",
+                "acceptVariable": true,
+                "refresh": true,
+                "id": "toolAgentflow-toolInputArgs",
+                "array": [
+                    {
+                        "label": "Input Argument Name",
+                        "name": "inputArgName",
+                        "type": "asyncOptions",
+                        "loadMethod": "listToolInputArgs",
+                        "refresh": true
+                    },
+                    {
+                        "label": "Input Argument Value",
+                        "name": "inputArgValue",
+                        "type": "string",
+                        "acceptVariable": true
+                    }
+                ],
+                "show": {
+                    "toolAgentflowSelectedTool": ".+"
+                }
+            },
+            {
+                "label": "Update Flow State",
+                "name": "toolUpdateState",
+                "description": "Update runtime state during the execution of the workflow",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "toolAgentflow-toolUpdateState",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "asyncOptions",
+                        "loadMethod": "listRuntimeStateKeys"
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "acceptNodeOutputAsVariable": true
+                    }
+                ]
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "toolAgentflow-output",
+                "name": "toolAgentflow",
+                "label": "Tool",
+                "type": "Tool",
+                "baseClasses": ["Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

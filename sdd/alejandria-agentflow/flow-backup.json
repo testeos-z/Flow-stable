@@ -1,0 +1,2005 @@
+{
+    "flowId": "50306854-0f6a-4283-bb1f-64c0cb0d82d3",
+    "name": "Alejandria",
+    "type": "AGENTFLOW",
+    "flowData": {
+        "nodes": [
+            {
+                "id": "startAgentflow_0",
+                "type": "agentFlow",
+                "position": {
+                    "x": -125,
+                    "y": 31.5
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Start",
+                    "name": "startAgentflow",
+                    "version": 1.1,
+                    "type": "Start",
+                    "category": "Agent Flows",
+                    "description": "Starting point of the agentflow",
+                    "color": "#7EE787",
+                    "baseClasses": ["Start"],
+                    "hideInput": true,
+                    "inputs": {
+                        "startInputType": "chatInput",
+                        "startEphemeralMemory": "",
+                        "startState": [
+                            {
+                                "key": "original_query",
+                                "value": ""
+                            },
+                            {
+                                "key": "user_language",
+                                "value": ""
+                            },
+                            {
+                                "key": "territory",
+                                "value": ""
+                            },
+                            {
+                                "key": "intent",
+                                "value": ""
+                            },
+                            {
+                                "key": "query_normalized",
+                                "value": ""
+                            },
+                            {
+                                "key": "recommended_sources",
+                                "value": "[]"
+                            },
+                            {
+                                "key": "router_result",
+                                "value": "{}"
+                            },
+                            {
+                                "key": "search_queries",
+                                "value": "{}"
+                            },
+                            {
+                                "key": "search_plan",
+                                "value": "{}"
+                            },
+                            {
+                                "key": "search_results",
+                                "value": "[]"
+                            },
+                            {
+                                "key": "evidence",
+                                "value": "[]"
+                            },
+                            {
+                                "key": "final_answer",
+                                "value": ""
+                            }
+                        ],
+                        "startPersistState": ""
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Input Type",
+                            "name": "startInputType",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "Chat Input",
+                                    "name": "chatInput"
+                                }
+                            ],
+                            "default": "chatInput",
+                            "id": "startAgentflow_0-input-startInputType-options",
+                            "display": true
+                        },
+                        {
+                            "label": "Ephemeral Memory",
+                            "name": "startEphemeralMemory",
+                            "type": "boolean",
+                            "optional": true,
+                            "id": "startAgentflow_0-input-startEphemeralMemory-boolean",
+                            "display": true
+                        },
+                        {
+                            "label": "Flow State",
+                            "name": "startState",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "string",
+                                    "placeholder": "Foo"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "placeholder": "Bar",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "startAgentflow_0-input-startState-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Persist State",
+                            "name": "startPersistState",
+                            "type": "boolean",
+                            "optional": true,
+                            "id": "startAgentflow_0-input-startPersistState-boolean",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "startAgentflow_0-output-startAgentflow",
+                            "label": "Start",
+                            "name": "startAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 104,
+                "height": 66,
+                "positionAbsolute": {
+                    "x": -125,
+                    "y": 31.5
+                },
+                "selected": false
+            },
+            {
+                "id": "llmAgentflow_0",
+                "type": "agentFlow",
+                "position": {
+                    "x": 57.75,
+                    "y": 30
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Router",
+                    "name": "llmAgentflow",
+                    "version": 1.1,
+                    "type": "LLM",
+                    "category": "Agent Flows",
+                    "description": "Classify user query: language, territory, intent, source recommendations",
+                    "color": "#22D3EE",
+                    "baseClasses": ["LLM"],
+                    "hideInput": false,
+                    "inputs": {
+                        "llmModel": "chatOpenRouter",
+                        "llmMessages": [
+                            {
+                                "role": "system",
+                                "content": "You are a multilingual query router for a knowledge retrieval system. Your job is to classify the user's question and determine the best sources to search.\n\n## Task\nAnalyze the user's message and extract:\n1. **language**: The ISO 639-1 code of the user's language (es, en, pt, fr, de, it). Default to \"en\" if unsure.\n2. **territory**: The geographic focus \u2014 \"nyc\" for New York City topics, \"madeira\" for Madeira/Portugal topics, \"europa\" for EU/Europe-wide topics, \"global\" for everything else or when ambiguous.\n3. **intent**: \"knowledge_search\" for factual questions, \"policy_analysis\" for policy/program evaluation, \"data_query\" for statistics/data requests, \"general_question\" as default.\n4. **query_normalized**: The user's original query with typos fixed, redundant words removed, and formatted as a clean search string.\n5. **recommended_sources**: An array of knowledge sources to search, selected from: \"knowledge.global\" (general documents 435K records), \"knowledge.nyc\" (NYC-specific documents 18K records), \"knowledge.madeira\" (Madeira-specific documents 164K records), \"openalex\" (academic papers), \"pt_data\" (Portugal datasets), \"madeira_data\" (Madeira local data), \"ue_data\" (EU data).\n\n## Rules\n- If territory is \"nyc\", primary source MUST be \"knowledge.nyc\" with \"knowledge.global\" as fallback.\n- If territory is \"madeira\", primary source MUST be \"knowledge.madeira\" with \"knowledge.global\" as fallback and \"madeira_data\" for local data.\n- If territory is \"europa\", include \"ue_data\" and \"knowledge.global\".\n- If territory is \"global\", use \"knowledge.global\" with \"openalex\" for academic questions.\n- Always include \"knowledge.global\" as a fallback source unless territory is unambiguously specific.\n- For empty or nonsensical input: language=\"en\", territory=\"global\", intent=\"general_question\".\n\n## Output\nReturn ONLY valid JSON matching the schema. No explanations, no markdown fences."
+                            },
+                            {
+                                "role": "user",
+                                "content": "{{input}}"
+                            }
+                        ],
+                        "llmEnableMemory": false,
+                        "llmMemoryType": "",
+                        "llmStructuredOutput": "",
+                        "llmUpdateState": [
+                            {
+                                "key": "router_result",
+                                "value": "{{output}}"
+                            }
+                        ],
+                        "llmReturnResponseAs": "userMessage",
+                        "llmModelConfig": {
+                            "cache": "",
+                            "modelName": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+                            "temperature": 0.1,
+                            "streaming": true,
+                            "allowImageUploads": "",
+                            "maxTokens": "",
+                            "topP": "",
+                            "frequencyPenalty": "",
+                            "presencePenalty": "",
+                            "timeout": "",
+                            "basepath": "https://openrouter.ai/api/v1",
+                            "baseOptions": "",
+                            "agentModel": "chatOpenRouter",
+                            "FLOWISE_CREDENTIAL_ID": "ddeb2757-f8e2-4ed7-9647-5a113332b432"
+                        }
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Model",
+                            "name": "llmModel",
+                            "type": "asyncOptions",
+                            "loadMethod": "listModels",
+                            "loadConfig": true,
+                            "id": "llmAgentflow_0-input-llmModel-asyncOptions",
+                            "display": true
+                        },
+                        {
+                            "label": "Messages",
+                            "name": "llmMessages",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Role",
+                                    "name": "role",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "name": "system"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "name": "assistant"
+                                        },
+                                        {
+                                            "label": "Developer",
+                                            "name": "developer"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "name": "user"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Content",
+                                    "name": "content",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "generateInstruction": true,
+                                    "rows": 4
+                                }
+                            ],
+                            "id": "llmAgentflow_0-input-llmMessages-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Enable Memory",
+                            "name": "llmEnableMemory",
+                            "type": "boolean",
+                            "default": false,
+                            "optional": true,
+                            "id": "llmAgentflow_0-input-llmEnableMemory-boolean",
+                            "display": true
+                        },
+                        {
+                            "label": "Memory Type",
+                            "name": "llmMemoryType",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "All Messages",
+                                    "name": "allMessages"
+                                },
+                                {
+                                    "label": "Window Size",
+                                    "name": "windowSize"
+                                },
+                                {
+                                    "label": "Conversation Summary",
+                                    "name": "conversationSummary"
+                                },
+                                {
+                                    "label": "Conversation Summary Buffer",
+                                    "name": "conversationSummaryBuffer"
+                                }
+                            ],
+                            "id": "llmAgentflow_0-input-llmMemoryType-options",
+                            "display": true
+                        },
+                        {
+                            "label": "JSON Structured Output",
+                            "name": "llmStructuredOutput",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Type",
+                                    "name": "type",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "String",
+                                            "name": "string"
+                                        },
+                                        {
+                                            "label": "String Array",
+                                            "name": "stringArray"
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "name": "number"
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "name": "boolean"
+                                        },
+                                        {
+                                            "label": "Enum",
+                                            "name": "enum"
+                                        },
+                                        {
+                                            "label": "JSON Array",
+                                            "name": "jsonArray"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "llmAgentflow_0-input-llmStructuredOutput-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Update Flow State",
+                            "name": "llmUpdateState",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listRuntimeStateKeys"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "acceptNodeOutputAsVariable": true
+                                }
+                            ],
+                            "id": "llmAgentflow_0-input-llmUpdateState-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Return Response As",
+                            "name": "llmReturnResponseAs",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "User Message",
+                                    "name": "userMessage"
+                                },
+                                {
+                                    "label": "Assistant Message",
+                                    "name": "assistantMessage"
+                                }
+                            ],
+                            "default": "userMessage",
+                            "id": "llmAgentflow_0-input-llmReturnResponseAs-options",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "llmAgentflow_0-output-llmAgentflow",
+                            "label": "LLM",
+                            "name": "llmAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 260,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 57.75,
+                    "y": 30
+                },
+                "selected": false
+            },
+            {
+                "id": "llmAgentflow_1",
+                "type": "agentFlow",
+                "position": {
+                    "x": 400,
+                    "y": 30
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Ling\u00fcista PRE",
+                    "name": "llmAgentflow",
+                    "version": 1.1,
+                    "type": "LLM",
+                    "category": "Agent Flows",
+                    "description": "Translate queries for territory-specific vector search",
+                    "color": "#22D3EE",
+                    "baseClasses": ["LLM"],
+                    "hideInput": false,
+                    "inputs": {
+                        "llmModel": "chatOpenRouter",
+                        "llmMessages": [
+                            {
+                                "role": "system",
+                                "content": "You are a multilingual query translator for a multi-territory knowledge system. Your job is to prepare search queries in source languages so vector search works correctly.\n\n## Task\nGiven the router analysis (router_result), produce translated search queries for each territory that needs them:\n\n1. **original_language**: The user's detected language from router_result.\n2. **translations**: Object mapping target language codes to translated queries.\n\n## Translation Rules\n- If user language IS the source language: passthrough the original query (no translation needed).\n- If user language DIFFERS from source: translate the query_normalized into the source language.\n- Source languages by territory:\n  - \"nyc\", \"europa\", \"global\" \u2192 English (\"en\")\n  - \"madeira\" \u2192 Portuguese (\"pt\")\n  - \"pt_data\", \"madeira_data\" \u2192 Portuguese (\"pt\")\n  - \"ue_data\" \u2192 English (\"en\")\n  - \"openalex\" \u2192 English (\"en\")\n- If translation fails or is uncertain: keep the original query.\n\n## Input\nRouter result: {{$flow.state.router_result}}\n\n## Output\nReturn ONLY valid JSON matching the schema. No explanations. If no translation needed, return {\"original_language\": \"<lang>\", \"translations\": {}}."
+                            },
+                            {
+                                "role": "user",
+                                "content": "{{$flow.state.router_result}}"
+                            }
+                        ],
+                        "llmEnableMemory": false,
+                        "llmMemoryType": "",
+                        "llmStructuredOutput": "",
+                        "llmUpdateState": [
+                            {
+                                "key": "search_queries",
+                                "value": "{{output}}"
+                            }
+                        ],
+                        "llmReturnResponseAs": "userMessage",
+                        "llmModelConfig": {
+                            "cache": "",
+                            "modelName": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+                            "temperature": 0.1,
+                            "streaming": true,
+                            "allowImageUploads": "",
+                            "maxTokens": "",
+                            "topP": "",
+                            "frequencyPenalty": "",
+                            "presencePenalty": "",
+                            "timeout": "",
+                            "basepath": "https://openrouter.ai/api/v1",
+                            "baseOptions": "",
+                            "agentModel": "chatOpenRouter",
+                            "FLOWISE_CREDENTIAL_ID": "ddeb2757-f8e2-4ed7-9647-5a113332b432"
+                        }
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Model",
+                            "name": "llmModel",
+                            "type": "asyncOptions",
+                            "loadMethod": "listModels",
+                            "loadConfig": true,
+                            "id": "llmAgentflow_1-input-llmModel-asyncOptions",
+                            "display": true
+                        },
+                        {
+                            "label": "Messages",
+                            "name": "llmMessages",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Role",
+                                    "name": "role",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "name": "system"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "name": "assistant"
+                                        },
+                                        {
+                                            "label": "Developer",
+                                            "name": "developer"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "name": "user"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Content",
+                                    "name": "content",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "generateInstruction": true,
+                                    "rows": 4
+                                }
+                            ],
+                            "id": "llmAgentflow_1-input-llmMessages-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Enable Memory",
+                            "name": "llmEnableMemory",
+                            "type": "boolean",
+                            "default": false,
+                            "optional": true,
+                            "id": "llmAgentflow_1-input-llmEnableMemory-boolean",
+                            "display": true
+                        },
+                        {
+                            "label": "Memory Type",
+                            "name": "llmMemoryType",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "All Messages",
+                                    "name": "allMessages"
+                                },
+                                {
+                                    "label": "Window Size",
+                                    "name": "windowSize"
+                                },
+                                {
+                                    "label": "Conversation Summary",
+                                    "name": "conversationSummary"
+                                },
+                                {
+                                    "label": "Conversation Summary Buffer",
+                                    "name": "conversationSummaryBuffer"
+                                }
+                            ],
+                            "id": "llmAgentflow_1-input-llmMemoryType-options",
+                            "display": true
+                        },
+                        {
+                            "label": "JSON Structured Output",
+                            "name": "llmStructuredOutput",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Type",
+                                    "name": "type",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "String",
+                                            "name": "string"
+                                        },
+                                        {
+                                            "label": "String Array",
+                                            "name": "stringArray"
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "name": "number"
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "name": "boolean"
+                                        },
+                                        {
+                                            "label": "Enum",
+                                            "name": "enum"
+                                        },
+                                        {
+                                            "label": "JSON Array",
+                                            "name": "jsonArray"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "llmAgentflow_1-input-llmStructuredOutput-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Update Flow State",
+                            "name": "llmUpdateState",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listRuntimeStateKeys"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "acceptNodeOutputAsVariable": true
+                                }
+                            ],
+                            "id": "llmAgentflow_1-input-llmUpdateState-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Return Response As",
+                            "name": "llmReturnResponseAs",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "User Message",
+                                    "name": "userMessage"
+                                },
+                                {
+                                    "label": "Assistant Message",
+                                    "name": "assistantMessage"
+                                }
+                            ],
+                            "default": "userMessage",
+                            "id": "llmAgentflow_1-input-llmReturnResponseAs-options",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "llmAgentflow_1-output-llmAgentflow",
+                            "label": "LLM",
+                            "name": "llmAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 260,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 400,
+                    "y": 30
+                },
+                "selected": false
+            },
+            {
+                "id": "agentAgentflow_0",
+                "type": "agentFlow",
+                "position": {
+                    "x": 742.75,
+                    "y": 30
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Bibliotecario",
+                    "name": "agentAgentflow",
+                    "version": 3.2,
+                    "type": "Agent",
+                    "category": "Agent Flows",
+                    "description": "Create a search plan \u2014 which sources, in what order, with what queries",
+                    "color": "#4DD0E1",
+                    "baseClasses": ["Agent"],
+                    "hideInput": false,
+                    "inputs": {
+                        "agentModel": "chatOpenRouter",
+                        "agentMessages": [
+                            {
+                                "role": "system",
+                                "content": "You are the Bibliotecario. Output a JSON search plan based on the input. Return ONLY JSON, no markdown. Format: [{\"step\":1,\"source\":\"...\",\"query\":\"...\",\"priority\":\"primary\",\"match_count\":10,\"reasoning\":\"...\"}]"
+                            },
+                            {
+                                "role": "user",
+                                "content": "router_result: {{$flow.state.router_result}}\nsearch_queries: {{$flow.state.search_queries}}"
+                            }
+                        ],
+                        "agentTools": "",
+                        "agentKnowledgeDocumentStores": "",
+                        "agentKnowledgeVSEmbeddings": "",
+                        "agentEnableMemory": false,
+                        "agentMemoryType": "",
+                        "agentUserMessage": "",
+                        "agentReturnResponseAs": "userMessage",
+                        "agentStructuredOutput": "",
+                        "agentUpdateState": [
+                            {
+                                "key": "search_plan",
+                                "value": "{{output}}"
+                            }
+                        ],
+                        "agentModelConfig": {
+                            "cache": "",
+                            "modelName": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+                            "temperature": 0.9,
+                            "streaming": true,
+                            "allowImageUploads": "",
+                            "maxTokens": "",
+                            "topP": "",
+                            "frequencyPenalty": "",
+                            "presencePenalty": "",
+                            "timeout": "",
+                            "basepath": "https://openrouter.ai/api/v1",
+                            "baseOptions": "",
+                            "agentModel": "chatOpenRouter",
+                            "FLOWISE_CREDENTIAL_ID": "ddeb2757-f8e2-4ed7-9647-5a113332b432"
+                        }
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Model",
+                            "name": "agentModel",
+                            "type": "asyncOptions",
+                            "loadMethod": "listModels",
+                            "loadConfig": true,
+                            "id": "agentAgentflow_0-input-agentModel-asyncOptions",
+                            "display": true
+                        },
+                        {
+                            "label": "Messages",
+                            "name": "agentMessages",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Role",
+                                    "name": "role",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "name": "system"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "name": "assistant"
+                                        },
+                                        {
+                                            "label": "Developer",
+                                            "name": "developer"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "name": "user"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Content",
+                                    "name": "content",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "generateInstruction": true,
+                                    "rows": 4
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentMessages-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Tools",
+                            "name": "agentTools",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Tool",
+                                    "name": "agentSelectedTool",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listTools",
+                                    "loadConfig": true
+                                },
+                                {
+                                    "label": "Require Human Input",
+                                    "name": "agentSelectedToolRequiresHumanInput",
+                                    "type": "boolean",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentTools-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Knowledge (Document Stores)",
+                            "name": "agentKnowledgeDocumentStores",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Document Store",
+                                    "name": "documentStore",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listStores"
+                                },
+                                {
+                                    "label": "Describe Knowledge",
+                                    "name": "docStoreDescription",
+                                    "type": "string",
+                                    "rows": 4
+                                },
+                                {
+                                    "label": "Return Source Documents",
+                                    "name": "returnSourceDocuments",
+                                    "type": "boolean",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentKnowledgeDocumentStores-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Knowledge (Vector Embeddings)",
+                            "name": "agentKnowledgeVSEmbeddings",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Vector Store",
+                                    "name": "vectorStore",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listVectorStores",
+                                    "loadConfig": true
+                                },
+                                {
+                                    "label": "Embedding Model",
+                                    "name": "embeddingModel",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listEmbeddings",
+                                    "loadConfig": true
+                                },
+                                {
+                                    "label": "Knowledge Name",
+                                    "name": "knowledgeName",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Describe Knowledge",
+                                    "name": "knowledgeDescription",
+                                    "type": "string",
+                                    "rows": 4
+                                },
+                                {
+                                    "label": "Return Source Documents",
+                                    "name": "returnSourceDocuments",
+                                    "type": "boolean",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentKnowledgeVSEmbeddings-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Enable Memory",
+                            "name": "agentEnableMemory",
+                            "type": "boolean",
+                            "default": false,
+                            "optional": true,
+                            "id": "agentAgentflow_0-input-agentEnableMemory-boolean",
+                            "display": true
+                        },
+                        {
+                            "label": "Memory Type",
+                            "name": "agentMemoryType",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "All Messages",
+                                    "name": "allMessages"
+                                },
+                                {
+                                    "label": "Window Size",
+                                    "name": "windowSize"
+                                },
+                                {
+                                    "label": "Conversation Summary",
+                                    "name": "conversationSummary"
+                                },
+                                {
+                                    "label": "Conversation Summary Buffer",
+                                    "name": "conversationSummaryBuffer"
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentMemoryType-options",
+                            "display": true
+                        },
+                        {
+                            "label": "Input Message",
+                            "name": "agentUserMessage",
+                            "type": "string",
+                            "rows": 4,
+                            "optional": true,
+                            "acceptVariable": true,
+                            "id": "agentAgentflow_0-input-agentUserMessage-string",
+                            "display": true
+                        },
+                        {
+                            "label": "Return Response As",
+                            "name": "agentReturnResponseAs",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "User Message",
+                                    "name": "userMessage"
+                                },
+                                {
+                                    "label": "Assistant Message",
+                                    "name": "assistantMessage"
+                                }
+                            ],
+                            "default": "userMessage",
+                            "id": "agentAgentflow_0-input-agentReturnResponseAs-options",
+                            "display": true
+                        },
+                        {
+                            "label": "JSON Structured Output",
+                            "name": "agentStructuredOutput",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Type",
+                                    "name": "type",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "String",
+                                            "name": "string"
+                                        },
+                                        {
+                                            "label": "String Array",
+                                            "name": "stringArray"
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "name": "number"
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "name": "boolean"
+                                        },
+                                        {
+                                            "label": "Enum",
+                                            "name": "enum"
+                                        },
+                                        {
+                                            "label": "JSON Array",
+                                            "name": "jsonArray"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentStructuredOutput-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Update Flow State",
+                            "name": "agentUpdateState",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listRuntimeStateKeys"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "acceptNodeOutputAsVariable": true
+                                }
+                            ],
+                            "id": "agentAgentflow_0-input-agentUpdateState-array",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "agentAgentflow_0-output-agentAgentflow",
+                            "label": "Agent",
+                            "name": "agentAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 260,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 742.75,
+                    "y": 30
+                },
+                "selected": false
+            },
+            {
+                "id": "agentAgentflow_1",
+                "type": "agentFlow",
+                "position": {
+                    "x": 1085.5,
+                    "y": 30
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Source Worker",
+                    "name": "agentAgentflow",
+                    "version": 3.2,
+                    "type": "Agent",
+                    "category": "Agent Flows",
+                    "description": "Execute search plan: call RetrieverTools and MCP tools per plan steps",
+                    "color": "#4DD0E1",
+                    "baseClasses": ["Agent"],
+                    "hideInput": false,
+                    "inputs": {
+                        "agentModel": "chatOpenRouter",
+                        "agentMessages": [
+                            {
+                                "role": "system",
+                                "content": "You are the Source Worker. Based on the search plan received, output an aggregated results array. Return ONLY JSON. Format: [{\"source\":\"...\",\"title\":\"...\",\"url\":\"...\",\"excerpt\":\"...\",\"relevance\":0.9,\"language\":\"en\",\"step\":1}]"
+                            },
+                            {
+                                "role": "user",
+                                "content": "Search plan: {{$flow.state.search_plan}}"
+                            }
+                        ],
+                        "agentTools": "",
+                        "agentKnowledgeDocumentStores": "",
+                        "agentKnowledgeVSEmbeddings": "",
+                        "agentEnableMemory": false,
+                        "agentMemoryType": "",
+                        "agentUserMessage": "",
+                        "agentReturnResponseAs": "userMessage",
+                        "agentStructuredOutput": "",
+                        "agentUpdateState": [
+                            {
+                                "key": "search_results",
+                                "value": "{{output}}"
+                            }
+                        ],
+                        "agentModelConfig": {
+                            "cache": "",
+                            "modelName": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+                            "temperature": 0.9,
+                            "streaming": true,
+                            "allowImageUploads": "",
+                            "maxTokens": "",
+                            "topP": "",
+                            "frequencyPenalty": "",
+                            "presencePenalty": "",
+                            "timeout": "",
+                            "basepath": "https://openrouter.ai/api/v1",
+                            "baseOptions": "",
+                            "agentModel": "chatOpenRouter",
+                            "FLOWISE_CREDENTIAL_ID": "ddeb2757-f8e2-4ed7-9647-5a113332b432"
+                        }
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Model",
+                            "name": "agentModel",
+                            "type": "asyncOptions",
+                            "loadMethod": "listModels",
+                            "loadConfig": true,
+                            "id": "agentAgentflow_1-input-agentModel-asyncOptions",
+                            "display": true
+                        },
+                        {
+                            "label": "Messages",
+                            "name": "agentMessages",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Role",
+                                    "name": "role",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "name": "system"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "name": "assistant"
+                                        },
+                                        {
+                                            "label": "Developer",
+                                            "name": "developer"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "name": "user"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Content",
+                                    "name": "content",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "generateInstruction": true,
+                                    "rows": 4
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentMessages-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Tools",
+                            "name": "agentTools",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Tool",
+                                    "name": "agentSelectedTool",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listTools",
+                                    "loadConfig": true
+                                },
+                                {
+                                    "label": "Require Human Input",
+                                    "name": "agentSelectedToolRequiresHumanInput",
+                                    "type": "boolean",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentTools-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Knowledge (Document Stores)",
+                            "name": "agentKnowledgeDocumentStores",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Document Store",
+                                    "name": "documentStore",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listStores"
+                                },
+                                {
+                                    "label": "Describe Knowledge",
+                                    "name": "docStoreDescription",
+                                    "type": "string",
+                                    "rows": 4
+                                },
+                                {
+                                    "label": "Return Source Documents",
+                                    "name": "returnSourceDocuments",
+                                    "type": "boolean",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentKnowledgeDocumentStores-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Knowledge (Vector Embeddings)",
+                            "name": "agentKnowledgeVSEmbeddings",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Vector Store",
+                                    "name": "vectorStore",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listVectorStores",
+                                    "loadConfig": true
+                                },
+                                {
+                                    "label": "Embedding Model",
+                                    "name": "embeddingModel",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listEmbeddings",
+                                    "loadConfig": true
+                                },
+                                {
+                                    "label": "Knowledge Name",
+                                    "name": "knowledgeName",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Describe Knowledge",
+                                    "name": "knowledgeDescription",
+                                    "type": "string",
+                                    "rows": 4
+                                },
+                                {
+                                    "label": "Return Source Documents",
+                                    "name": "returnSourceDocuments",
+                                    "type": "boolean",
+                                    "optional": true
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentKnowledgeVSEmbeddings-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Enable Memory",
+                            "name": "agentEnableMemory",
+                            "type": "boolean",
+                            "default": false,
+                            "optional": true,
+                            "id": "agentAgentflow_1-input-agentEnableMemory-boolean",
+                            "display": true
+                        },
+                        {
+                            "label": "Memory Type",
+                            "name": "agentMemoryType",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "All Messages",
+                                    "name": "allMessages"
+                                },
+                                {
+                                    "label": "Window Size",
+                                    "name": "windowSize"
+                                },
+                                {
+                                    "label": "Conversation Summary",
+                                    "name": "conversationSummary"
+                                },
+                                {
+                                    "label": "Conversation Summary Buffer",
+                                    "name": "conversationSummaryBuffer"
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentMemoryType-options",
+                            "display": true
+                        },
+                        {
+                            "label": "Input Message",
+                            "name": "agentUserMessage",
+                            "type": "string",
+                            "rows": 4,
+                            "optional": true,
+                            "acceptVariable": true,
+                            "id": "agentAgentflow_1-input-agentUserMessage-string",
+                            "display": true
+                        },
+                        {
+                            "label": "Return Response As",
+                            "name": "agentReturnResponseAs",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "User Message",
+                                    "name": "userMessage"
+                                },
+                                {
+                                    "label": "Assistant Message",
+                                    "name": "assistantMessage"
+                                }
+                            ],
+                            "default": "userMessage",
+                            "id": "agentAgentflow_1-input-agentReturnResponseAs-options",
+                            "display": true
+                        },
+                        {
+                            "label": "JSON Structured Output",
+                            "name": "agentStructuredOutput",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Type",
+                                    "name": "type",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "String",
+                                            "name": "string"
+                                        },
+                                        {
+                                            "label": "String Array",
+                                            "name": "stringArray"
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "name": "number"
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "name": "boolean"
+                                        },
+                                        {
+                                            "label": "Enum",
+                                            "name": "enum"
+                                        },
+                                        {
+                                            "label": "JSON Array",
+                                            "name": "jsonArray"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentStructuredOutput-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Update Flow State",
+                            "name": "agentUpdateState",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listRuntimeStateKeys"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "acceptNodeOutputAsVariable": true
+                                }
+                            ],
+                            "id": "agentAgentflow_1-input-agentUpdateState-array",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "agentAgentflow_1-output-agentAgentflow",
+                            "label": "Agent",
+                            "name": "agentAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 260,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 1085.5,
+                    "y": 30
+                },
+                "selected": false
+            },
+            {
+                "id": "conditionAgentflow_0",
+                "type": "agentFlow",
+                "position": {
+                    "x": 1428.25,
+                    "y": 30
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Has Results?",
+                    "name": "conditionAgentflow",
+                    "version": 1.1,
+                    "type": "Condition",
+                    "category": "Agent Flows",
+                    "description": "Check if search_results has any items; route to Evidence Merger or fallback Direct Reply",
+                    "color": "#F59E0B",
+                    "baseClasses": ["Condition"],
+                    "hideInput": false,
+                    "inputs": {
+                        "conditions": [
+                            {
+                                "type": "String",
+                                "value1": "{{$flow.state.search_results}}",
+                                "operation": "contains",
+                                "value2": "["
+                            }
+                        ]
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Conditions",
+                            "name": "conditions",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Type",
+                                    "name": "type",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "String",
+                                            "name": "String"
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "name": "Number"
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "name": "Boolean"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Value 1",
+                                    "name": "value1",
+                                    "type": "string",
+                                    "acceptVariable": true
+                                },
+                                {
+                                    "label": "Operation",
+                                    "name": "operation",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "Equal",
+                                            "name": "equal"
+                                        },
+                                        {
+                                            "label": "Not Equal",
+                                            "name": "notEqual"
+                                        },
+                                        {
+                                            "label": "Contains",
+                                            "name": "contains"
+                                        },
+                                        {
+                                            "label": "Not Contains",
+                                            "name": "notContains"
+                                        },
+                                        {
+                                            "label": "Is Empty",
+                                            "name": "isEmpty"
+                                        },
+                                        {
+                                            "label": "Is Not Empty",
+                                            "name": "isNotEmpty"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Value 2",
+                                    "name": "value2",
+                                    "type": "string",
+                                    "acceptVariable": true
+                                }
+                            ],
+                            "id": "conditionAgentflow_0-input-conditions-array",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "conditionAgentflow_0-output-goEvidence",
+                            "label": "True (goEvidence)",
+                            "name": "goEvidence"
+                        },
+                        {
+                            "id": "conditionAgentflow_0-output-goFallback",
+                            "label": "False (goFallback)",
+                            "name": "goFallback"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 180,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 1428.25,
+                    "y": 30
+                },
+                "selected": false
+            },
+            {
+                "id": "customFunctionAgentflow_0",
+                "type": "agentFlow",
+                "position": {
+                    "x": 1691,
+                    "y": -60
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Evidence Merger",
+                    "name": "customFunctionAgentflow",
+                    "version": 1.1,
+                    "type": "CustomFunction",
+                    "category": "Agent Flows",
+                    "description": "Deduplicate by URL, rank by relevance, validate citations",
+                    "color": "#A78BFA",
+                    "baseClasses": ["CustomFunction"],
+                    "hideInput": false,
+                    "inputs": {
+                        "customFunctionFunctionCode": "const results = $flow.state.search_results;\n\n// If empty or not an array, return empty evidence\nif (!Array.isArray(results) || results.length === 0) {\n    return [];\n}\n\n// Step 1: Filter out error entries\nconst validResults = results.filter(r => !r.error);\n\n// Step 2: Deduplicate by URL \u2014 keep highest relevance\nconst seenUrls = new Map();\nfor (const r of validResults) {\n    const url = (r.url || '').trim();\n    if (!url) continue;\n    const existing = seenUrls.get(url);\n    if (!existing || (r.relevance || 0) > (existing.relevance || 0)) {\n        seenUrls.set(url, r);\n    }\n}\n\n// Step 3: Separate url-less entries (add confidence flag)\nconst urlLess = validResults.filter(r => !(r.url || '').trim())\n    .map(r => ({ ...r, confidence: \"low\" }));\n\n// Step 4: Merge deduplicated + url-less, sort by relevance DESC\nconst merged = [\n    ...Array.from(seenUrls.values()).map(r => ({ ...r, confidence: \"high\" })),\n    ...urlLess\n].sort((a, b) => (b.relevance || 0) - (a.relevance || 0));\n\n// Step 5: Return merged array\nreturn merged;",
+                        "customFunctionJavaScriptFunctionName": "mergeEvidence",
+                        "customFunctionOutputToFlowState": [
+                            {
+                                "key": "evidence",
+                                "value": "{{output}}"
+                            }
+                        ]
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Function Name",
+                            "name": "customFunctionJavaScriptFunctionName",
+                            "type": "string",
+                            "id": "customFunctionAgentflow_0-input-customFunctionJavaScriptFunctionName-string",
+                            "display": true
+                        },
+                        {
+                            "label": "Code",
+                            "name": "customFunctionFunctionCode",
+                            "type": "code",
+                            "rows": 20,
+                            "id": "customFunctionAgentflow_0-input-customFunctionFunctionCode-code",
+                            "display": true
+                        },
+                        {
+                            "label": "Update Flow State",
+                            "name": "customFunctionOutputToFlowState",
+                            "type": "array",
+                            "optional": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listRuntimeStateKeys"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "acceptVariable": true
+                                }
+                            ],
+                            "id": "customFunctionAgentflow_0-input-customFunctionOutputToFlowState-array",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "customFunctionAgentflow_0-output-customFunctionAgentflow",
+                            "label": "CustomFunction",
+                            "name": "customFunctionAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 200,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 1691,
+                    "y": -60
+                },
+                "selected": false
+            },
+            {
+                "id": "llmAgentflow_2",
+                "type": "agentFlow",
+                "position": {
+                    "x": 1973.75,
+                    "y": -60
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "S\u00edntesis Final",
+                    "name": "llmAgentflow",
+                    "version": 1.1,
+                    "type": "LLM",
+                    "category": "Agent Flows",
+                    "description": "Synthesize evidence into natural-language response with inline citations",
+                    "color": "#22D3EE",
+                    "baseClasses": ["LLM"],
+                    "hideInput": false,
+                    "inputs": {
+                        "llmModel": "chatOpenRouter",
+                        "llmMessages": [
+                            {
+                                "role": "system",
+                                "content": "You are the \"S\u00edntesis Final\" \u2014 the response synthesizer for a multi-source knowledge system. Your job is to produce a coherent, well-cited answer using ONLY the evidence provided. Do NOT use your own training knowledge.\n\n## Input\n- Original query: {{$flow.state.original_query}}\n- User language: {{$flow.state.router_result.language}}\n- Evidence: {{$flow.state.evidence}}\n\n## Instructions\n1. Read the original query. Understand what the user is asking.\n2. Review ALL evidence items. Ignore nothing relevant.\n3. Synthesize a coherent answer that addresses the query directly.\n4. Format citations inline as [Source: Title](URL) or [Source: Title] if no URL.\n5. Respond in the user's language ({{$flow.state.router_result.language}}). If language detection failed, default to English.\n6. Be honest about limitations:\n   - If evidence is partial: \"Based on available sources, [answer]. Note: [source] data was unavailable.\"\n   - If evidence contradicts: present both views with sources.\n   - If only one evidence item: state the key finding with its citation.\n   - For yes/no questions: direct answer first, then supporting evidence.\n\n## Citation Format\n- Use [N] numbering for inline: \"According to NYC housing data [1], ...\"\n- At the end, list all citations:\n  References:\n  [1] Title \u2014 URL\n  [2] Title \u2014 URL\n\n## Output Format\nWrite in natural paragraphs. Do NOT output JSON. The response goes directly to the user."
+                            },
+                            {
+                                "role": "user",
+                                "content": "Original query: {{$flow.state.original_query}}\n\nEvidence:\n{{$flow.state.evidence}}"
+                            }
+                        ],
+                        "llmEnableMemory": false,
+                        "llmMemoryType": "",
+                        "llmStructuredOutput": "",
+                        "llmUpdateState": [
+                            {
+                                "key": "final_answer",
+                                "value": "{{output}}"
+                            }
+                        ],
+                        "llmReturnResponseAs": "userMessage",
+                        "llmModelConfig": {
+                            "cache": "",
+                            "modelName": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+                            "temperature": 0.1,
+                            "streaming": true,
+                            "allowImageUploads": "",
+                            "maxTokens": "",
+                            "topP": "",
+                            "frequencyPenalty": "",
+                            "presencePenalty": "",
+                            "timeout": "",
+                            "basepath": "https://openrouter.ai/api/v1",
+                            "baseOptions": "",
+                            "agentModel": "chatOpenRouter",
+                            "FLOWISE_CREDENTIAL_ID": "ddeb2757-f8e2-4ed7-9647-5a113332b432"
+                        }
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Model",
+                            "name": "llmModel",
+                            "type": "asyncOptions",
+                            "loadMethod": "listModels",
+                            "loadConfig": true,
+                            "id": "llmAgentflow_2-input-llmModel-asyncOptions",
+                            "display": true
+                        },
+                        {
+                            "label": "Messages",
+                            "name": "llmMessages",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Role",
+                                    "name": "role",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "name": "system"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "name": "assistant"
+                                        },
+                                        {
+                                            "label": "Developer",
+                                            "name": "developer"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "name": "user"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Content",
+                                    "name": "content",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "generateInstruction": true,
+                                    "rows": 4
+                                }
+                            ],
+                            "id": "llmAgentflow_2-input-llmMessages-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Enable Memory",
+                            "name": "llmEnableMemory",
+                            "type": "boolean",
+                            "default": false,
+                            "optional": true,
+                            "id": "llmAgentflow_2-input-llmEnableMemory-boolean",
+                            "display": true
+                        },
+                        {
+                            "label": "Memory Type",
+                            "name": "llmMemoryType",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "All Messages",
+                                    "name": "allMessages"
+                                },
+                                {
+                                    "label": "Window Size",
+                                    "name": "windowSize"
+                                },
+                                {
+                                    "label": "Conversation Summary",
+                                    "name": "conversationSummary"
+                                },
+                                {
+                                    "label": "Conversation Summary Buffer",
+                                    "name": "conversationSummaryBuffer"
+                                }
+                            ],
+                            "id": "llmAgentflow_2-input-llmMemoryType-options",
+                            "display": true
+                        },
+                        {
+                            "label": "JSON Structured Output",
+                            "name": "llmStructuredOutput",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "string"
+                                },
+                                {
+                                    "label": "Type",
+                                    "name": "type",
+                                    "type": "options",
+                                    "options": [
+                                        {
+                                            "label": "String",
+                                            "name": "string"
+                                        },
+                                        {
+                                            "label": "String Array",
+                                            "name": "stringArray"
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "name": "number"
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "name": "boolean"
+                                        },
+                                        {
+                                            "label": "Enum",
+                                            "name": "enum"
+                                        },
+                                        {
+                                            "label": "JSON Array",
+                                            "name": "jsonArray"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "id": "llmAgentflow_2-input-llmStructuredOutput-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Update Flow State",
+                            "name": "llmUpdateState",
+                            "type": "array",
+                            "optional": true,
+                            "acceptVariable": true,
+                            "array": [
+                                {
+                                    "label": "Key",
+                                    "name": "key",
+                                    "type": "asyncOptions",
+                                    "loadMethod": "listRuntimeStateKeys"
+                                },
+                                {
+                                    "label": "Value",
+                                    "name": "value",
+                                    "type": "string",
+                                    "acceptVariable": true,
+                                    "acceptNodeOutputAsVariable": true
+                                }
+                            ],
+                            "id": "llmAgentflow_2-input-llmUpdateState-array",
+                            "display": true
+                        },
+                        {
+                            "label": "Return Response As",
+                            "name": "llmReturnResponseAs",
+                            "type": "options",
+                            "options": [
+                                {
+                                    "label": "User Message",
+                                    "name": "userMessage"
+                                },
+                                {
+                                    "label": "Assistant Message",
+                                    "name": "assistantMessage"
+                                }
+                            ],
+                            "default": "userMessage",
+                            "id": "llmAgentflow_2-input-llmReturnResponseAs-options",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [
+                        {
+                            "id": "llmAgentflow_2-output-llmAgentflow",
+                            "label": "LLM",
+                            "name": "llmAgentflow"
+                        }
+                    ],
+                    "outputs": {}
+                },
+                "width": 260,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 1973.75,
+                    "y": -60
+                },
+                "selected": false
+            },
+            {
+                "id": "directReplyAgentflow_0",
+                "type": "agentFlow",
+                "position": {
+                    "x": 2316.5,
+                    "y": -60
+                },
+                "data": {
+                    "loadMethods": {},
+                    "label": "Reply",
+                    "name": "directReplyAgentflow",
+                    "version": 1.1,
+                    "type": "DirectReply",
+                    "category": "Agent Flows",
+                    "description": "Return final answer or fallback message to user",
+                    "color": "#F87171",
+                    "baseClasses": ["DirectReply"],
+                    "hideInput": false,
+                    "inputs": {
+                        "replyMessage": "{{$flow.state.final_answer}}"
+                    },
+                    "inputAnchors": [],
+                    "inputParams": [
+                        {
+                            "label": "Message",
+                            "name": "replyMessage",
+                            "type": "string",
+                            "rows": 4,
+                            "acceptVariable": true,
+                            "id": "directReplyAgentflow_0-input-replyMessage-string",
+                            "display": true
+                        }
+                    ],
+                    "outputAnchors": [],
+                    "outputs": {}
+                },
+                "width": 200,
+                "height": 72,
+                "positionAbsolute": {
+                    "x": 2316.5,
+                    "y": -60
+                },
+                "selected": false
+            }
+        ],
+        "edges": [
+            {
+                "id": "startAgentflow_0-startAgentflow_0-output-startAgentflow-llmAgentflow_0-llmAgentflow_0",
+                "source": "startAgentflow_0",
+                "sourceHandle": "startAgentflow_0-output-startAgentflow",
+                "target": "llmAgentflow_0",
+                "targetHandle": "llmAgentflow_0",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#7EE787",
+                    "targetColor": "#22D3EE"
+                }
+            },
+            {
+                "id": "llmAgentflow_0-llmAgentflow_0-output-llmAgentflow-llmAgentflow_1-llmAgentflow_1",
+                "source": "llmAgentflow_0",
+                "sourceHandle": "llmAgentflow_0-output-llmAgentflow",
+                "target": "llmAgentflow_1",
+                "targetHandle": "llmAgentflow_1",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#22D3EE",
+                    "targetColor": "#22D3EE"
+                }
+            },
+            {
+                "id": "llmAgentflow_1-llmAgentflow_1-output-llmAgentflow-agentAgentflow_0-agentAgentflow_0",
+                "source": "llmAgentflow_1",
+                "sourceHandle": "llmAgentflow_1-output-llmAgentflow",
+                "target": "agentAgentflow_0",
+                "targetHandle": "agentAgentflow_0",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#22D3EE",
+                    "targetColor": "#4DD0E1"
+                }
+            },
+            {
+                "id": "agentAgentflow_0-agentAgentflow_0-output-agentAgentflow-agentAgentflow_1-agentAgentflow_1",
+                "source": "agentAgentflow_0",
+                "sourceHandle": "agentAgentflow_0-output-agentAgentflow",
+                "target": "agentAgentflow_1",
+                "targetHandle": "agentAgentflow_1",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#4DD0E1",
+                    "targetColor": "#4DD0E1"
+                }
+            },
+            {
+                "id": "agentAgentflow_1-agentAgentflow_1-output-agentAgentflow-conditionAgentflow_0-conditionAgentflow_0",
+                "source": "agentAgentflow_1",
+                "sourceHandle": "agentAgentflow_1-output-agentAgentflow",
+                "target": "conditionAgentflow_0",
+                "targetHandle": "conditionAgentflow_0",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#4DD0E1",
+                    "targetColor": "#F59E0B"
+                }
+            },
+            {
+                "id": "conditionAgentflow_0-conditionAgentflow_0-output-goEvidence-customFunctionAgentflow_0-customFunctionAgentflow_0",
+                "source": "conditionAgentflow_0",
+                "sourceHandle": "conditionAgentflow_0-output-goEvidence",
+                "target": "customFunctionAgentflow_0",
+                "targetHandle": "customFunctionAgentflow_0",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#F59E0B",
+                    "targetColor": "#A78BFA"
+                }
+            },
+            {
+                "id": "conditionAgentflow_0-conditionAgentflow_0-output-goFallback-directReplyAgentflow_0-directReplyAgentflow_0",
+                "source": "conditionAgentflow_0",
+                "sourceHandle": "conditionAgentflow_0-output-goFallback",
+                "target": "directReplyAgentflow_0",
+                "targetHandle": "directReplyAgentflow_0",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#F59E0B",
+                    "targetColor": "#F87171"
+                }
+            },
+            {
+                "id": "customFunctionAgentflow_0-customFunctionAgentflow_0-output-customFunctionAgentflow-llmAgentflow_2-llmAgentflow_2",
+                "source": "customFunctionAgentflow_0",
+                "sourceHandle": "customFunctionAgentflow_0-output-customFunctionAgentflow",
+                "target": "llmAgentflow_2",
+                "targetHandle": "llmAgentflow_2",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#A78BFA",
+                    "targetColor": "#22D3EE"
+                }
+            },
+            {
+                "id": "llmAgentflow_2-llmAgentflow_2-output-llmAgentflow-directReplyAgentflow_0-directReplyAgentflow_0",
+                "source": "llmAgentflow_2",
+                "sourceHandle": "llmAgentflow_2-output-llmAgentflow",
+                "target": "directReplyAgentflow_0",
+                "targetHandle": "directReplyAgentflow_0",
+                "type": "agentFlow",
+                "data": {
+                    "isHumanInput": false,
+                    "sourceColor": "#22D3EE",
+                    "targetColor": "#F87171"
+                }
+            }
+        ],
+        "viewport": {
+            "x": 0,
+            "y": 0,
+            "zoom": 1
+        }
+    },
+    "createdDate": "2026-05-02T23:31:57.345Z",
+    "updatedDate": "2026-05-03T00:07:02.196Z",
+    "backupDate": "2026-05-02",
+    "nodeCount": 9,
+    "edgeCount": 9
+}

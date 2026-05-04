@@ -1,0 +1,426 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 500,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Agent",
+        "name": "agentAgentflow",
+        "version": "3.2",
+        "type": "Agent",
+        "category": "Agent Flows",
+        "description": "Dynamically choose and utilize tools during runtime, enabling multi-step reasoning",
+        "color": "#4DD0E1",
+        "baseClasses": ["Agent"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/Agent/Agent.js",
+        "icon": "Agent.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listModels": true,
+            "listEmbeddings": true,
+            "listTools": true,
+            "listRuntimeStateKeys": true,
+            "listStores": true,
+            "listVectorStores": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Model",
+                "name": "agentModel",
+                "type": "asyncOptions",
+                "loadMethod": "listModels",
+                "loadConfig": true,
+                "id": "agentAgentflow-agentModel"
+            },
+            {
+                "label": "Messages",
+                "name": "agentMessages",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "agentAgentflow-agentMessages",
+                "array": [
+                    {
+                        "label": "Role",
+                        "name": "role",
+                        "type": "options",
+                        "options": [
+                            { "label": "System", "name": "system" },
+                            { "label": "Assistant", "name": "assistant" },
+                            { "label": "Developer", "name": "developer" },
+                            { "label": "User", "name": "user" }
+                        ]
+                    },
+                    {
+                        "label": "Content",
+                        "name": "content",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "generateInstruction": true,
+                        "rows": 4
+                    }
+                ]
+            },
+            {
+                "label": "OpenAI Built-in Tools",
+                "name": "agentToolsBuiltInOpenAI",
+                "type": "multiOptions",
+                "optional": true,
+                "id": "agentAgentflow-agentToolsBuiltInOpenAI",
+                "options": [
+                    {
+                        "label": "Web Search",
+                        "name": "web_search_preview",
+                        "description": "Search the web for the latest information"
+                    },
+                    {
+                        "label": "Code Interpreter",
+                        "name": "code_interpreter",
+                        "description": "Write and run Python code in a sandboxed environment"
+                    },
+                    {
+                        "label": "Image Generation",
+                        "name": "image_generation",
+                        "description": "Generate images based on a text prompt"
+                    }
+                ],
+                "show": {
+                    "agentModel": "chatOpenAI"
+                }
+            },
+            {
+                "label": "Gemini Built-in Tools",
+                "name": "agentToolsBuiltInGemini",
+                "type": "multiOptions",
+                "optional": true,
+                "id": "agentAgentflow-agentToolsBuiltInGemini",
+                "options": [
+                    {
+                        "label": "URL Context",
+                        "name": "urlContext",
+                        "description": "Extract content from given URLs"
+                    },
+                    {
+                        "label": "Google Search",
+                        "name": "googleSearch",
+                        "description": "Search real-time web content"
+                    },
+                    {
+                        "label": "Code Execution",
+                        "name": "codeExecution",
+                        "description": "Write and run Python code in a sandboxed environment"
+                    }
+                ],
+                "show": {
+                    "agentModel": "chatGoogleGenerativeAI"
+                }
+            },
+            {
+                "label": "Anthropic Built-in Tools",
+                "name": "agentToolsBuiltInAnthropic",
+                "type": "multiOptions",
+                "optional": true,
+                "id": "agentAgentflow-agentToolsBuiltInAnthropic",
+                "options": [
+                    {
+                        "label": "Web Search",
+                        "name": "web_search_20250305",
+                        "description": "Search the web for the latest information"
+                    },
+                    {
+                        "label": "Web Fetch",
+                        "name": "web_fetch_20250910",
+                        "description": "Retrieve full content from specified web pages"
+                    }
+                ],
+                "show": {
+                    "agentModel": "chatAnthropic"
+                }
+            },
+            {
+                "label": "Tools",
+                "name": "agentTools",
+                "type": "array",
+                "optional": true,
+                "id": "agentAgentflow-agentTools",
+                "array": [
+                    {
+                        "label": "Tool",
+                        "name": "agentSelectedTool",
+                        "type": "asyncOptions",
+                        "loadMethod": "listTools",
+                        "loadConfig": true
+                    },
+                    {
+                        "label": "Require Human Input",
+                        "name": "agentSelectedToolRequiresHumanInput",
+                        "type": "boolean",
+                        "optional": true
+                    }
+                ]
+            },
+            {
+                "label": "Knowledge (Document Stores)",
+                "name": "agentKnowledgeDocumentStores",
+                "type": "array",
+                "description": "Give your agent context about different document sources. Document stores must be upserted in advance.",
+                "client": ["agentflowv2"],
+                "optional": true,
+                "id": "agentAgentflow-agentKnowledgeDocumentStores",
+                "array": [
+                    {
+                        "label": "Document Store",
+                        "name": "documentStore",
+                        "type": "asyncOptions",
+                        "loadMethod": "listStores"
+                    },
+                    {
+                        "label": "Describe Knowledge",
+                        "name": "docStoreDescription",
+                        "type": "string",
+                        "generateDocStoreDescription": true,
+                        "placeholder": "Describe what the knowledge base is about, this is useful for the AI to know when and how to search for correct information",
+                        "rows": 4
+                    },
+                    {
+                        "label": "Return Source Documents",
+                        "name": "returnSourceDocuments",
+                        "type": "boolean",
+                        "optional": true
+                    }
+                ]
+            },
+            {
+                "label": "Knowledge (Vector Embeddings)",
+                "name": "agentKnowledgeVSEmbeddings",
+                "type": "array",
+                "description": "Give your agent context about different document sources from existing vector stores and embeddings",
+                "client": ["agentflowv2"],
+                "optional": true,
+                "id": "agentAgentflow-agentKnowledgeVSEmbeddings",
+                "array": [
+                    {
+                        "label": "Vector Store",
+                        "name": "vectorStore",
+                        "type": "asyncOptions",
+                        "loadMethod": "listVectorStores",
+                        "loadConfig": true
+                    },
+                    {
+                        "label": "Embedding Model",
+                        "name": "embeddingModel",
+                        "type": "asyncOptions",
+                        "loadMethod": "listEmbeddings",
+                        "loadConfig": true
+                    },
+                    {
+                        "label": "Knowledge Name",
+                        "name": "knowledgeName",
+                        "type": "string",
+                        "placeholder": "A short name for the knowledge base, this is useful for the AI to know when and how to search for correct information"
+                    },
+                    {
+                        "label": "Describe Knowledge",
+                        "name": "knowledgeDescription",
+                        "type": "string",
+                        "placeholder": "Describe what the knowledge base is about, this is useful for the AI to know when and how to search for correct information",
+                        "rows": 4
+                    },
+                    {
+                        "label": "Return Source Documents",
+                        "name": "returnSourceDocuments",
+                        "type": "boolean",
+                        "optional": true
+                    }
+                ]
+            },
+            {
+                "label": "Enable Memory",
+                "name": "agentEnableMemory",
+                "type": "boolean",
+                "description": "Enable memory for the conversation thread",
+                "default": true,
+                "optional": true,
+                "id": "agentAgentflow-agentEnableMemory"
+            },
+            {
+                "label": "Memory Type",
+                "name": "agentMemoryType",
+                "type": "options",
+                "options": [
+                    {
+                        "label": "All Messages",
+                        "name": "allMessages",
+                        "description": "Retrieve all messages from the conversation"
+                    },
+                    {
+                        "label": "Window Size",
+                        "name": "windowSize",
+                        "description": "Uses a fixed window size to surface the last N messages"
+                    },
+                    {
+                        "label": "Conversation Summary",
+                        "name": "conversationSummary",
+                        "description": "Summarizes the whole conversation"
+                    },
+                    {
+                        "label": "Conversation Summary Buffer",
+                        "name": "conversationSummaryBuffer",
+                        "description": "Summarize conversations once token limit is reached. Default to 2000"
+                    }
+                ],
+                "optional": true,
+                "default": "allMessages",
+                "id": "agentAgentflow-agentMemoryType",
+                "show": {
+                    "agentEnableMemory": true
+                }
+            },
+            {
+                "label": "Window Size",
+                "name": "agentMemoryWindowSize",
+                "type": "number",
+                "default": "20",
+                "description": "Uses a fixed window size to surface the last N messages",
+                "id": "agentAgentflow-agentMemoryWindowSize",
+                "show": {
+                    "agentMemoryType": "windowSize"
+                }
+            },
+            {
+                "label": "Max Token Limit",
+                "name": "agentMemoryMaxTokenLimit",
+                "type": "number",
+                "default": "2000",
+                "description": "Summarize conversations once token limit is reached. Default to 2000",
+                "id": "agentAgentflow-agentMemoryMaxTokenLimit",
+                "show": {
+                    "agentMemoryType": "conversationSummaryBuffer"
+                }
+            },
+            {
+                "label": "Input Message",
+                "name": "agentUserMessage",
+                "type": "string",
+                "description": "Add an input message as user message at the end of the conversation",
+                "rows": 4,
+                "optional": true,
+                "acceptVariable": true,
+                "id": "agentAgentflow-agentUserMessage",
+                "show": {
+                    "agentEnableMemory": true
+                }
+            },
+            {
+                "label": "Return Response As",
+                "name": "agentReturnResponseAs",
+                "type": "options",
+                "options": [
+                    { "label": "User Message", "name": "userMessage" },
+                    { "label": "Assistant Message", "name": "assistantMessage" }
+                ],
+                "default": "userMessage",
+                "id": "agentAgentflow-agentReturnResponseAs"
+            },
+            {
+                "label": "JSON Structured Output",
+                "name": "agentStructuredOutput",
+                "description": "Instruct the Agent to give output in a JSON structured schema",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "agentAgentflow-agentStructuredOutput",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "string"
+                    },
+                    {
+                        "label": "Type",
+                        "name": "type",
+                        "type": "options",
+                        "options": [
+                            { "label": "String", "name": "string" },
+                            { "label": "String Array", "name": "stringArray" },
+                            { "label": "Number", "name": "number" },
+                            { "label": "Boolean", "name": "boolean" },
+                            { "label": "Enum", "name": "enum" },
+                            { "label": "JSON Array", "name": "jsonArray" }
+                        ]
+                    },
+                    {
+                        "label": "Enum Values",
+                        "name": "enumValues",
+                        "type": "string",
+                        "placeholder": "value1, value2, value3",
+                        "description": "Enum values. Separated by comma",
+                        "optional": true,
+                        "show": {
+                            "agentStructuredOutput[$index].type": "enum"
+                        }
+                    },
+                    {
+                        "label": "JSON Schema",
+                        "name": "jsonSchema",
+                        "type": "code",
+                        "placeholder": "{\n    \"answer\": {\n        \"type\": \"string\",\n        \"description\": \"Value of the answer\"\n    },\n    \"reason\": {\n        \"type\": \"string\",\n        \"description\": \"Reason for the answer\"\n    },\n    \"optional\": {\n        \"type\": \"boolean\"\n    },\n    \"count\": {\n        \"type\": \"number\"\n    },\n    \"children\": {\n        \"type\": \"array\",\n        \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"value\": {\n                    \"type\": \"string\",\n                    \"description\": \"Value of the children's answer\"\n                }\n            }\n        }\n    }\n}",
+                        "description": "JSON schema for the structured output",
+                        "optional": true,
+                        "hideCodeExecute": true,
+                        "show": {
+                            "agentStructuredOutput[$index].type": "jsonArray"
+                        }
+                    },
+                    {
+                        "label": "Description",
+                        "name": "description",
+                        "type": "string",
+                        "placeholder": "Description of the key"
+                    }
+                ]
+            },
+            {
+                "label": "Update Flow State",
+                "name": "agentUpdateState",
+                "description": "Update runtime state during the execution of the workflow",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "agentAgentflow-agentUpdateState",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "asyncOptions",
+                        "loadMethod": "listRuntimeStateKeys"
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "acceptNodeOutputAsVariable": true
+                    }
+                ]
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "agentAgentflow-output",
+                "name": "agentAgentflow",
+                "label": "Agent",
+                "type": "Agent",
+                "baseClasses": ["Agent"]
+            }
+        ],
+        "outputs": {}
+    }
+}

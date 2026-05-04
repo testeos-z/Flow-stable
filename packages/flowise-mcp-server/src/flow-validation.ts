@@ -79,6 +79,40 @@ export const ZodReactFlowObject = z.object({
 export const ZodChatFlowType = z.enum(['CHATFLOW', 'MULTIAGENT', 'ASSISTANT', 'AGENTFLOW'])
 
 // ===========================================
+// AgentFlow Schemas
+// ===========================================
+
+export const AgentFlowNodeType = z.enum([
+    'Start',
+    'Agent',
+    'LLM',
+    'ToolNode',
+    'Condition',
+    'ConditionAgent',
+    'CustomFunction',
+    'ExecuteFlow',
+    'Loop',
+    'End',
+    'State',
+    'HumanInput',
+    'DirectReply'
+])
+
+export const ZodAgentFlowNode = ZodReactFlowNode.extend({
+    type: z.literal('agentFlow'),
+    data: ZodNodeData.extend({
+        type: AgentFlowNodeType,
+        category: z.literal('Agent Flows')
+    })
+})
+
+export const ZodAgentFlowObject = z.object({
+    nodes: z.array(ZodAgentFlowNode),
+    edges: z.array(ZodReactFlowEdge),
+    viewport: ZodViewport
+})
+
+// ===========================================
 // Inferred Types
 // ===========================================
 
@@ -88,6 +122,8 @@ export type ReactFlowObject = z.infer<typeof ZodReactFlowObject>
 export type ReactFlowPosition = z.infer<typeof ZodPosition>
 export type Viewport = z.infer<typeof ZodViewport>
 export type ChatflowType = z.infer<typeof ZodChatFlowType>
+export type AgentFlowNode = z.infer<typeof ZodAgentFlowNode>
+export type AgentFlowObject = z.infer<typeof ZodAgentFlowObject>
 
 // ===========================================
 // Validation Result Types
@@ -184,6 +220,127 @@ export function validateFlowDataSchema(flowData: string): FlowValidationResult {
     result.valid = true
     result.data = schemaResult.data
     return result
+}
+
+/**
+ * Validates AGENTFLOW flowData JSON string against Zod schema
+ */
+export function validateAgentFlowData(flowData: string): FlowValidationResult {
+    const result: FlowValidationResult = {
+        valid: false,
+        errors: [],
+        warnings: []
+    }
+
+    let parsed: unknown
+    try {
+        parsed = JSON.parse(flowData)
+    } catch (e) {
+        result.errors.push({
+            path: 'flowData',
+            message: `Invalid JSON: ${e instanceof Error ? e.message : 'Unknown parse error'}`,
+            severity: 'error'
+        })
+        return result
+    }
+
+    const schemaResult = ZodAgentFlowObject.safeParse(parsed)
+    if (!schemaResult.success) {
+        for (const issue of schemaResult.error.issues) {
+            result.errors.push({
+                path: issue.path.join('.'),
+                message: issue.message,
+                severity: 'error'
+            })
+        }
+        return result
+    }
+
+    result.valid = true
+    result.data = schemaResult.data as ReactFlowObject
+    return result
+}
+
+/**
+ * Validates AGENTFLOW-specific semantic rules.
+ * Returns an array of validation errors (empty if valid).
+ */
+export function validateAgentFlowSemantics(nodes: ReactFlowNode[], edges: ReactFlowEdge[]): ValidationError[] {
+    const errors: ValidationError[] = []
+
+    // 1. Exactly one Start node
+    const starts = nodes.filter((n) => n.data.type === 'Start')
+    if (starts.length !== 1) {
+        errors.push({
+            path: 'nodes',
+            message: `AGENTFLOW must have exactly 1 Start node, found ${starts.length}`,
+            severity: 'error'
+        })
+    }
+
+    // 2. At least one valid ending node
+    const endingTypes = ['DirectReply', 'ExecuteFlow', 'HumanInput', 'End']
+    const hasEnding = nodes.some((n) => endingTypes.includes(n.data.type))
+    if (!hasEnding) {
+        errors.push({
+            path: 'nodes',
+            message: 'AGENTFLOW must have at least one ending node (DirectReply, ExecuteFlow, HumanInput, End)',
+            severity: 'error'
+        })
+    }
+
+    // 3. Condition / ConditionAgent must have >= 2 outgoing edges
+    const conditions = nodes.filter((n) => n.data.type === 'Condition' || n.data.type === 'ConditionAgent')
+    for (const cond of conditions) {
+        const outgoing = edges.filter((e) => e.source === cond.id)
+        if (outgoing.length < 2) {
+            errors.push({
+                path: `node.${cond.id}`,
+                message: 'Condition must have at least 2 outgoing edges',
+                severity: 'error'
+            })
+        }
+    }
+
+    // 4. Loop must point to an earlier node in the array order
+    // (We use node array index as a proxy for execution order)
+    const nodeIndexMap = new Map(nodes.map((n, i) => [n.id, i]))
+    const loops = nodes.filter((n) => n.data.type === 'Loop')
+    for (const loop of loops) {
+        const outgoing = edges.filter((e) => e.source === loop.id)
+        for (const edge of outgoing) {
+            const targetIndex = nodeIndexMap.get(edge.target)
+            const sourceIndex = nodeIndexMap.get(loop.id)
+            if (targetIndex === undefined || sourceIndex === undefined) {
+                errors.push({
+                    path: `edge.${edge.id}`,
+                    message: `Loop points to unknown node "${edge.target}"`,
+                    severity: 'error'
+                })
+            } else if (targetIndex >= sourceIndex) {
+                errors.push({
+                    path: `edge.${edge.id}`,
+                    message: 'Loop must point to an earlier node',
+                    severity: 'error'
+                })
+            }
+        }
+    }
+
+    // 5. Agent nodes must have agentModelConfig.modelName
+    const agents = nodes.filter((n) => n.data.type === 'Agent')
+    for (const agent of agents) {
+        const config = agent.data.inputs?.agentModelConfig
+        if (!config?.modelName) {
+            errors.push({
+                path: `node.${agent.id}`,
+                message: 'Agent must have agentModelConfig with modelName',
+                severity: 'error'
+            })
+        }
+    }
+
+    return errors
 }
 
 /**
@@ -352,6 +509,8 @@ export function fixFlowData(flowData: string): FlowValidationResult {
                 ;(node as Record<string, unknown>).positionAbsolute = node.position
             }
             if (!node.type) {
+                // Only inject customNode if type is completely missing.
+                // If node.type already exists (e.g., 'agentFlow'), preserve it.
                 ;(node as Record<string, unknown>).type = 'customNode'
             }
             if (!node.data) {

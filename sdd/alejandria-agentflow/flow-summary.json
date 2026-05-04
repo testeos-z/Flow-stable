@@ -1,0 +1,66 @@
+{
+    "flowId": "50306854-0f6a-4283-bb1f-64c0cb0d82d3",
+    "name": "Alejandria",
+    "type": "AGENTFLOW",
+    "nodes": [
+        {
+            "id": "startAgentflow_0",
+            "type": "Start",
+            "label": "Start"
+        },
+        {
+            "id": "llmAgentflow_0",
+            "type": "LLM",
+            "label": "Router"
+        },
+        {
+            "id": "llmAgentflow_1",
+            "type": "LLM",
+            "label": "Ling\u00fcista PRE"
+        },
+        {
+            "id": "agentAgentflow_0",
+            "type": "Agent",
+            "label": "Bibliotecario"
+        },
+        {
+            "id": "agentAgentflow_1",
+            "type": "Agent",
+            "label": "Source Worker"
+        },
+        {
+            "id": "conditionAgentflow_0",
+            "type": "Condition",
+            "label": "Has Results?"
+        },
+        {
+            "id": "customFunctionAgentflow_0",
+            "type": "CustomFunction",
+            "label": "Evidence Merger"
+        },
+        {
+            "id": "llmAgentflow_2",
+            "type": "LLM",
+            "label": "S\u00edntesis Final"
+        },
+        {
+            "id": "directReplyAgentflow_0",
+            "type": "DirectReply",
+            "label": "Reply"
+        }
+    ],
+    "edges": [
+        "startAgentflow_0 -> llmAgentflow_0",
+        "llmAgentflow_0 -> llmAgentflow_1",
+        "llmAgentflow_1 -> agentAgentflow_0",
+        "agentAgentflow_0 -> agentAgentflow_1",
+        "agentAgentflow_1 -> conditionAgentflow_0",
+        "conditionAgentflow_0 -> customFunctionAgentflow_0",
+        "conditionAgentflow_0 -> directReplyAgentflow_0",
+        "customFunctionAgentflow_0 -> llmAgentflow_2",
+        "llmAgentflow_2 -> directReplyAgentflow_0"
+    ],
+    "status": "functional",
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "notes": "Full 9-node pipeline verified working. Tool nodes (retriever, MCP) need UI configuration. Structured JSON output disabled (nemotron doesn't support it) - using prompt-based JSON instead."
+}

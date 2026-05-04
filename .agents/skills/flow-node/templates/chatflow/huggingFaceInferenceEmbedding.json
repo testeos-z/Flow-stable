@@ -1,0 +1,61 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 200,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "HuggingFace Inference Embedding",
+        "name": "huggingFaceInferenceEmbedding",
+        "version": "1.0",
+        "type": "HuggingFaceInferenceEmbeddings",
+        "category": "Embeddings",
+        "description": "HuggingFace Inference API to generate embeddings for a given text",
+        "icon": "HuggingFace.svg",
+        "baseClasses": ["HuggingFaceInferenceEmbeddings", "Embeddings"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/embeddings/HuggingFaceInferenceEmbedding/HuggingFaceInferenceEmbedding.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Model",
+                "name": "modelName",
+                "type": "string",
+                "description": "If using own inference endpoint, leave this blank",
+                "placeholder": "sentence-transformers/distilbert-base-nli-mean-tokens",
+                "optional": true,
+                "id": "huggingFaceInferenceEmbedding-modelName"
+            },
+            {
+                "label": "Endpoint",
+                "name": "endpoint",
+                "type": "string",
+                "placeholder": "https://xyz.eu-west-1.aws.endpoints.huggingface.cloud/sentence-transformers/all-MiniLM-L6-v2",
+                "description": "Using your own inference endpoint",
+                "optional": true,
+                "id": "huggingFaceInferenceEmbedding-endpoint"
+            },
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["huggingFaceApi"],
+                "id": "huggingFaceInferenceEmbedding-credential"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "huggingFaceInferenceEmbedding-output",
+                "name": "huggingFaceInferenceEmbedding",
+                "label": "HuggingFace Inference Embedding",
+                "type": "HuggingFaceInferenceEmbeddings",
+                "baseClasses": ["HuggingFaceInferenceEmbeddings", "Embeddings"]
+            }
+        ],
+        "outputs": {}
+    }
+}

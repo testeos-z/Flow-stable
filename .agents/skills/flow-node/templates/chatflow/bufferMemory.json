@@ -1,0 +1,54 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 200,
+    "height": 100,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Buffer Memory",
+        "name": "bufferMemory",
+        "version": "2.0",
+        "type": "BufferMemory",
+        "category": "Memory",
+        "description": "Retrieve chat messages stored in database",
+        "icon": "memory.svg",
+        "baseClasses": ["BufferMemory", "FlowiseMemory"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/memory/BufferMemory/BufferMemory.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Session Id",
+                "name": "sessionId",
+                "type": "string",
+                "description": "If not specified, a random id will be used. Learn <a target=\"_blank\" href=\"https://docs.flowiseai.com/memory#ui-and-embedded-chat\">more</a>",
+                "default": "",
+                "additionalParams": true,
+                "optional": true,
+                "id": "bufferMemory-sessionId"
+            },
+            {
+                "label": "Memory Key",
+                "name": "memoryKey",
+                "type": "string",
+                "default": "chat_history",
+                "additionalParams": true,
+                "id": "bufferMemory-memoryKey"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "bufferMemory-output",
+                "name": "bufferMemory",
+                "label": "Buffer Memory",
+                "type": "BufferMemory",
+                "baseClasses": ["BufferMemory", "FlowiseMemory"]
+            }
+        ],
+        "outputs": {}
+    }
+}

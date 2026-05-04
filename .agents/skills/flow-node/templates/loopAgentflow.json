@@ -1,0 +1,92 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "agentFlow",
+    "width": 260,
+    "height": 250,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Loop",
+        "name": "loopAgentflow",
+        "version": "1.2",
+        "type": "Loop",
+        "category": "Agent Flows",
+        "description": "Loop back to a previous node",
+        "color": "#FFA07A",
+        "baseClasses": ["Loop"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/Loop/Loop.js",
+        "icon": "Loop.png",
+        "hideInput": false,
+        "loadMethods": {
+            "listPreviousNodes": true,
+            "listRuntimeStateKeys": true
+        },
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Loop Back To",
+                "name": "loopBackToNode",
+                "type": "asyncOptions",
+                "loadMethod": "listPreviousNodes",
+                "freeSolo": true,
+                "id": "loopAgentflow-loopBackToNode"
+            },
+            {
+                "label": "Max Loop Count",
+                "name": "maxLoopCount",
+                "type": "number",
+                "default": 5,
+                "id": "loopAgentflow-maxLoopCount"
+            },
+            {
+                "label": "Fallback Message",
+                "name": "fallbackMessage",
+                "type": "string",
+                "description": "Message to display if the loop count is exceeded",
+                "placeholder": "Enter your fallback message here",
+                "rows": 4,
+                "acceptVariable": true,
+                "optional": true,
+                "id": "loopAgentflow-fallbackMessage"
+            },
+            {
+                "label": "Update Flow State",
+                "name": "loopUpdateState",
+                "description": "Update runtime state during the execution of the workflow",
+                "type": "array",
+                "optional": true,
+                "acceptVariable": true,
+                "id": "loopAgentflow-loopUpdateState",
+                "array": [
+                    {
+                        "label": "Key",
+                        "name": "key",
+                        "type": "asyncOptions",
+                        "loadMethod": "listRuntimeStateKeys"
+                    },
+                    {
+                        "label": "Value",
+                        "name": "value",
+                        "type": "string",
+                        "acceptVariable": true,
+                        "acceptNodeOutputAsVariable": true
+                    }
+                ]
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "loopAgentflow-output",
+                "name": "loopAgentflow",
+                "label": "Loop",
+                "type": "Loop",
+                "baseClasses": ["Loop"]
+            }
+        ],
+        "outputs": {}
+    }
+}
