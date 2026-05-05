@@ -198,7 +198,10 @@ server.tool(
 // Tool: Update Chatflow
 server.tool(
     'update_chatflow',
-    "Update an existing chatflow's configuration, nodes, edges, or metadata.",
+    "Update an existing chatflow's configuration, nodes, edges, or metadata. " +
+        "Default mode 'patch' merges with existing flowData (preserves nodes/edges not in update). " +
+        "Use mode 'full-replace' for complete replacement. " +
+        'The 30% node reduction guardrail blocks destructive updates unless forceOverwrite: true.',
     {
         chatflowId: z.string().describe('The ID of the chatflow to update'),
         name: z.string().optional().describe('New name for the chatflow'),
@@ -209,7 +212,22 @@ server.tool(
             })
             .optional()
             .describe('Updated flow configuration'),
-        chatbotConfig: z.record(z.string(), z.any()).optional().describe('Updated chatbot configuration')
+        chatbotConfig: z.record(z.string(), z.any()).optional().describe('Updated chatbot configuration'),
+        mode: z
+            .enum(['patch', 'full-replace'])
+            .optional()
+            .default('patch')
+            .describe("Update mode: 'patch' merges with existing (safe), 'full-replace' replaces all (destructive)"),
+        forceOverwrite: z
+            .boolean()
+            .optional()
+            .default(false)
+            .describe('Bypass 30% node reduction guardrail. Use with caution - allows destructive updates.'),
+        allowDestructiveUpdate: z
+            .boolean()
+            .optional()
+            .default(false)
+            .describe('Alias for forceOverwrite - bypasses destructive update guardrail')
     },
     async (params) => handleUpdateChatflow(flowiseApi, params)
 )

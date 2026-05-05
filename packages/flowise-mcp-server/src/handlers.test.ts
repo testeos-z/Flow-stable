@@ -288,7 +288,18 @@ describe('handlers', () => {
         })
 
         it('should update flowData', async () => {
-            const mockApi = createMockApiClient(vi.fn().mockResolvedValue({}))
+            // Mock: GET returns existing flow, PUT succeeds
+            let callCount = 0
+            const mockRequest = vi.fn().mockImplementation(() => {
+                callCount++
+                if (callCount === 1) {
+                    // First call is GET for existing flow
+                    return { flowData: JSON.stringify({ nodes: [{ id: 'existing' }], edges: [], viewport: { x: 0, y: 0, zoom: 1 } }) }
+                }
+                // Second call is PUT
+                return {}
+            })
+            const mockApi = createMockApiClient(mockRequest)
             const newFlowData = { nodes: [{ id: 'new' }], edges: [] }
 
             await handleUpdateChatflow(mockApi, {
@@ -296,14 +307,19 @@ describe('handlers', () => {
                 flowData: newFlowData
             })
 
-            // fixFlowData injects viewport and node defaults
-            const callArgs = vi.mocked(mockApi.request).mock.calls[0]
-            const body = callArgs[2] as { flowData: string }
-            expect(callArgs[0]).toBe('PUT')
-            expect(callArgs[1]).toBe('/chatflows/123')
+            // Verify GET was called first (patch mode)
+            const getCallArgs = vi.mocked(mockApi.request).mock.calls[0]
+            expect(getCallArgs[0]).toBe('GET')
+            expect(getCallArgs[1]).toBe('/chatflows/123')
+
+            // Verify PUT was called with merged flowData
+            const putCallArgs = vi.mocked(mockApi.request).mock.calls[1]
+            const body = putCallArgs[2] as { flowData: string }
+            expect(putCallArgs[0]).toBe('PUT')
+            expect(putCallArgs[1]).toBe('/chatflows/123')
             const flowData = JSON.parse(body.flowData)
-            expect(flowData.nodes).toHaveLength(1)
-            expect(flowData.nodes[0].id).toBe('new')
+            // Should have both existing and new nodes (merge behavior)
+            expect(flowData.nodes).toHaveLength(2)
             expect(flowData.viewport).toEqual({ x: 0, y: 0, zoom: 1 })
         })
 

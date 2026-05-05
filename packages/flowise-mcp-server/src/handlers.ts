@@ -11,6 +11,101 @@ import { listCredentials, validateCredential, resolveCredential } from './creden
 // Re-export shared types and helpers from handler-helpers for backwards compatibility
 export { type ToolResponse, type FlowiseSdkClient, successResponse, errorResponse } from './handlers/handler-helpers.js'
 
+/**
+ * FlowData types for merge operations
+ */
+interface FlowData {
+    nodes: unknown[]
+    edges: unknown[]
+    viewport?: { x: number; y: number; zoom: number }
+}
+
+/**
+ * Update mode: patch (safe, merges with existing) or full-replace (destructive)
+ */
+type UpdateMode = 'patch' | 'full-replace'
+
+/**
+ * Options for update operations
+ */
+interface UpdateOptions {
+    mode?: UpdateMode
+    forceOverwrite?: boolean
+    allowDestructiveUpdate?: boolean
+}
+
+/**
+ * Get existing flow data from a chatflow
+ * Fetches the current flowData from Flowise API
+ */
+async function getExistingFlow(api: FlowiseApiClient, chatflowId: string): Promise<FlowData> {
+    interface ChatflowResponse {
+        flowData?: string
+        [key: string]: unknown
+    }
+    const chatflow = await api.request<ChatflowResponse>('GET', `/chatflows/${chatflowId}`)
+    if (!chatflow.flowData) {
+        throw new Error(`Chatflow ${chatflowId} has no flowData`)
+    }
+    return JSON.parse(chatflow.flowData)
+}
+
+/**
+ * Deep merge flowData - preserves existing nodes/edges not in incoming
+ * In patch mode, nodes/edges in incoming update existing ones, others are preserved
+ * In full-replace mode, incoming completely replaces existing
+ */
+function mergeFlowData(existing: FlowData, incoming: FlowData, mode: UpdateMode): FlowData {
+    if (mode === 'full-replace') {
+        return {
+            ...incoming,
+            viewport: incoming.viewport || existing.viewport || { x: 0, y: 0, zoom: 1 }
+        }
+    }
+
+    // Patch mode: deep merge by node.id and edge.id
+    const existingNodes = existing.nodes as Array<{ id: string; [key: string]: unknown }>
+    const incomingNodes = incoming.nodes as Array<{ id: string; [key: string]: unknown }>
+    const existingEdges = existing.edges as Array<{ id: string; [key: string]: unknown }>
+    const incomingEdges = incoming.edges as Array<{ id: string; [key: string]: unknown }>
+
+    // Create maps for O(1) lookup
+    const nodeMap = new Map(existingNodes.map((n) => [n.id, n]))
+    const edgeMap = new Map(existingEdges.map((e) => [e.id, e]))
+
+    // Merge nodes: incoming updates existing, preserve others
+    for (const node of incomingNodes) {
+        nodeMap.set(node.id, { ...nodeMap.get(node.id), ...node })
+    }
+
+    // Merge edges: incoming updates existing, preserve others
+    for (const edge of incomingEdges) {
+        edgeMap.set(edge.id, { ...edgeMap.get(edge.id), ...edge })
+    }
+
+    return {
+        nodes: Array.from(nodeMap.values()),
+        edges: Array.from(edgeMap.values()),
+        viewport: incoming.viewport || existing.viewport || { x: 0, y: 0, zoom: 1 }
+    }
+}
+
+/**
+ * Check if update would destructively remove nodes (more than 30% reduction)
+ * Returns true if guardrail should block the update
+ */
+function shouldBlockDestructiveUpdate(existing: FlowData, incoming: FlowData): boolean {
+    const existingCount = existing.nodes.length
+    const incomingCount = incoming.nodes.length
+
+    // If existing is empty, allow any update
+    if (existingCount === 0) return false
+
+    // Calculate threshold: incoming must be at least 70% of existing
+    const threshold = existingCount * 0.7
+    return incomingCount < threshold
+}
+
 import { successResponse, errorResponse } from './handlers/handler-helpers.js'
 import type { ToolResponse, FlowiseSdkClient } from './handlers/handler-helpers.js'
 
@@ -199,7 +294,10 @@ export async function handleCreateChatflow(
 }
 
 /**
- * Update chatflow handler
+ * Update chatflow handler - supports patch-safe mode with GET→merge→validate→PUT
+ * Default mode is 'patch' which preserves existing nodes/edges
+ * Use mode: 'full-replace' for complete replacement
+ * Use forceOverwrite: true to bypass destructive update guardrail
  */
 export async function handleUpdateChatflow(
     api: FlowiseApiClient,
@@ -208,16 +306,44 @@ export async function handleUpdateChatflow(
         name?: string
         flowData?: { nodes: unknown[]; edges: unknown[] }
         chatbotConfig?: Record<string, unknown>
+        mode?: UpdateMode
+        forceOverwrite?: boolean
+        allowDestructiveUpdate?: boolean
     }
 ): Promise<ToolResponse> {
     try {
+        const mode: UpdateMode = params.mode || 'patch'
+        const forceOverwrite = params.forceOverwrite || params.allowDestructiveUpdate || false
+
         const updateData: Record<string, unknown> = {}
         if (params.name) updateData.name = params.name
-        if (params.flowData) {
-            const fixedFlowData = validateAndFixFlowData(params.flowData)
-            updateData.flowData = JSON.stringify(fixedFlowData)
-        }
         if (params.chatbotConfig) updateData.chatbotConfig = JSON.stringify(params.chatbotConfig)
+
+        if (params.flowData) {
+            // In patch mode, fetch existing and merge
+            if (mode === 'patch') {
+                const existing = await getExistingFlow(api, params.chatflowId)
+                const incoming = params.flowData as FlowData
+
+                // Check guardrail - block destructive updates unless forceOverwrite
+                if (!forceOverwrite && shouldBlockDestructiveUpdate(existing, incoming)) {
+                    return errorResponse(
+                        `Destructive update blocked: incoming has ${incoming.nodes.length} nodes but existing has ${existing.nodes.length}. ` +
+                            `Update would remove more than 30% of nodes. ` +
+                            `Use forceOverwrite: true to bypass this guardrail.`
+                    )
+                }
+
+                // Merge existing with incoming
+                const merged = mergeFlowData(existing, incoming, mode)
+                const fixedFlowData = validateAndFixFlowData(merged)
+                updateData.flowData = JSON.stringify(fixedFlowData)
+            } else {
+                // full-replace mode
+                const fixedFlowData = validateAndFixFlowData(params.flowData)
+                updateData.flowData = JSON.stringify(fixedFlowData)
+            }
+        }
 
         const chatflow = await api.request('PUT', `/chatflows/${params.chatflowId}`, updateData)
         return successResponse(chatflow)
@@ -457,3 +583,6 @@ export async function handleResolveCredential(type: string, env?: string): Promi
         return errorResponse(`Error resolving credential: ${message}`)
     }
 }
+
+// Export internal functions for testing
+export { mergeFlowData, shouldBlockDestructiveUpdate, type FlowData, type UpdateMode }

@@ -1,0 +1,68 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Tech stack: Node.js v18-20, pnpm monorepo with Turborepo, TypeScript, React
+  Architecture: FlowiseAI fork with dual-agent system (flow-architect + flow-ing)
+  Testing: Jest (server/ui), Cypress (E2E), ts-jest for TypeScript
+  Style: ESLint + Prettier (printWidth: 140, singleQuote, 4-space tabs)
+  
+strict_tdd: true
+
+testing:
+  detected: 2026-05-04
+  runner:
+    command: turbo run test
+    framework: Jest (ts-jest)
+  coverage:
+    available: true
+    command: turbo run test:coverage
+  layers:
+    unit:
+      available: true
+      tool: Jest with ts-jest
+    integration:
+      available: true
+      tool: "@testing-library/react, supertest"
+    e2e:
+      available: true
+      tool: Cypress
+  quality:
+    linter:
+      available: true
+      command: pnpm lint
+    type_checker:
+      available: true
+      command: tsc --noEmit
+    formatter:
+      available: true
+      command: pnpm format
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected packages (ui, server, components, agentflow, observe)
+    - Consider dual-agent boundaries (flow-architect READ-ONLY, flow-ing WRITE-ONLY)
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Test both happy paths and error conditions
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+    - Consider Flowise constraints (viewport, credentials, node types)
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow existing code patterns (Prettier config)
+    - Load flow-architect or flow-ing skill when touching Flowise flows
+    - Run tests before committing (turbo run test)
+  verify:
+    - Run full test suite (turbo run test)
+    - Compare implementation against every spec scenario
+    - Validate E2E flows with Cypress if UI changes
+  archive:
+    - Warn before merging destructive deltas (large removals)
+    - Update skill-registry if new patterns emerge

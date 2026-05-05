@@ -10,6 +10,8 @@ description: >
     or migrating it.
 ---
 
+> **⚠️ MANDATORY RULE**: ANTES de crear, modificar, o editar CUALQUIER flow en Flowise, SIEMPRE debes aplicar `full_flow_validation` primero. No hay excepciones.
+
 ## System overview
 
 **a2a-lab** evaluates public policies from three independent perspectives in sequence:
