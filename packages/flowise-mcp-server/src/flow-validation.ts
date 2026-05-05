@@ -340,6 +340,62 @@ export function validateAgentFlowSemantics(nodes: ReactFlowNode[], edges: ReactF
         }
     }
 
+    // 6. Condition node edges must use standard sourceHandle naming
+    //    Format: {nodeId}-output-conditionAgentflow-condition-{index}
+    //    and {nodeId}-output-conditionAgentflow-condition-else
+    //    Custom names (e.g., "goEvidence") break canvas rendering
+    const conditionNodes = nodes.filter((n) => n.data.type === 'Condition' || n.data.type === 'ConditionAgent')
+    for (const cond of conditionNodes) {
+        const condEdges = edges.filter((e) => e.source === cond.id)
+        const condName = cond.data.name || 'conditionAgentflow'
+        const standardPrefix = `${cond.id}-output-${condName}-condition-`
+
+        for (const edge of condEdges) {
+            const handle = edge.sourceHandle || ''
+            if (!handle) continue // skip edges without sourceHandle
+
+            // Must match: {prefix}{number} or {prefix}else
+            const isStandardHandle =
+                handle === `${condName}-output-${condName}-condition-0` ||
+                handle.startsWith(standardPrefix) ||
+                handle === `${condName}-output-${condName}-condition-else` ||
+                handle === `${cond.id}-output-${condName}-condition-else` ||
+                handle === `${standardPrefix}0` ||
+                handle === `${standardPrefix}1` ||
+                handle === `${standardPrefix}2` ||
+                handle === `${standardPrefix}else`
+
+            if (!isStandardHandle) {
+                // Check if it's a custom (non-standard) handle name
+                const expectedTrue = `${cond.id}-output-${condName}-condition-0`
+                const expectedElse = `${cond.id}-output-${condName}-condition-else`
+                errors.push({
+                    path: `edge.${edge.id}`,
+                    message: `Condition node "${
+                        cond.data.label || cond.id
+                    }" has non-standard sourceHandle "${handle}". Use "${expectedTrue}" for true branch and "${expectedElse}" for else branch. Custom handles break canvas rendering.`,
+                    severity: 'warning'
+                })
+            }
+        }
+    }
+
+    // 7. DirectReply nodes must use directReplyMessage (not replyMessage)
+    //    Using replyMessage silently fails — the message is never sent
+    const directReplies = nodes.filter((n) => n.data.type === 'DirectReply')
+    for (const dr of directReplies) {
+        const inputs = dr.data.inputs as Record<string, unknown> | undefined
+        if (inputs && 'replyMessage' in inputs && !('directReplyMessage' in inputs)) {
+            errors.push({
+                path: `node.${dr.id}`,
+                message: `DirectReply "${
+                    dr.data.label || dr.id
+                }" uses "replyMessage" which silently fails. Use "directReplyMessage" instead (per node definition inputs[0].name).`,
+                severity: 'error'
+            })
+        }
+    }
+
     return errors
 }
 

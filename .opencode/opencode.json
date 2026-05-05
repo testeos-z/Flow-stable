@@ -150,6 +150,24 @@
                 "flow-control_get_assistant_tools": true,
                 "flow-control_generate_assistant_instruction": true
             }
+        },
+        "testman": {
+            "description": "Testing orchestrator — detects test type (unit/integration/e2e) and framework, delegates to specialized sub-agents. Trigger: When user requests testing, writing tests, running test suites, or mentions 'test', 'testing', 'tests'.",
+            "mode": "all",
+            "skill": "/home/snor/.config/opencode/skills/testman",
+            "tools": {
+                "bash": true,
+                "delegation": true,
+                "delegation_list": true,
+                "delegation_read": true,
+                "edit": true,
+                "glob": true,
+                "grep": true,
+                "read": true,
+                "task": true,
+                "todowrite": true,
+                "write": true
+            }
         }
     },
     "mcp": {
