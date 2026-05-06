@@ -1,5 +1,6 @@
 import {
     A2AStorageAdapter,
+    validateTaskTransition,
     AgentCard,
     A2ATask,
     A2AMessage,
@@ -90,21 +91,7 @@ export class LocalJsonAdapter implements A2AStorageAdapter {
     async updateTaskStatus(taskId: string, status: TaskStatus, _metadata?: Record<string, unknown>): Promise<void> {
         const task = this.tables.get('a2a_tasks')!.get(taskId)
         if (!task) throw new Error(`Task ${taskId} not found`)
-        const current = task.status as TaskStatus
-
-        // State machine: reject illegal transitions
-        const validTransitions: Record<TaskStatus, TaskStatus[]> = {
-            submitted: ['working', 'canceled'],
-            working: ['completed', 'failed', 'canceled'],
-            completed: [],
-            failed: [],
-            canceled: []
-        }
-
-        if (!validTransitions[current].includes(status)) {
-            throw new Error(`Invalid transition: ${current} → ${status}`)
-        }
-
+        validateTaskTransition(task.status as TaskStatus, status)
         task.status = status
     }
 

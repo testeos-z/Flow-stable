@@ -1,24 +1,7 @@
 import { z } from 'zod/v3'
 import { StructuredTool } from '@langchain/core/tools'
-import { A2AStorageAdapter, A2AMessageSchema, A2AFilterSchema } from '../../../src/A2AStorageAdapter'
-import type { A2ATask, A2AMessage, A2AFilter, TaskStatus } from '../../../src/A2AStorageAdapter'
-
-const VALID_TRANSITIONS: Record<TaskStatus, TaskStatus[]> = {
-    submitted: ['working', 'canceled'],
-    working: ['completed', 'failed', 'canceled'],
-    completed: [],
-    failed: [],
-    canceled: []
-}
-
-function validateTransition(current: TaskStatus, next: TaskStatus): void {
-    if (!VALID_TRANSITIONS[current].includes(next)) {
-        throw new Error(
-            `Invalid A2A task status transition: ${current} → ${next}. ` +
-                `Valid transitions from ${current}: ${VALID_TRANSITIONS[current].join(', ') || 'none (terminal state)'}`
-        )
-    }
-}
+import { A2AStorageAdapter, A2AMessageSchema, A2AFilterSchema, validateTaskTransition } from '../../../src/A2AStorageAdapter'
+import type { A2ATask, A2AMessage, A2AFilter } from '../../../src/A2AStorageAdapter'
 
 // ---------------------------------------------------------------------------
 // TaskCreateTool
@@ -109,7 +92,7 @@ export class TaskStatusTool extends StructuredTool {
         const task = await this.adapter.getTask(input.taskId)
         if (!task) throw new Error(`Task ${input.taskId} not found`)
 
-        validateTransition(task.status, input.status)
+        validateTaskTransition(task.status, input.status)
         await this.adapter.updateTaskStatus(input.taskId, input.status)
         return `Task ${input.taskId} status updated: ${task.status} → ${input.status}`
     }

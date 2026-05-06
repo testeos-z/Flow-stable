@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod/v3'
 import { ICommonObject } from './Interface'
 
 // ---------------------------------------------------------------------------
@@ -8,6 +8,27 @@ import { ICommonObject } from './Interface'
 export type AgentStatus = 'active' | 'idle' | 'offline'
 export type TaskStatus = 'submitted' | 'working' | 'completed' | 'failed' | 'canceled'
 export type ArtifactPermission = 'read' | 'write' | 'admin'
+
+// ---------------------------------------------------------------------------
+// Shared state machine validation
+// ---------------------------------------------------------------------------
+
+export const VALID_TASK_TRANSITIONS: Record<TaskStatus, TaskStatus[]> = {
+    submitted: ['working', 'canceled'],
+    working: ['completed', 'failed', 'canceled'],
+    completed: [],
+    failed: [],
+    canceled: []
+}
+
+export function validateTaskTransition(current: TaskStatus, next: TaskStatus): void {
+    if (!VALID_TASK_TRANSITIONS[current].includes(next)) {
+        throw new Error(
+            `Invalid A2A task status transition: ${current} → ${next}. ` +
+                `Valid transitions from ${current}: ${VALID_TASK_TRANSITIONS[current].join(', ') || 'none (terminal state)'}`
+        )
+    }
+}
 
 // ---------------------------------------------------------------------------
 // A2AStorageAdapter — interface all backends must implement

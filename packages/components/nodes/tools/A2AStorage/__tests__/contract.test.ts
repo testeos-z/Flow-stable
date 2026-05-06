@@ -11,7 +11,8 @@ import {
     A2ADecision,
     A2AObservation,
     AgentStatus,
-    TaskStatus
+    TaskStatus,
+    validateTaskTransition
 } from '../../../../src/A2AStorageAdapter'
 
 // ---------------------------------------------------------------------------
@@ -203,6 +204,28 @@ export function runContractTests(name: string, adapterFactory: () => Promise<A2A
                 const id = await adapter.createTask(taskA)
                 await adapter.updateTaskStatus(id, 'canceled')
                 await expect(adapter.updateTaskStatus(id, 'working')).rejects.toThrow()
+            })
+
+            it('updateTaskStatus rejects submitted→completed (state machine)', async () => {
+                const id = await adapter.createTask(taskA)
+                await expect(adapter.updateTaskStatus(id, 'completed')).rejects.toThrow()
+            })
+
+            it('updateTaskStatus rejects submitted→failed (state machine)', async () => {
+                const id = await adapter.createTask(taskA)
+                await expect(adapter.updateTaskStatus(id, 'failed')).rejects.toThrow()
+            })
+
+            it('updateTaskStatus rejects working→submitted (state machine)', async () => {
+                const id = await adapter.createTask(taskA)
+                await adapter.updateTaskStatus(id, 'working')
+                await expect(adapter.updateTaskStatus(id, 'submitted')).rejects.toThrow()
+            })
+
+            it('updateTaskStatus rejects canceled→submitted (state machine)', async () => {
+                const id = await adapter.createTask(taskA)
+                await adapter.updateTaskStatus(id, 'canceled')
+                await expect(adapter.updateTaskStatus(id, 'submitted')).rejects.toThrow()
             })
 
             it('listTasks filters by status', async () => {
@@ -667,17 +690,7 @@ class MockA2AAdapter implements A2AStorageAdapter {
     async updateTaskStatus(taskId: string, status: TaskStatus, _metadata?: Record<string, unknown>): Promise<void> {
         const task = this.tasks.get(taskId)
         if (!task) throw new Error(`Task ${taskId} not found`)
-
-        const invalidTransitions: Record<string, TaskStatus[]> = {
-            completed: ['working', 'submitted'],
-            failed: ['working', 'submitted'],
-            canceled: ['working']
-        }
-
-        if (invalidTransitions[task.status]?.includes(status)) {
-            throw new Error(`Invalid transition: ${task.status} → ${status}`)
-        }
-
+        validateTaskTransition(task.status, status)
         task.status = status
     }
 
