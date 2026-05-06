@@ -1,0 +1,82 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 300,
+    "height": 280,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "A2A Memory Adapter",
+        "name": "a2aMemoryAdapter",
+        "version": "1.0",
+        "type": "A2AMemoryAdapter",
+        "category": "Memory",
+        "description": "Hybrid memory bridging Flowise conversation history with A2A structured context (claims, decisions, observations)",
+        "icon": "a2amemory.svg",
+        "baseClasses": ["A2AMemoryAdapter", "BufferMemory", "FlowiseMemory"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/A2AMemoryAdapter/A2AMemoryAdapter.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Storage Backend",
+                "name": "storageBackend",
+                "type": "options",
+                "options": [
+                    { "label": "Local JSON", "name": "localjson" },
+                    { "label": "Supabase", "name": "supabase" },
+                    { "label": "PostgreSQL", "name": "postgres" },
+                    { "label": "SQLite", "name": "sqlite" }
+                ],
+                "default": "localjson",
+                "id": "a2aMemoryAdapter-storageBackend"
+            },
+            {
+                "label": "Session Id",
+                "name": "sessionId",
+                "type": "string",
+                "description": "If not specified, the default session will be used",
+                "default": "",
+                "additionalParams": true,
+                "optional": true,
+                "id": "a2aMemoryAdapter-sessionId"
+            },
+            {
+                "label": "Memory Key",
+                "name": "memoryKey",
+                "type": "string",
+                "default": "a2a_context",
+                "additionalParams": true,
+                "id": "a2aMemoryAdapter-memoryKey"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "optional": true,
+                "additionalParams": true,
+                "id": "a2aMemoryAdapter-supabaseProjUrl"
+            }
+        ],
+        "credential": {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": ["supabaseApi"],
+            "optional": true
+        },
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "a2aMemoryAdapter-output",
+                "name": "a2aMemoryAdapter",
+                "label": "A2A Memory Adapter",
+                "type": "A2AMemoryAdapter",
+                "baseClasses": ["A2AMemoryAdapter", "BufferMemory", "FlowiseMemory"]
+            }
+        ],
+        "outputs": {}
+    }
+}

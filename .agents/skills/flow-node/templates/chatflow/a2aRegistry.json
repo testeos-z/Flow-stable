@@ -1,0 +1,77 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 300,
+    "height": 320,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "A2A Registry",
+        "name": "a2aRegistry",
+        "version": "1.0",
+        "type": "A2ARegistry",
+        "category": "Tools",
+        "description": "Register and discover agents with capabilities, MCP endpoints, and artifact types",
+        "icon": "a2aregistry.svg",
+        "baseClasses": ["A2ARegistry", "DynamicTool", "Tool"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/A2ARegistry/A2ARegistry.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Storage Backend",
+                "name": "storageBackend",
+                "type": "options",
+                "options": [
+                    { "label": "Local JSON", "name": "localjson" },
+                    { "label": "Supabase", "name": "supabase" },
+                    { "label": "PostgreSQL", "name": "postgres" },
+                    { "label": "SQLite", "name": "sqlite" }
+                ],
+                "default": "localjson",
+                "id": "a2aRegistry-storageBackend"
+            },
+            {
+                "label": "Operation",
+                "name": "operation",
+                "type": "options",
+                "options": [
+                    { "label": "Register Agent", "name": "register" },
+                    { "label": "Get Agent", "name": "get" },
+                    { "label": "Find Agents", "name": "find" },
+                    { "label": "Update Status", "name": "updateStatus" }
+                ],
+                "default": "find",
+                "id": "a2aRegistry-operation"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "optional": true,
+                "additionalParams": true,
+                "id": "a2aRegistry-supabaseProjUrl"
+            }
+        ],
+        "credential": {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": ["supabaseApi"],
+            "optional": true
+        },
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "a2aRegistry-output",
+                "name": "a2aRegistry",
+                "label": "A2A Registry",
+                "type": "A2ARegistry",
+                "baseClasses": ["A2ARegistry", "DynamicTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

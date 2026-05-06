@@ -45,14 +45,15 @@ You are the **only agent** that may call the Flowise server or API.
 
 **NEVER** save a flow without running the full pipeline:
 
-| Stage                   | Owner       | What it checks                                                                          |
-| ----------------------- | ----------- | --------------------------------------------------------------------------------------- |
-| 0. Per-node acquisition | `flow-node` | Each node JSON is valid & UI-renderable (schema enforced by flow-node)                  |
-| 1. Per-node final check | `flow-ing`  | Re-verify all `flow-node` responses have `valid: true`                                  |
-| 2. Full flowData        | `flow-ing`  | `nodes`, `edges`, `viewport` complete & correct                                         |
-| 3. Graph connectivity   | `flow-ing`  | No orphans (except StickyNote), no invalid cycles, edges reference real nodes & handles |
-| 4. Smoke test           | `flow-ing`  | Flow can be created and responds to a minimal prompt                                    |
-| 5. Integration test     | `flow-ing`  | Tools, retrievers, MCPs, credentials work end-to-end                                    |
+| Stage                   | Owner       | What it checks                                                                                         |
+| ----------------------- | ----------- | ------------------------------------------------------------------------------------------------------ |
+| 0. Per-node acquisition | `flow-node` | Each node JSON is valid & UI-renderable (schema enforced by flow-node)                                 |
+| 1. Per-node final check | `flow-ing`  | Re-verify all `flow-node` responses have `valid: true`                                                 |
+| 2. Full flowData        | `flow-ing`  | `nodes`, `edges`, `viewport` complete & correct                                                        |
+| 2.5 A2A Storage Check   | `flow-ing`  | All A2A nodes share same `storageBackend` and credential (if Supabase). Skip if no A2A nodes detected. |
+| 3. Graph connectivity   | `flow-ing`  | No orphans (except StickyNote), no invalid cycles, edges reference real nodes & handles                |
+| 4. Smoke test           | `flow-ing`  | Flow can be created and responds to a minimal prompt                                                   |
+| 5. Integration test     | `flow-ing`  | Tools, retrievers, MCPs, credentials work end-to-end                                                   |
 
 Stage 0 is a **hard gate**. If `flow-node` returns `valid: false` for any node, the pipeline aborts before Stage 1 and the flow is NOT saved.
 
@@ -295,3 +296,36 @@ When saving flows, ensure credentials are UUIDs from the registry:
 -   `openRouterApi` → `ddeb2757-f8e2-4ed7-9647-5a113332b432`
 -   `supabaseApi` → `0df85d26-749b-4fac-9a88-7399663a3099`
 -   `huggingFaceApi` → `aae7223f-da1b-47d5-bb26-1a2f1b2a3d5b`
+
+### A2A Storage Consistency Validation
+
+```typescript
+function validateA2AStorageConsistency(nodes: INodeData[]): ValidationResult {
+    const a2aNodes = nodes.filter((n) => n.type?.startsWith('A2A'))
+    if (!a2aNodes.length) return { valid: true }
+
+    const backends = new Set(a2aNodes.map((n) => n.inputs?.storageBackend))
+    if (backends.size > 1) {
+        return { valid: false, error: `Mismatched storage backends: ${[...backends].join(', ')}` }
+    }
+
+    const backend = [...backends][0]
+    if (backend === 'supabase') {
+        const credentials = a2aNodes.map((n) => n.credential)
+        if (credentials.some((c) => !c) || new Set(credentials.filter(Boolean)).size > 1) {
+            return { valid: false, error: 'Supabase backend requires consistent credential across all A2A nodes' }
+        }
+    }
+
+    return { valid: true }
+}
+```
+
+### A2A Smoke Test Checklist
+
+-   [ ] Registry: register agent → get agent → find by capability
+-   [ ] Task: create → update status working → update status completed
+-   [ ] Task state machine: reject completed→working, failed→working, canceled→working
+-   [ ] Artifact: register → grant access → check access → revoke access
+-   [ ] SharedContext: create session → add claim → record decision → verify provenance
+-   [ ] MemoryAdapter: saveA2AContext → loadA2AContext across sessions
