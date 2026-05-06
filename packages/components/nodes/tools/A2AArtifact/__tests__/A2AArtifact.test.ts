@@ -72,7 +72,7 @@ describe('A2AArtifact Node', () => {
 
             // Grant read access
             const grantTool = new ArtifactGrantTool(adapter)
-            await grantTool._call({ artifactId: id, agentId: AGENT_B, permission: 'read' })
+            await grantTool._call({ artifactId: id, agentId: AGENT_B, permission: 'read', grantedBy: AGENT_A })
 
             // Now B has read access
             const after = await checkTool._call({ artifactId: id, agentId: AGENT_B })
@@ -92,7 +92,7 @@ describe('A2AArtifact Node', () => {
             const id = await regTool._call({ name: 'Y', type: 'text', content: '', ownerId: AGENT_A })
 
             const grantTool = new ArtifactGrantTool(adapter)
-            await grantTool._call({ artifactId: id, agentId: AGENT_C, permission: 'admin' })
+            await grantTool._call({ artifactId: id, agentId: AGENT_C, permission: 'admin', grantedBy: AGENT_A })
 
             const checkTool = new ArtifactCheckTool(adapter)
             expect(await checkTool._call({ artifactId: id, agentId: AGENT_C })).toBe('admin')

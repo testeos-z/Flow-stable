@@ -66,7 +66,7 @@ describe('A2A Integration', () => {
         })
 
         const grantTool = new ArtifactGrantTool(adapter)
-        await grantTool._call({ artifactId: artId, agentId: MASTER, permission: 'read' })
+        await grantTool._call({ artifactId: artId, agentId: MASTER, permission: 'read', grantedBy: ANALYST })
 
         const checkTool = new ArtifactCheckTool(adapter)
         const perm = await checkTool._call({ artifactId: artId, agentId: MASTER })

@@ -11,10 +11,16 @@ const ArtifactRegisterInput = z.object({
     taskId: z.string().uuid().optional().describe('Associated task UUID')
 })
 
-const GrantRevokeInput = z.object({
+const GrantInput = z.object({
     artifactId: z.string().uuid().describe('Artifact UUID'),
-    agentId: z.string().uuid().describe('Agent to grant/revoke access'),
-    permission: z.enum(['read', 'write', 'admin']).describe('Access level')
+    agentId: z.string().uuid().describe('Agent to grant access to'),
+    permission: z.enum(['read', 'write', 'admin']).describe('Access level'),
+    grantedBy: z.string().uuid().describe('The agent UUID that is granting the permission')
+})
+
+const RevokeInput = z.object({
+    artifactId: z.string().uuid().describe('Artifact UUID'),
+    agentId: z.string().uuid().describe('Agent to revoke access from')
 })
 
 // ---------------------------------------------------------------------------
@@ -100,7 +106,7 @@ export class ArtifactGrantTool extends StructuredTool {
         'Permission levels: read, write, admin. ' +
         'The granting agent ID is recorded for audit trail.'
 
-    schema = GrantRevokeInput
+    schema = GrantInput
 
     private adapter: A2AStorageAdapter
 
@@ -110,8 +116,7 @@ export class ArtifactGrantTool extends StructuredTool {
     }
 
     async _call(input: z.input<typeof this.schema>): Promise<string> {
-        // The caller's agent ID is not known at tool level; use 'grant' as placeholder
-        await this.adapter.grantAccess(input.artifactId, input.agentId, input.permission as ArtifactPermission, 'grants')
+        await this.adapter.grantAccess(input.artifactId, input.agentId, input.permission as ArtifactPermission, input.grantedBy)
         return `Granted ${input.permission} to ${input.agentId} on artifact ${input.artifactId}`
     }
 }
@@ -123,7 +128,7 @@ export class ArtifactRevokeTool extends StructuredTool {
     name = 'a2a_artifact_revoke'
     description = 'Revoke a previously granted permission to an artifact for a specific agent.'
 
-    schema = GrantRevokeInput.omit({ permission: true })
+    schema = RevokeInput
 
     private adapter: A2AStorageAdapter
 
