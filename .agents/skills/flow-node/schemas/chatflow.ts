@@ -22,7 +22,12 @@ export const CHATFLOW_MVP_ALLOWLIST = [
     'huggingFaceInferenceEmbedding',
     'supabase',
     'retrieverTool',
-    'toolAgent'
+    'toolAgent',
+    'a2aRegistry',
+    'a2aTask',
+    'a2aArtifact',
+    'a2aSharedContext',
+    'a2aMemoryAdapter'
 ] as const
 
 // ============================================================================
