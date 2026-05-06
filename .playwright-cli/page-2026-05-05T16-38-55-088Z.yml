@@ -1,0 +1,120 @@
+- generic [ref=e32]:
+      - banner [ref=e33]:
+            - generic [ref=e34]:
+                  - generic [ref=e35]:
+                        - link "GobernAI" [ref=e37] [cursor=pointer]:
+                              - /url: /chatflows
+                              - img "GobernAI" [ref=e39]
+                        - button [ref=e40] [cursor=pointer]:
+                              - img [ref=e42]
+                  - checkbox [ref=e45] [cursor=pointer]
+                  - button [ref=e48] [cursor=pointer]:
+                        - img [ref=e50]
+      - navigation "mailbox folders" [ref=e53]:
+            - list [ref=e58]:
+                  - button "Chatflows" [ref=e59] [cursor=pointer]:
+                        - img [ref=e61]
+                        - heading "Chatflows" [level=5] [ref=e67]
+                  - button "Agentflows" [ref=e68] [cursor=pointer]:
+                        - img [ref=e70]
+                        - paragraph [ref=e78]: Agentflows
+                  - button "Executions" [ref=e79] [cursor=pointer]:
+                        - img [ref=e81]
+                        - paragraph [ref=e86]: Executions
+                  - button "Assistants" [ref=e87] [cursor=pointer]:
+                        - img [ref=e89]
+                        - paragraph [ref=e94]: Assistants
+                  - button "Marketplaces" [ref=e95] [cursor=pointer]:
+                        - img [ref=e97]
+                        - paragraph [ref=e101]: Marketplaces
+                  - button "Tools" [ref=e102] [cursor=pointer]:
+                        - img [ref=e104]
+                        - paragraph [ref=e107]: Tools
+                  - button "Credentials" [ref=e108] [cursor=pointer]:
+                        - img [ref=e110]
+                        - paragraph [ref=e115]: Credentials
+                  - button "Variables" [ref=e116] [cursor=pointer]:
+                        - img [ref=e118]
+                        - paragraph [ref=e122]: Variables
+                  - button "API Keys" [ref=e123] [cursor=pointer]:
+                        - img [ref=e125]
+                        - paragraph [ref=e128]: API Keys
+                  - button "Document Stores" [ref=e129] [cursor=pointer]:
+                        - img [ref=e131]
+                        - paragraph [ref=e136]: Document Stores
+      - main [ref=e137]:
+            - generic [ref=e140]:
+                  - generic [ref=e142]:
+                        - generic [ref=e144]:
+                              - heading "Chatflows" [level=1] [ref=e145]
+                              - paragraph [ref=e146]: Build single-agent systems, chatbots and simple LLM flows
+                        - generic [ref=e147]:
+                              - generic [ref=e148]:
+                                    - img [ref=e150]
+                                    - searchbox "Search Name or Category [ Ctrl + F ]" [ref=e153]
+                                    - group
+                              - group [ref=e154]:
+                                    - button "Card View" [pressed] [ref=e155] [cursor=pointer]:
+                                          - img [ref=e156]
+                                    - button "List View" [ref=e161] [cursor=pointer]:
+                                          - img [ref=e162]
+                              - button "Add New" [ref=e163] [cursor=pointer]:
+                                    - img [ref=e165]
+                                    - text: Add New
+                  - generic [ref=e166]:
+                        - generic [ref=e169] [cursor=pointer]:
+                              - paragraph [ref=e172]: Inclusion Agent (Pipeline Test)
+                              - generic [ref=e173]:
+                                    - generic "OpenRouter" [ref=e174]
+                                    - generic "Buffer Memory" [ref=e175]
+                                    - generic "Custom MCP Server" [ref=e176]
+                                    - paragraph [ref=e177]: + 1 More
+                        - generic [ref=e180] [cursor=pointer]:
+                              - paragraph [ref=e183]: Pipeline Test 1777683336
+                              - generic "OpenRouter" [ref=e185]
+                        - generic [ref=e188] [cursor=pointer]:
+                              - paragraph [ref=e191]: NYC Knowledge Agent (OpenRouter + Supabase pgvector + MCP)
+                              - generic [ref=e192]:
+                                    - generic "OpenRouter" [ref=e193]
+                                    - generic "Buffer Memory" [ref=e194]
+                                    - generic "HuggingFace Inference Embedding" [ref=e195]
+                                    - paragraph [ref=e196]: + 3 More
+                        - generic [ref=e199] [cursor=pointer]:
+                              - paragraph [ref=e202]: test
+                              - generic [ref=e203]:
+                                    - generic "Tool Agent" [ref=e204]
+                                    - generic "Buffer Memory" [ref=e205]
+                                    - generic "OpenRouter" [ref=e206]
+                        - generic [ref=e209] [cursor=pointer]:
+                              - paragraph [ref=e212]: Nemotron + Supabase Chatflow (Reparado Completo)
+                              - generic [ref=e213]:
+                                    - generic "OpenRouter - Nemotron" [ref=e214]
+                                    - generic "OpenAI Embeddings" [ref=e215]
+                                    - generic "Supabase" [ref=e216]
+                                    - paragraph [ref=e217]: + 1 More
+                        - generic [ref=e220] [cursor=pointer]:
+                              - paragraph [ref=e223]: Agent OpenRouter + Supabase Vector Store
+                              - generic [ref=e224]:
+                                    - generic "OpenRouter" [ref=e225]
+                                    - generic "OpenAI Embeddings" [ref=e226]
+                                    - generic "Supabase" [ref=e227]
+                                    - paragraph [ref=e228]: + 1 More
+                  - generic [ref=e229]:
+                        - generic [ref=e230]:
+                              - paragraph [ref=e231]: 'Items per page:'
+                              - generic [ref=e233]:
+                                    - combobox [ref=e234] [cursor=pointer]: '12'
+                                    - textbox: '12'
+                                    - img
+                                    - group
+                        - paragraph [ref=e235]: Items 1 to 6 of 6
+                        - navigation "pagination navigation" [ref=e236]:
+                              - list [ref=e237]:
+                                    - listitem [ref=e238]:
+                                          - button "Go to previous page" [disabled]:
+                                                - img
+                                    - listitem [ref=e239]:
+                                          - button "page 1" [ref=e240] [cursor=pointer]: '1'
+                                    - listitem [ref=e241]:
+                                          - button "Go to next page" [disabled]:
+                                                - img

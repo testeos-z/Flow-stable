@@ -1,0 +1,172 @@
+- generic [ref=e3]:
+      - banner [ref=e4]:
+            - generic [ref=e6]:
+                  - generic [ref=e7]:
+                        - button "Back" [ref=e9] [cursor=pointer]:
+                              - img [ref=e11]
+                        - generic [ref=e14]:
+                              - paragraph [ref=e15]:
+                                    - strong [ref=e299]: '*'
+                                    - text: alejandria v2 save
+                              - button "Edit Name" [ref=e16] [cursor=pointer]:
+                                    - img [ref=e18]
+                  - generic [ref=e21]:
+                        - button "API Endpoint" [ref=e22] [cursor=pointer]:
+                              - img [ref=e24]
+                        - button "Save Agents" [ref=e28] [cursor=pointer]:
+                              - img [ref=e30]
+                        - button "Settings" [ref=e34] [cursor=pointer]:
+                              - img [ref=e36]
+      - generic [ref=e42]:
+            - generic [ref=e43]:
+                  - generic [ref=e44]:
+                        - generic:
+                              - img:
+                                    - generic:
+                                          - button "Edge from startAgentflow_0 to llmAgentflow_0" [ref=e45] [cursor=pointer]
+                                          - button "Edge from llmAgentflow_0 to llmAgentflow_1" [ref=e48] [cursor=pointer]
+                                          - button "Edge from llmAgentflow_1 to agentAgentflow_0" [ref=e51] [cursor=pointer]
+                                          - button "Edge from agentAgentflow_1 to conditionAgentflow_0" [ref=e54] [cursor=pointer]
+                                          - button "Edge from customFunctionAgentflow_0 to llmAgentflow_2" [ref=e57] [cursor=pointer]
+                                          - button "Edge from llmAgentflow_2 to directReplyAgentflow_0" [ref=e60] [cursor=pointer]
+                                          - button "Edge from agentAgentflow_0 to customFunctionAgentflow_1" [ref=e63] [cursor=pointer]
+                                          - button "Edge from customFunctionAgentflow_1 to agentAgentflow_1" [ref=e66] [cursor=pointer]
+                              - generic:
+                                    - button "startAgentflow Start" [ref=e69]:
+                                          - generic [ref=e72]:
+                                                - generic [ref=e73]:
+                                                      - img "startAgentflow" [ref=e76]
+                                                      - paragraph [ref=e78]: Start
+                                                - generic [ref=e79]:
+                                                      - img
+                                    - button "llmAgentflow Router chatOpenRouter google/gemini-2.5-flash-lite" [ref=e80]:
+                                          - generic [ref=e83]:
+                                                - generic [ref=e86]:
+                                                      - img "llmAgentflow" [ref=e89]
+                                                      - generic [ref=e90]:
+                                                            - paragraph [ref=e91]: Router
+                                                            - generic [ref=e93]:
+                                                                  - img "chatOpenRouter" [ref=e94]
+                                                                  - paragraph [ref=e95]: google/gemini-2.5-flash-lite
+                                                - generic [ref=e96]:
+                                                      - img
+                                    - button "llmAgentflow Lingüista PRE chatOpenRouter minimax/minimax-m2.5" [ref=e97]:
+                                          - generic [ref=e100]:
+                                                - generic [ref=e103]:
+                                                      - img "llmAgentflow" [ref=e106]
+                                                      - generic [ref=e107]:
+                                                            - paragraph [ref=e108]: Lingüista PRE
+                                                            - generic [ref=e110]:
+                                                                  - img "chatOpenRouter" [ref=e111]
+                                                                  - paragraph [ref=e112]: minimax/minimax-m2.5
+                                                - generic [ref=e113]:
+                                                      - img
+                                    - button "agentAgentflow Bibliotecario chatOpenRouter google/gemini-2.5-flash-lite" [ref=e114]:
+                                          - generic [ref=e117]:
+                                                - generic [ref=e120]:
+                                                      - img "agentAgentflow" [ref=e123]
+                                                      - generic [ref=e124]:
+                                                            - paragraph [ref=e125]: Bibliotecario
+                                                            - generic [ref=e127]:
+                                                                  - img "chatOpenRouter" [ref=e128]
+                                                                  - paragraph [ref=e129]: google/gemini-2.5-flash-lite
+                                                - generic [ref=e130]:
+                                                      - img
+                                    - button "agentAgentflow Source Worker chatOpenRouter google/gemini-2.5-flash-lite customMcpServerTool customMcpServerTool customMcpServerTool customMcpServerTool customMcpServerTool" [ref=e131]:
+                                          - generic [ref=e134]:
+                                                - generic [ref=e137]:
+                                                      - img "agentAgentflow" [ref=e140]
+                                                      - generic [ref=e141]:
+                                                            - paragraph [ref=e142]: Source Worker
+                                                            - generic [ref=e144]:
+                                                                  - img "chatOpenRouter" [ref=e145]
+                                                                  - paragraph [ref=e146]: google/gemini-2.5-flash-lite
+                                                            - generic [ref=e147]:
+                                                                  - img "customMcpServerTool" [ref=e148]
+                                                                  - img "customMcpServerTool" [ref=e149]
+                                                                  - img "customMcpServerTool" [ref=e150]
+                                                                  - img "customMcpServerTool" [ref=e151]
+                                                                  - img "customMcpServerTool" [ref=e152]
+                                                - generic [ref=e153]:
+                                                      - img
+                                    - button "conditionAgentflow Has Results?" [active] [ref=e154]:
+                                          - generic [ref=e157]:
+                                                - generic [ref=e160]:
+                                                      - img "conditionAgentflow" [ref=e163]
+                                                      - paragraph [ref=e165]: Has Results?
+                                                - generic [ref=e166]:
+                                                      - img
+                                                - generic [ref=e167]:
+                                                      - img
+                                    - button "customFunctionAgentflow Evidence Merger" [ref=e168]:
+                                          - generic [ref=e171]:
+                                                - generic [ref=e174]:
+                                                      - img "customFunctionAgentflow" [ref=e177]
+                                                      - paragraph [ref=e179]: Evidence Merger
+                                                - generic [ref=e180]:
+                                                      - img
+                                    - button "llmAgentflow Síntesis Final chatOpenRouter minimax/minimax-m2.5" [ref=e181]:
+                                          - generic [ref=e184]:
+                                                - generic [ref=e187]:
+                                                      - img "llmAgentflow" [ref=e190]
+                                                      - generic [ref=e191]:
+                                                            - paragraph [ref=e192]: Síntesis Final
+                                                            - generic [ref=e194]:
+                                                                  - img "chatOpenRouter" [ref=e195]
+                                                                  - paragraph [ref=e196]: minimax/minimax-m2.5
+                                                - generic [ref=e197]:
+                                                      - img
+                                    - button "directReplyAgentflow Reply" [ref=e198]:
+                                          - generic [ref=e201]:
+                                                - generic [ref=e204]:
+                                                      - img "directReplyAgentflow" [ref=e207]
+                                                      - paragraph [ref=e209]: Reply
+                                                - generic [ref=e210]:
+                                                      - img
+                                    - button "directReplyAgentflow Fallback Reply" [ref=e211]:
+                                          - generic [ref=e214]:
+                                                - generic [ref=e217]:
+                                                      - img "directReplyAgentflow" [ref=e220]
+                                                      - paragraph [ref=e222]: Fallback Reply
+                                                - generic [ref=e223]:
+                                                      - img
+                                    - button "Markdown Stripper" [ref=e224]:
+                                          - generic [ref=e227]:
+                                                - generic [ref=e230]:
+                                                      - img [ref=e233]
+                                                      - paragraph [ref=e236]: Markdown Stripper
+                                                - generic [ref=e237]:
+                                                      - img
+                  - group "Basic button group" [ref=e301]:
+                        - button "Duplicate" [ref=e302] [cursor=pointer]:
+                              - img [ref=e303]
+                        - button "Delete" [ref=e306] [cursor=pointer]:
+                              - img [ref=e307]
+                        - button "Info" [ref=e310] [cursor=pointer]:
+                              - img [ref=e311]
+            - generic [ref=e252]:
+                  - button "zoom in" [ref=e253] [cursor=pointer]:
+                        - img [ref=e254]
+                  - button "zoom out" [disabled]:
+                        - img
+                  - button "fit view" [ref=e256] [cursor=pointer]:
+                        - img [ref=e257]
+                  - button "toggle interactivity" [ref=e259] [cursor=pointer]:
+                        - img [ref=e260]
+                  - button "toggle snapping" [ref=e262] [cursor=pointer]:
+                        - img [ref=e263]
+                  - button "toggle background" [ref=e266] [cursor=pointer]:
+                        - img [ref=e267]
+            - img "React Flow mini map" [ref=e270]
+            - img [ref=e282]
+            - button "add" [ref=e284] [cursor=pointer]:
+                  - img [ref=e285]
+            - button "generate" [ref=e286] [cursor=pointer]:
+                  - img [ref=e287]
+            - button "chat" [ref=e289] [cursor=pointer]:
+                  - img [ref=e290]
+            - button "validation" [ref=e292] [cursor=pointer]:
+                  - img [ref=e293]
+            - link "React Flow attribution" [ref=e297] [cursor=pointer]:
+                  - /url: https://reactflow.dev
+                  - text: React Flow

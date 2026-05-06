@@ -1,0 +1,336 @@
+- generic [ref=e1]:
+      - generic [ref=e3]:
+            - banner [ref=e4]:
+                  - generic [ref=e6]:
+                        - generic [ref=e7]:
+                              - button [ref=e694] [cursor=pointer]:
+                                    - img [ref=e11]
+                              - generic [ref=e14]:
+                                    - paragraph [ref=e15]: alejandria v2 save
+                                    - button [ref=e695] [cursor=pointer]:
+                                          - img [ref=e18]
+                        - generic [ref=e21]:
+                              - button [ref=e696] [cursor=pointer]:
+                                    - img [ref=e24]
+                              - button [ref=e697] [cursor=pointer]:
+                                    - img [ref=e30]
+                              - button [ref=e698] [cursor=pointer]:
+                                    - img [ref=e36]
+            - generic [ref=e42]:
+                  - generic [ref=e43]:
+                        - generic [ref=e44]:
+                              - generic:
+                                    - img:
+                                          - generic:
+                                                - button [ref=e699] [cursor=pointer]
+                                                - button [ref=e700] [cursor=pointer]
+                                                - button [ref=e701] [cursor=pointer]
+                                                - button [ref=e702] [cursor=pointer]
+                                                - button [ref=e703] [cursor=pointer]
+                                                - button [ref=e704] [cursor=pointer]
+                                                - button [ref=e705] [cursor=pointer]
+                                    - generic:
+                                          - button [ref=e706]:
+                                                - generic [ref=e68]:
+                                                      - img [ref=e343]
+                                                      - generic [ref=e69]:
+                                                            - generic [ref=e70]:
+                                                                  - img [ref=e707]
+                                                                  - paragraph [ref=e75]: Start
+                                                            - generic [ref=e76]:
+                                                                  - img
+                                          - button [ref=e708]:
+                                                - generic [ref=e79]:
+                                                      - img [ref=e346]
+                                                      - generic [ref=e80]:
+                                                            - generic [ref=e83]:
+                                                                  - img [ref=e709]
+                                                                  - generic [ref=e87]:
+                                                                        - paragraph [ref=e88]: Router
+                                                                        - generic [ref=e90]:
+                                                                              - img [ref=e710]
+                                                                              - paragraph [ref=e92]: google/gemini-2.5-flash-lite
+                                                            - generic [ref=e93]:
+                                                                  - img
+                                          - button [ref=e711]:
+                                                - generic [ref=e96]:
+                                                      - img [ref=e349]
+                                                      - generic [ref=e97]:
+                                                            - generic [ref=e100]:
+                                                                  - img [ref=e712]
+                                                                  - generic [ref=e104]:
+                                                                        - paragraph [ref=e105]: Lingüista PRE
+                                                                        - generic [ref=e107]:
+                                                                              - img [ref=e713]
+                                                                              - paragraph [ref=e109]: minimax/minimax-m2.5
+                                                            - generic [ref=e110]:
+                                                                  - img
+                                          - button [ref=e714]:
+                                                - generic [ref=e113]:
+                                                      - img [ref=e352]
+                                                      - generic [ref=e114]:
+                                                            - generic [ref=e117]:
+                                                                  - img [ref=e715]
+                                                                  - generic [ref=e121]:
+                                                                        - paragraph [ref=e122]: Bibliotecario
+                                                                        - generic [ref=e124]:
+                                                                              - img [ref=e716]
+                                                                              - paragraph [ref=e126]: google/gemini-2.5-flash-lite
+                                                            - generic [ref=e127]:
+                                                                  - img
+                                          - button [ref=e717]:
+                                                - generic [ref=e130]:
+                                                      - img [ref=e402]
+                                                      - generic [ref=e131]:
+                                                            - generic [ref=e134]:
+                                                                  - img [ref=e718]
+                                                                  - generic [ref=e138]:
+                                                                        - paragraph [ref=e139]: Source Worker
+                                                                        - generic [ref=e141]:
+                                                                              - img [ref=e719]
+                                                                              - paragraph [ref=e143]: google/gemini-2.5-flash-lite
+                                                                        - generic [ref=e144]:
+                                                                              - img [ref=e720]
+                                                                              - img [ref=e721]
+                                                                              - img [ref=e722]
+                                                                              - img [ref=e723]
+                                                                              - img [ref=e724]
+                                                            - generic [ref=e150]:
+                                                                  - img
+                                          - button [ref=e725]:
+                                                - generic [ref=e153]:
+                                                      - img [ref=e405]
+                                                      - generic [ref=e154]:
+                                                            - generic [ref=e157]:
+                                                                  - img [ref=e726]
+                                                                  - paragraph [ref=e162]: Has Results?
+                                                            - generic [ref=e163]:
+                                                                  - img
+                                                            - generic [ref=e164]:
+                                                                  - img
+                                          - button [ref=e727]:
+                                                - generic [ref=e167]:
+                                                      - img [ref=e408]
+                                                      - generic [ref=e168]:
+                                                            - generic [ref=e171]:
+                                                                  - img [ref=e728]
+                                                                  - paragraph [ref=e176]: Evidence Merger
+                                                            - generic [ref=e177]:
+                                                                  - img
+                                          - button [ref=e729]:
+                                                - generic [ref=e180]:
+                                                      - img [ref=e411]
+                                                      - generic [ref=e181]:
+                                                            - generic [ref=e184]:
+                                                                  - img [ref=e730]
+                                                                  - generic [ref=e188]:
+                                                                        - paragraph [ref=e189]: Síntesis Final
+                                                                        - generic [ref=e191]:
+                                                                              - img [ref=e731]
+                                                                              - paragraph [ref=e193]: minimax/minimax-m2.5
+                                                            - generic [ref=e194]:
+                                                                  - img
+                                          - button [ref=e732]:
+                                                - generic [ref=e197]:
+                                                      - img [ref=e414]
+                                                      - generic [ref=e198]:
+                                                            - generic [ref=e201]:
+                                                                  - img [ref=e733]
+                                                                  - paragraph [ref=e206]: Reply
+                                                            - generic [ref=e207]:
+                                                                  - img
+                                          - button [ref=e734]:
+                                                - generic [ref=e210]:
+                                                      - img [ref=e417]
+                                                      - generic [ref=e211]:
+                                                            - generic [ref=e214]:
+                                                                  - img [ref=e735]
+                                                                  - paragraph [ref=e219]: Fallback Reply
+                                                            - generic [ref=e220]:
+                                                                  - img
+                        - group [ref=e736]:
+                              - button [ref=e737] [cursor=pointer]:
+                                    - img [ref=e224]
+                              - button [ref=e738] [cursor=pointer]:
+                                    - img [ref=e228]
+                              - button [ref=e739] [cursor=pointer]:
+                                    - img [ref=e232]
+                  - generic [ref=e235]:
+                        - button [ref=e740] [cursor=pointer]:
+                              - img [ref=e237]
+                        - button [disabled]:
+                              - img
+                        - button [ref=e741] [cursor=pointer]:
+                              - img [ref=e240]
+                        - button [ref=e742] [cursor=pointer]:
+                              - img [ref=e243]
+                        - button [ref=e743] [cursor=pointer]:
+                              - img [ref=e246]
+                        - button [ref=e744] [cursor=pointer]:
+                              - img [ref=e250]
+                  - img [ref=e745]
+                  - img [ref=e264]
+                  - button [ref=e746] [cursor=pointer]:
+                        - img [ref=e267]
+                  - button [ref=e747] [cursor=pointer]:
+                        - img [ref=e269]
+                  - button [ref=e748] [cursor=pointer]:
+                        - img [ref=e281]
+                  - button [ref=e749] [cursor=pointer]:
+                        - img [ref=e285]
+                  - button [ref=e750] [cursor=pointer]:
+                        - img [ref=e289]
+                  - generic [ref=e303]:
+                        - generic [ref=e305]:
+                              - generic [ref=e306]:
+                                    - img [ref=e751]
+                                    - paragraph [ref=e311]: Hi there! How can I help?
+                              - generic [ref=e312]:
+                                    - img [ref=e752]
+                                    - paragraph [ref=e317]: cual es la mejor libreria en new York ?
+                              - generic [ref=e318]:
+                                    - img [ref=e753]
+                                    - button [ref=e754] [cursor=pointer]:
+                                          - generic [ref=e324]:
+                                                - img [ref=e326]
+                                                - img [ref=e329]
+                                                - paragraph [ref=e331]: Process Flow
+                              - generic [ref=e364]:
+                                    - img [ref=e755]
+                                    - paragraph [ref=e369]: What are the best libraries in NYC?
+                              - generic [ref=e370]:
+                                    - img [ref=e756]
+                                    - generic [ref=e372]:
+                                          - generic [ref=e374]:
+                                                - button [expanded] [ref=e757] [cursor=pointer]:
+                                                      - generic [ref=e376]:
+                                                            - img [ref=e430]
+                                                            - img [ref=e419]
+                                                            - paragraph [ref=e390]: Process Flow
+                                                - region [ref=e435]:
+                                                      - separator [ref=e436]
+                                                      - tree [ref=e438]:
+                                                            - treeitem [expanded] [selected] [ref=e758]:
+                                                                  - generic [ref=e440] [cursor=pointer]:
+                                                                        - img [ref=e442]
+                                                                        - generic [ref=e445]:
+                                                                              - img [ref=e447]
+                                                                              - paragraph [ref=e449]: Start
+                                                                              - button [ref=e759]:
+                                                                                    - img [ref=e451]
+                                                                              - img [ref=e460]
+                                                                  - group [ref=e462]:
+                                                                        - treeitem [expanded] [ref=e760]:
+                                                                              - generic [ref=e466] [cursor=pointer]:
+                                                                                    - img [ref=e468]
+                                                                                    - generic [ref=e471]:
+                                                                                          - img [ref=e473]
+                                                                                          - paragraph [ref=e475]: Router
+                                                                                          - button [ref=e761]:
+                                                                                                - img [ref=e477]
+                                                                                          - img [ref=e486]
+                                                                              - group [ref=e488]:
+                                                                                    - treeitem [expanded] [ref=e762]:
+                                                                                          - generic [ref=e492] [cursor=pointer]:
+                                                                                                - img [ref=e494]
+                                                                                                - generic [ref=e497]:
+                                                                                                      - img [ref=e499]
+                                                                                                      - paragraph [ref=e501]: Lingüista PRE
+                                                                                                      - button [ref=e763]:
+                                                                                                            - img [ref=e503]
+                                                                                                      - img [ref=e512]
+                                                                                          - group [ref=e514]:
+                                                                                                - treeitem [expanded] [ref=e764]:
+                                                                                                      - generic [ref=e518] [cursor=pointer]:
+                                                                                                            - img [ref=e520]
+                                                                                                            - generic [ref=e523]:
+                                                                                                                  - img [ref=e525]
+                                                                                                                  - paragraph [ref=e529]: Bibliotecario
+                                                                                                                  - button [ref=e765]:
+                                                                                                                        - img [ref=e531]
+                                                                                                                  - img [ref=e540]
+                                                                                                      - group [ref=e542]:
+                                                                                                            - treeitem [expanded] [ref=e766]:
+                                                                                                                  - generic [ref=e546] [cursor=pointer]:
+                                                                                                                        - img [ref=e548]
+                                                                                                                        - generic [ref=e551]:
+                                                                                                                              - img [ref=e553]
+                                                                                                                              - paragraph [ref=e557]: Source Worker
+                                                                                                                              - button [ref=e767]:
+                                                                                                                                    - img [ref=e559]
+                                                                                                                              - img [ref=e568]
+                                                                                                                  - group [ref=e570]:
+                                                                                                                        - treeitem [expanded] [ref=e768]:
+                                                                                                                              - generic [ref=e574] [cursor=pointer]:
+                                                                                                                                    - img [ref=e576]
+                                                                                                                                    - generic [ref=e579]:
+                                                                                                                                          - img [ref=e581]
+                                                                                                                                          - paragraph [ref=e586]: Has Results?
+                                                                                                                                          - button [ref=e769]:
+                                                                                                                                                - img [ref=e588]
+                                                                                                                                          - img [ref=e597]
+                                                                                                                              - group [ref=e599]:
+                                                                                                                                    - generic [ref=e601]:
+                                                                                                                                          - treeitem [expanded] [ref=e770]:
+                                                                                                                                                - generic [ref=e603] [cursor=pointer]:
+                                                                                                                                                      - img [ref=e605]
+                                                                                                                                                      - generic [ref=e608]:
+                                                                                                                                                            - img [ref=e610]
+                                                                                                                                                            - paragraph [ref=e612]: Evidence Merger
+                                                                                                                                                            - button [ref=e771]:
+                                                                                                                                                                  - img [ref=e614]
+                                                                                                                                                            - img [ref=e623]
+                                                                                                                                                - group [ref=e625]:
+                                                                                                                                                      - treeitem [expanded] [ref=e772]:
+                                                                                                                                                            - generic [ref=e629] [cursor=pointer]:
+                                                                                                                                                                  - img [ref=e631]
+                                                                                                                                                                  - generic [ref=e634]:
+                                                                                                                                                                        - img [ref=e636]
+                                                                                                                                                                        - paragraph [ref=e638]: Síntesis Final
+                                                                                                                                                                        - button [ref=e773]:
+                                                                                                                                                                              - img [ref=e640]
+                                                                                                                                                                        - img [ref=e649]
+                                                                                                                                                            - group [ref=e651]:
+                                                                                                                                                                  - treeitem [ref=e774]:
+                                                                                                                                                                        - generic [ref=e657] [cursor=pointer]:
+                                                                                                                                                                              - img [ref=e659]
+                                                                                                                                                                              - paragraph [ref=e661]: Reply
+                                                                                                                                                                              - button [ref=e775]:
+                                                                                                                                                                                    - img [ref=e663]
+                                                                                                                                                                              - img [ref=e672]
+                                                                                                                                          - treeitem [ref=e776]:
+                                                                                                                                                - generic [ref=e677] [cursor=pointer]:
+                                                                                                                                                      - img [ref=e679]
+                                                                                                                                                      - paragraph [ref=e681]: Fallback Reply
+                                                                                                                                                      - button [ref=e777]:
+                                                                                                                                                            - img [ref=e683]
+                                                                                                                                                      - img [ref=e692]
+                                          - paragraph [ref=e423]: undefinedundefined
+                        - separator [ref=e332]
+                        - generic [ref=e335]:
+                              - textbox [ref=e778]:
+                                    - /placeholder: Type your question...
+                              - button [ref=e426] [cursor=pointer]:
+                                    - img [ref=e427]
+                              - group
+                  - link [ref=e779] [cursor=pointer]:
+                        - /url: https://reactflow.dev
+                        - text: React Flow
+      - dialog [ref=e782]:
+            - generic [ref=e784]:
+                  - generic [ref=e785]:
+                        - img [ref=e788]
+                        - heading "Reply" [level=5] [ref=e790]
+                  - group [ref=e792]:
+                        - button "Rendered" [pressed] [ref=e793] [cursor=pointer]: Rendered
+                        - button "Raw" [ref=e794] [cursor=pointer]: Raw
+                  - generic [ref=e795]:
+                        - heading "Input" [level=5] [ref=e796]
+                        - paragraph [ref=e799]:
+                              - emphasis [ref=e800]: No data
+                        - heading "Output" [level=5] [ref=e801]
+                        - paragraph [ref=e804]:
+                              - emphasis [ref=e805]: No data
+                        - heading "State" [level=5] [ref=e806]
+                        - generic [ref=e808]: "{ \"original_query\": \"\", \"user_language\": \"\", \"territory\": \"\", \"intent\": \"\", \"query_normalized\": \"\", \"recommended_sources\": \"[]\", \"router_result\": \"{\\\"language\\\":\\\"en\\\",\\\"territory\\\":\\\"nyc\\\",\\\"intent\\\":\\\"knowledge_search\\\",\\\"query_normalized\\\":\\\"best libraries in NYC\\\",\\\"recommended_sources\\\":[\\\"knowledge.nyc\\\",\\\"knowledge.global\\\"]}\", \"search_queries\": \"{\\\"original_language\\\": \\\"en\\\", \\\"translations\\\": {}}\", \"search_plan\": \"```json\\n[\\n {\\n \\\"step\\\": 1,\\n \\\"source\\\": \\\"google\\\",\\n \\\"query\\\": \\\"best libraries in NYC\\\",\\n \\\"priority\\\": \\\"primary\\\",\\n \\\"match_count\\\": \\\"1-5\\\",\\n \\\"reasoning\\\": \\\"This is a direct translation of the user's query and is likely to yield relevant results from general web searches.\\\"\\n },\\n {\\n \\\"step\\\": 2,\\n \\\"source\\\": \\\"google\\\",\\n \\\"query\\\": \\\"NYC public library branches\\\",\\n \\\"priority\\\": \\\"primary\\\",\\n \\\"match_count\\\": \\\"1-5\\\",\\n \\\"reasoning\\\": \\\"Focuses on the publicly accessible library system in NYC, which is a key component of 'libraries in NYC'.\\\"\\n },\\n {\\n \\\"step\\\": 3,\\n \\\"source\\\": \\\"google\\\",\\n \\\"query\\\": \\\"most popular libraries New York City\\\",\\n \\\"priority\\\": \\\"fallback\\\",\\n \\\"match_count\\\": \\\"1-5\\\",\\n \\\"reasoning\\\": \\\"A variation on the initial query to capture different phrasing that might lead to relevant lists or articles.\\\"\\n }\\n]\\n```\", \"search_results\": \"I found several datasets related to \\\"library\\\" in NYC, but they seem to be related to mobility surveys, public safety, parking violations, and environmental sensors, rather than actual libraries. It's possible there isn't a dataset specifically cataloging libraries.\\n\\nWould you like me to search for something else, or perhaps try a broader search term?\", \"evidence\": \"[]\", \"final_answer\": \"I don't have any source evidence available to answer your question about the best libraries in NYC. The evidence array provided is empty, so I'm unable to cite any sources.\\n\\nIf you can provide sources or URLs to relevant information about NYC libraries, I'd be happy to synthesize a well-cited response for you. Alternatively, you may want to check resources like the New York Public Library website (nypl.org) or NYC Department of Records and Information Services for official information about libraries in New York City.\" }"
+            - button "Close" [ref=e810] [cursor=pointer]: Close

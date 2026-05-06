@@ -78,6 +78,34 @@ full_flow_validation(fix: true, checkGraph: true)
 
 Always use UUIDs — never type names.
 
-## Known Gotcha
+## Known Gotchas
+
+### 1. MCP schema strips `viewport`
 
 The MCP schema for `create_chatflow` / `update_chatflow` strips `viewport` via Zod (it's not in the schema). `fixFlowData()` injects a default `{x:0, y:0, zoom:1}`. If a specific viewport is needed, use `repair_chatflow` to inject it directly into the DB after creation.
+
+### 2. DirectReply node field name: `directReplyMessage`, NOT `replyMessage`
+
+The DirectReply node in AgentFlow V2 uses `directReplyMessage` as the field name (per node definition `inputs[0].name`). Using `replyMessage` silently fails — the node renders an empty space instead of the variable content. Always verify field names against `flow-control_get_node(nodeName)` before editing.
+
+### 3. Condition node `sourceHandle` format
+
+Condition node edges MUST match the node's `outputAnchors` IDs. These are `conditionAgentflow_N-output-0` (first condition) and `conditionAgentflow_N-output-1` (else branch). Custom handle names like `goEvidence` or `goFallback` cause edges to not render in the canvas UI. The long format `conditionAgentflow_N-output-conditionAgentflow-condition-X` also doesn't work. Always check `outputAnchors` on the Condition node to find the correct handle IDs.
+
+### 4. AgentFlow `startTemplate` is NOT used at runtime
+
+The `startTemplate` field exists in the Start node JSON but is **never read by the runtime code** (`Start.ts`). The Start node only processes `startState` (defaults) and the `question` input. `startTemplate` is a UI-only field that Flowise shows in the editor but ignores during execution.
+
+**Fix**: Always add a state update in the first processing node (e.g., Router) to set flow state variables from `{{question}}` or `{{output}}`. Never rely on `startTemplate` to populate state values.
+
+### 5. LLMs wrap JSON in markdown fences
+
+Models like `gemini-2.5-flash-lite` frequently ignore "NO markdown" instructions and wrap JSON output in `\`\`\`json ... \`\`\``. Add a Custom Function node downstream to strip fences, rather than relying on prompt engineering alone.
+
+### 6. Large flowData updates via MCP fail silently
+
+The MCP `update_chatflow` tool has a ~5KB payload limit for inline parameters. For flows larger than that, use direct HTTP PUT to the Flowise API (`https://flow-stable-flow.up.railway.app/api/v1/chatflows/:id`) with Bearer auth.
+
+### 7. Bibliotecario must list valid MCP source names
+
+The Bibliotecario agent generates search plans with `source` fields. If the prompt does not explicitly list the valid source names (`nyc_data`, `ue_data`, `madeira_data`, `pt_data`, `openalex`), LLMs invent fake sources like `google` or `web_search` which don't map to any MCP tool. Always include a Valid Sources table and a Source Mapping from router names (e.g., `knowledge.nyc` → `nyc_data`) in the prompt.

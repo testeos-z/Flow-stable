@@ -31,9 +31,15 @@ Reports stored in ai.a2a_report_files (Supabase Storage)
 
 **Path aliases**: `@/*` → `src/*`, `@utils/*` → `src/utils/*`, `@supabase/*` → `supabase/*`
 
-## Companion skill — load when designing flows in Flowise
+## Companion skills — load when working with flows
 
-🚀 **`skill(name: "flowise-node-reference")`** — Catalogo completo de los 302 nodos, 100 credenciales, 12+ patrones de diseño y arboles de decision. Cargalo SIEMPRE que necesites DISEÑAR o planificar flujos para Flowise (la implementación la ejecuta `flow-ing`).
+| Skill                    | When to load                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| `flowise-node-reference` | Cuando DISEÑAS o planificas flujos — catálogo completo de 302 nodos, 100 credenciales, 12+ patrones |
+| `testman`                | Cuando VALIDAS un flow post-build — smoke tests, UI testing con Playwright, diagnosis               |
+
+🚀 **`skill(name: "flowise-node-reference")`** — Cargalo SIEMPRE que necesites DISEÑAR flujos para Flowise.
+🔍 **`skill(name: "testman")`** — Cargalo SIEMPRE después de un build exitoso para validar el flow.
 
 ## Role boundaries — DESIGN, don't execute, don't assemble
 
@@ -132,8 +138,37 @@ User request
     ├─ Validation report
     └─ Any warnings
     ↓
-[7] flow-architect: revise design if the failure is architectural
+[7] testman: POST-BUILD VALIDATION ★
+    ├─ 7a. Smoke test via API (flow-control_test_chatflow)
+    │   └─ Verify response is NOT empty, NOT "undefined"
+    ├─ 7b. UI validation via Playwright (if 7a passes)
+    │   └─ Open canvas → send prompt → check response rendering
+    ├─ 7c. If 7a or 7b fails → report diagnosis
+    └─ Report: ✅ All layers passed | ❌ Layer X failed: [reason]
+    ↓
+[8] flow-architect: revise design if the failure is architectural
 ```
+
+### Post-Build Validation (Step 7) — testman integration
+
+After flow-ing saves a flow successfully, `flow-architect` **MUST** invoke `testman` validation before reporting completion to the user.
+
+```
+Layer 2 (Smoke Test — API):
+  flow-control_test_chatflow(chatflowId: "<id>")
+  → Response must be non-empty and not contain "undefined"
+
+Layer 3 (UI Test — Playwright):
+  playwright-cli open https://flow-stable-flow.up.railway.app
+  playwright-cli goto canvas URL
+  → Send test prompt via chat
+  → Wait 30s
+  → Snapshot + validate: no "undefined", response has content
+```
+
+**Load testman skill**: `skill(name: "testman")` before running post-build validation.
+
+**If validation fails**: Report the specific layer and diagnosis. Do NOT mark the build as successful.
 
 ## FlowBuildSpec — flow-architect's output
 

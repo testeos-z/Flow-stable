@@ -1,0 +1,316 @@
+- generic [ref=e3]:
+      - banner [ref=e4]:
+            - generic [ref=e6]:
+                  - generic [ref=e7]:
+                        - button "Back" [ref=e1249] [cursor=pointer]:
+                              - img [ref=e11]
+                        - generic [ref=e14]:
+                              - paragraph [ref=e15]: alejandria v2 save
+                              - button "Edit Name" [ref=e1250] [cursor=pointer]:
+                                    - img [ref=e18]
+                  - generic [ref=e21]:
+                        - button "API Endpoint" [ref=e1251] [cursor=pointer]:
+                              - img [ref=e24]
+                        - button "Save Agents" [ref=e1252] [cursor=pointer]:
+                              - img [ref=e30]
+                        - button "Settings" [ref=e1253] [cursor=pointer]:
+                              - img [ref=e36]
+      - generic [ref=e42]:
+            - generic [ref=e43]:
+                  - generic [ref=e44]:
+                        - generic:
+                              - img:
+                                    - generic:
+                                          - button "Edge from startAgentflow_0 to llmAgentflow_0" [ref=e1254] [cursor=pointer]
+                                          - button "Edge from llmAgentflow_0 to llmAgentflow_1" [ref=e1255] [cursor=pointer]
+                                          - button "Edge from llmAgentflow_1 to agentAgentflow_0" [ref=e1256] [cursor=pointer]
+                                          - button "Edge from agentAgentflow_0 to agentAgentflow_1" [ref=e1257] [cursor=pointer]
+                                          - button "Edge from agentAgentflow_1 to conditionAgentflow_0" [ref=e1258] [cursor=pointer]
+                                          - button "Edge from customFunctionAgentflow_0 to llmAgentflow_2" [ref=e1259] [cursor=pointer]
+                                          - button "Edge from llmAgentflow_2 to directReplyAgentflow_0" [ref=e1260] [cursor=pointer]
+                              - generic:
+                                    - button "startAgentflow Start" [ref=e1261]:
+                                          - generic [ref=e68]:
+                                                - img [ref=e343]
+                                                - generic [ref=e69]:
+                                                      - generic [ref=e70]:
+                                                            - img "startAgentflow" [ref=e1262]
+                                                            - paragraph [ref=e75]: Start
+                                                      - generic [ref=e76]:
+                                                            - img
+                                    - button "llmAgentflow Router chatOpenRouter google/gemini-2.5-flash-lite" [ref=e1263]:
+                                          - generic [ref=e79]:
+                                                - img [ref=e346]
+                                                - generic [ref=e80]:
+                                                      - generic [ref=e83]:
+                                                            - img "llmAgentflow" [ref=e1264]
+                                                            - generic [ref=e87]:
+                                                                  - paragraph [ref=e88]: Router
+                                                                  - generic [ref=e90]:
+                                                                        - img "chatOpenRouter" [ref=e1265]
+                                                                        - paragraph [ref=e92]: google/gemini-2.5-flash-lite
+                                                      - generic [ref=e93]:
+                                                            - img
+                                    - button "llmAgentflow Lingüista PRE chatOpenRouter minimax/minimax-m2.5" [ref=e1266]:
+                                          - generic [ref=e96]:
+                                                - img [ref=e349]
+                                                - generic [ref=e97]:
+                                                      - generic [ref=e100]:
+                                                            - img "llmAgentflow" [ref=e1267]
+                                                            - generic [ref=e104]:
+                                                                  - paragraph [ref=e105]: Lingüista PRE
+                                                                  - generic [ref=e107]:
+                                                                        - img "chatOpenRouter" [ref=e1268]
+                                                                        - paragraph [ref=e109]: minimax/minimax-m2.5
+                                                      - generic [ref=e110]:
+                                                            - img
+                                    - button "agentAgentflow Bibliotecario chatOpenRouter google/gemini-2.5-flash-lite" [ref=e1269]:
+                                          - generic [ref=e113]:
+                                                - img [ref=e352]
+                                                - generic [ref=e114]:
+                                                      - generic [ref=e117]:
+                                                            - img "agentAgentflow" [ref=e1270]
+                                                            - generic [ref=e121]:
+                                                                  - paragraph [ref=e122]: Bibliotecario
+                                                                  - generic [ref=e124]:
+                                                                        - img "chatOpenRouter" [ref=e1271]
+                                                                        - paragraph [ref=e126]: google/gemini-2.5-flash-lite
+                                                      - generic [ref=e127]:
+                                                            - img
+                                    - button "agentAgentflow Source Worker chatOpenRouter google/gemini-2.5-flash-lite customMcpServerTool customMcpServerTool customMcpServerTool customMcpServerTool customMcpServerTool" [ref=e1272]:
+                                          - generic [ref=e130]:
+                                                - img [ref=e402]
+                                                - generic [ref=e131]:
+                                                      - generic [ref=e134]:
+                                                            - img "agentAgentflow" [ref=e1273]
+                                                            - generic [ref=e138]:
+                                                                  - paragraph [ref=e139]: Source Worker
+                                                                  - generic [ref=e141]:
+                                                                        - img "chatOpenRouter" [ref=e1274]
+                                                                        - paragraph [ref=e143]: google/gemini-2.5-flash-lite
+                                                                  - generic [ref=e144]:
+                                                                        - img "customMcpServerTool" [ref=e1275]
+                                                                        - img "customMcpServerTool" [ref=e1276]
+                                                                        - img "customMcpServerTool" [ref=e1277]
+                                                                        - img "customMcpServerTool" [ref=e1278]
+                                                                        - img "customMcpServerTool" [ref=e1279]
+                                                      - generic [ref=e150]:
+                                                            - img
+                                    - button "conditionAgentflow Has Results?" [ref=e1280]:
+                                          - generic [ref=e153]:
+                                                - img [ref=e405]
+                                                - generic [ref=e154]:
+                                                      - generic [ref=e157]:
+                                                            - img "conditionAgentflow" [ref=e1281]
+                                                            - paragraph [ref=e162]: Has Results?
+                                                      - generic [ref=e163]:
+                                                            - img
+                                                      - generic [ref=e164]:
+                                                            - img
+                                    - button "customFunctionAgentflow Evidence Merger" [ref=e1282]:
+                                          - generic [ref=e167]:
+                                                - img [ref=e408]
+                                                - generic [ref=e168]:
+                                                      - generic [ref=e171]:
+                                                            - img "customFunctionAgentflow" [ref=e1283]
+                                                            - paragraph [ref=e176]: Evidence Merger
+                                                      - generic [ref=e177]:
+                                                            - img
+                                    - button "llmAgentflow Síntesis Final chatOpenRouter minimax/minimax-m2.5" [ref=e1284]:
+                                          - generic [ref=e180]:
+                                                - img [ref=e411]
+                                                - generic [ref=e181]:
+                                                      - generic [ref=e184]:
+                                                            - img "llmAgentflow" [ref=e1285]
+                                                            - generic [ref=e188]:
+                                                                  - paragraph [ref=e189]: Síntesis Final
+                                                                  - generic [ref=e191]:
+                                                                        - img "chatOpenRouter" [ref=e1286]
+                                                                        - paragraph [ref=e193]: minimax/minimax-m2.5
+                                                      - generic [ref=e194]:
+                                                            - img
+                                    - button "directReplyAgentflow Reply" [ref=e1287]:
+                                          - generic [ref=e197]:
+                                                - img [ref=e414]
+                                                - generic [ref=e198]:
+                                                      - generic [ref=e201]:
+                                                            - img "directReplyAgentflow" [ref=e1288]
+                                                            - paragraph [ref=e206]: Reply
+                                                      - generic [ref=e207]:
+                                                            - img
+                                    - button "directReplyAgentflow Fallback Reply" [ref=e1289]:
+                                          - generic [ref=e210]:
+                                                - img [ref=e417]
+                                                - generic [ref=e211]:
+                                                      - generic [ref=e214]:
+                                                            - img "directReplyAgentflow" [ref=e1290]
+                                                            - paragraph [ref=e219]: Fallback Reply
+                                                      - generic [ref=e220]:
+                                                            - img
+                  - group "Basic button group" [ref=e1291]:
+                        - button "Duplicate" [ref=e1292] [cursor=pointer]:
+                              - img [ref=e224]
+                        - button "Delete" [ref=e1293] [cursor=pointer]:
+                              - img [ref=e228]
+                        - button "Info" [ref=e1294] [cursor=pointer]:
+                              - img [ref=e232]
+            - generic [ref=e235]:
+                  - button "zoom in" [ref=e1295] [cursor=pointer]:
+                        - img [ref=e237]
+                  - button "zoom out" [disabled]:
+                        - img
+                  - button "fit view" [ref=e1296] [cursor=pointer]:
+                        - img [ref=e240]
+                  - button "toggle interactivity" [ref=e1297] [cursor=pointer]:
+                        - img [ref=e243]
+                  - button "toggle snapping" [ref=e1298] [cursor=pointer]:
+                        - img [ref=e246]
+                  - button "toggle background" [ref=e1299] [cursor=pointer]:
+                        - img [ref=e250]
+            - img "React Flow mini map" [ref=e1300]
+            - img [ref=e264]
+            - button "add" [ref=e1301] [cursor=pointer]:
+                  - img [ref=e267]
+            - button "generate" [ref=e1302] [cursor=pointer]:
+                  - img [ref=e269]
+            - button "chat" [ref=e1303] [cursor=pointer]:
+                  - img [ref=e281]
+            - button "clear" [ref=e1304] [cursor=pointer]:
+                  - img [ref=e285]
+            - button "expand" [ref=e1305] [cursor=pointer]:
+                  - img [ref=e289]
+            - generic [ref=e303]:
+                  - generic [ref=e305]:
+                        - generic [ref=e306]:
+                              - img "AI" [ref=e1306]
+                              - paragraph [ref=e311]: Hi there! How can I help?
+                        - generic [ref=e312]:
+                              - img "Me" [ref=e1307]
+                              - paragraph [ref=e317]: cual es la mejor libreria en new York ?
+                        - generic [ref=e318]:
+                              - img "AI" [ref=e1308]
+                              - button "Process Flow" [ref=e1309] [cursor=pointer]:
+                                    - generic [ref=e324]:
+                                          - img [ref=e326]
+                                          - img [ref=e329]
+                                          - paragraph [ref=e331]: Process Flow
+                        - generic [ref=e364]:
+                              - img "Me" [ref=e1310]
+                              - paragraph [ref=e369]: What are the best libraries in NYC?
+                        - generic [ref=e370]:
+                              - img "AI" [ref=e1311]
+                              - generic [ref=e372]:
+                                    - generic [ref=e374]:
+                                          - button "Process Flow" [expanded] [ref=e1312] [cursor=pointer]:
+                                                - generic [ref=e376]:
+                                                      - img [ref=e430]
+                                                      - img [ref=e419]
+                                                      - paragraph [ref=e390]: Process Flow
+                                          - region [ref=e435]:
+                                                - separator [ref=e436]
+                                                - tree [ref=e438]:
+                                                      - treeitem "Start" [expanded] [ref=e1313]:
+                                                            - generic [ref=e876] [cursor=pointer]:
+                                                                  - img [ref=e878]
+                                                                  - generic [ref=e881]:
+                                                                        - img [ref=e883]
+                                                                        - paragraph [ref=e885]: Start
+                                                                        - button "View Details" [ref=e1314]:
+                                                                              - img [ref=e887]
+                                                                        - img [ref=e896]
+                                                            - group [ref=e898]:
+                                                                  - treeitem "Router" [expanded] [ref=e1315]:
+                                                                        - generic [ref=e902] [cursor=pointer]:
+                                                                              - img [ref=e904]
+                                                                              - generic [ref=e907]:
+                                                                                    - img [ref=e909]
+                                                                                    - paragraph [ref=e911]: Router
+                                                                                    - button "View Details" [ref=e1316]:
+                                                                                          - img [ref=e913]
+                                                                                    - img [ref=e922]
+                                                                        - group [ref=e924]:
+                                                                              - treeitem "Lingüista PRE" [expanded] [ref=e1317]:
+                                                                                    - generic [ref=e928] [cursor=pointer]:
+                                                                                          - img [ref=e930]
+                                                                                          - generic [ref=e933]:
+                                                                                                - img [ref=e935]
+                                                                                                - paragraph [ref=e937]: Lingüista PRE
+                                                                                                - button "View Details" [ref=e1318]:
+                                                                                                      - img [ref=e939]
+                                                                                                - img [ref=e948]
+                                                                                    - group [ref=e950]:
+                                                                                          - treeitem "Bibliotecario" [expanded] [ref=e1319]:
+                                                                                                - generic [ref=e954] [cursor=pointer]:
+                                                                                                      - img [ref=e956]
+                                                                                                      - generic [ref=e959]:
+                                                                                                            - img [ref=e961]
+                                                                                                            - paragraph [ref=e965]: Bibliotecario
+                                                                                                            - button "View Details" [ref=e1320]:
+                                                                                                                  - img [ref=e967]
+                                                                                                            - img [ref=e976]
+                                                                                                - group [ref=e978]:
+                                                                                                      - treeitem "Source Worker" [expanded] [ref=e1321]:
+                                                                                                            - generic [ref=e982] [cursor=pointer]:
+                                                                                                                  - img [ref=e984]
+                                                                                                                  - generic [ref=e987]:
+                                                                                                                        - img [ref=e989]
+                                                                                                                        - paragraph [ref=e993]: Source Worker
+                                                                                                                        - button "View Details" [ref=e1322]:
+                                                                                                                              - img [ref=e995]
+                                                                                                                        - img [ref=e1004]
+                                                                                                            - group [ref=e1006]:
+                                                                                                                  - treeitem "Has Results?" [expanded] [ref=e1323]:
+                                                                                                                        - generic [ref=e1010] [cursor=pointer]:
+                                                                                                                              - img [ref=e1012]
+                                                                                                                              - generic [ref=e1015]:
+                                                                                                                                    - img [ref=e1017]
+                                                                                                                                    - paragraph [ref=e1022]: Has Results?
+                                                                                                                                    - button "View Details" [ref=e1324]:
+                                                                                                                                          - img [ref=e1024]
+                                                                                                                                    - img [ref=e1033]
+                                                                                                                        - group [ref=e1035]:
+                                                                                                                              - generic [ref=e1037]:
+                                                                                                                                    - treeitem "Evidence Merger" [expanded] [ref=e1325]:
+                                                                                                                                          - generic [ref=e1039] [cursor=pointer]:
+                                                                                                                                                - img [ref=e1041]
+                                                                                                                                                - generic [ref=e1044]:
+                                                                                                                                                      - img [ref=e1046]
+                                                                                                                                                      - paragraph [ref=e1048]: Evidence Merger
+                                                                                                                                                      - button "View Details" [ref=e1326]:
+                                                                                                                                                            - img [ref=e1050]
+                                                                                                                                                      - img [ref=e1059]
+                                                                                                                                          - group [ref=e1061]:
+                                                                                                                                                - treeitem "Síntesis Final" [expanded] [ref=e1327]:
+                                                                                                                                                      - generic [ref=e1065] [cursor=pointer]:
+                                                                                                                                                            - img [ref=e1067]
+                                                                                                                                                            - generic [ref=e1070]:
+                                                                                                                                                                  - img [ref=e1072]
+                                                                                                                                                                  - paragraph [ref=e1074]: Síntesis Final
+                                                                                                                                                                  - button "View Details" [ref=e1328]:
+                                                                                                                                                                        - img [ref=e1076]
+                                                                                                                                                                  - img [ref=e1085]
+                                                                                                                                                      - group [ref=e1087]:
+                                                                                                                                                            - treeitem "Reply" [selected] [ref=e1329]:
+                                                                                                                                                                  - generic [ref=e1093] [cursor=pointer]:
+                                                                                                                                                                        - img [ref=e1095]
+                                                                                                                                                                        - paragraph [ref=e1097]: Reply
+                                                                                                                                                                        - button "View Details" [active] [ref=e1330]:
+                                                                                                                                                                              - img [ref=e1099]
+                                                                                                                                                                        - img [ref=e1108]
+                                                                                                                                    - treeitem "Fallback Reply" [ref=e1331]:
+                                                                                                                                          - generic [ref=e1113] [cursor=pointer]:
+                                                                                                                                                - img [ref=e1115]
+                                                                                                                                                - paragraph [ref=e1117]: Fallback Reply
+                                                                                                                                                - button "View Details" [ref=e1332]:
+                                                                                                                                                      - img [ref=e1119]
+                                                                                                                                                - img [ref=e1128]
+                                    - paragraph [ref=e423]: undefinedundefined
+                  - separator [ref=e332]
+                  - generic [ref=e335]:
+                        - textbox "Type your question..." [ref=e1333]
+                        - button [ref=e426] [cursor=pointer]:
+                              - img [ref=e427]
+                        - group
+            - link "React Flow attribution" [ref=e1334] [cursor=pointer]:
+                  - /url: https://reactflow.dev
+                  - text: React Flow
