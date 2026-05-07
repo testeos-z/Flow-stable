@@ -1,0 +1,76 @@
+// Node Golden Template — Generic Flowise Node JSON
+// Applicable to ANY node type. Substitute all {placeholder} values with data
+// discovered via flow-control_get_node(nodeName).
+// Load this file during Step 4 of the flowise-node-creator methodology.
+{
+    "id": "{nodeName}_{N}",
+    "type": "customNode",
+    "position": {
+        "x": 0,
+        "y": 0
+    },
+    "data": {
+        "name": "{nodeName}_{N}",
+        "type": "{nodeName}",
+        "label": "{nodeName}",
+        "category": "{category_from_mcp}",
+        "version": "{version_from_mcp}",
+        "baseClasses": ["{baseClass_0_from_mcp}", "{baseClass_1_from_mcp}"],
+        "inputs": {
+            "{inputName_0}": {
+                "label": "{inputLabel_0}",
+                "name": "{inputName_0}",
+                "type": "{inputType_0}",
+                "description": "{inputDescription_0}",
+                "id": "{nodeName}_{N}-input-{nodeName}-{inputName_0}-{index}"
+            }
+        },
+        "inputAnchors": [
+            {
+                "label": "{inputLabel_0}",
+                "name": "{inputName_0}",
+                "type": "{inputType_0}",
+                "id": "{nodeName}_{N}-input-{nodeName}-{inputName_0}-{index}",
+                "list": false
+            }
+        ],
+        "outputAnchors": [
+            {
+                "label": "{outputLabel_0}",
+                "name": "{outputName_0}",
+                "type": "{outputType_0}",
+                "id": "{nodeName}_{N}-output-{nodeName}-{baseClass_0}-{index}",
+                "list": false
+            }
+        ],
+        "inputParams": [
+            {
+                "label": "{paramLabel_0}",
+                "name": "{paramName_0}",
+                "type": "{paramType_0}",
+                "description": "{paramDescription_0}",
+                "id": "{nodeName}_{N}-input-{nodeName}-{paramName_0}-{index}"
+            }
+        ],
+        "credential": "{uuid_or_empty_string}"
+    }
+}
+
+// Substitution guide:
+//   {nodeName}_{N}        → unique node ID, e.g. chatOpenRouter_0
+//   {category_from_mcp}   → from MCP response .category
+//   {version_from_mcp}    → from MCP response .version
+//   {baseClass_*_from_mcp}→ from MCP response .baseClasses array
+//   {inputName_*}         → from MCP response .inputs keys
+//   {inputLabel_*}        → from MCP response .inputs[*].label
+//   {inputType_*}         → from MCP response .inputs[*].type
+//   {inputDescription_*}  → from MCP response .inputs[*].description
+//   {outputName_*}        → from MCP response .outputAnchors[*].name
+//   {outputLabel_*}       → from MCP response .outputAnchors[*].label
+//   {outputType_*}        → from MCP response .outputAnchors[*].type
+//   {paramName_*}         → from MCP response .inputParams[*].name
+//   {paramLabel_*}        → from MCP response .inputParams[*].label
+//   {paramType_*}         → from MCP response .inputParams[*].type
+//   {paramDescription_*}  → from MCP response .inputParams[*].description
+//   {uuid_or_empty_string}→ resolved credential UUID, or "" if none required
+//   {index}               → zero-based index of the anchor/param in its array

@@ -1,0 +1,28 @@
+// Edge Template — Generic Flowise Edge JSON
+// Load this file when connecting a node to others in a CHATFLOW or AGENTFLOW.
+// Every edge MUST match source/output and target/input handle IDs exactly.
+{
+    "id": "e_{sourceNodeId}-{targetNodeId}",
+    "source": "{sourceNodeId}",
+    "target": "{targetNodeId}",
+    "sourceHandle": "{source_outputAnchors_id}",
+    "targetHandle": "{target_inputAnchors_id}",
+    "type": "smoothstep"
+}
+
+// Handle matching rules:
+//   sourceHandle MUST equal the source node's outputAnchors[*].id exactly.
+//   targetHandle MUST equal the target node's inputAnchors[*].id exactly.
+//   If the IDs do not match, the connection will not render in the Flowise canvas.
+//
+// Example:
+//   Source node: chatOpenRouter_0 with output anchor:
+//     id: "chatOpenRouter_0-output-chatOpenRouter-chatModel-0"
+//   Target node: toolAgent_0 with input anchor:
+//     id: "toolAgent_0-input-toolAgent-model-0"
+//   Edge sourceHandle: "chatOpenRouter_0-output-chatOpenRouter-chatModel-0"
+//   Edge targetHandle: "toolAgent_0-input-toolAgent-model-0"
+//
+// Viewport note:
+//   The viewport belongs at the flowData level, NOT inside the edge object.
+//   flowData.viewport = { "x": 0, "y": 0, "zoom": 1 }
