@@ -37,6 +37,16 @@ The **only agent authorized to write to Flowise**. Runs 5-stage testing pipeline
 
 If any stage fails → report errors, DO NOT save.
 
+## Skills
+
+### flowise-node-creator
+
+Any agent can load `flowise-node-creator` when it needs to construct or validate a single Flowise node JSON. It provides the generic 7-step methodology (discover, check compatibility, resolve credential, build, generate anchors, validate, return). When domain-specific rules are needed, follow this loading order:
+
+1. `flowise-node-creator` — generic methodology
+2. `node-specialist-*` — category-specific constraints (e.g., chat-models, tools)
+3. `flowise-node-reference` — catalog and compatibility lookups (restricted to `flow-architect` and `flow-ing`)
+
 ## MCP Servers
 
 | Server            | Purpose                       | Write?        |
