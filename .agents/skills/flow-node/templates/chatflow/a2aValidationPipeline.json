@@ -1,0 +1,509 @@
+{
+    "nodes": [
+        {
+            "id": "startNode_0",
+            "position": { "x": 250, "y": 50 },
+            "positionAbsolute": { "x": 250, "y": 50 },
+            "type": "customNode",
+            "width": 300,
+            "height": 120,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "startNode_0",
+                "label": "Start",
+                "name": "startNode",
+                "version": "1.0",
+                "type": "StartNode",
+                "category": "Utilities",
+                "description": "Validation pipeline entry point — receives user input",
+                "icon": "start.svg",
+                "baseClasses": ["StartNode"],
+                "inputs": {},
+                "inputParams": [],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "startNode_0-output",
+                        "name": "startNode",
+                        "label": "Start",
+                        "type": "StartNode",
+                        "baseClasses": ["StartNode"]
+                    }
+                ],
+                "outputs": {}
+            }
+        },
+        {
+            "id": "a2aRegistry_0",
+            "position": { "x": 250, "y": 220 },
+            "positionAbsolute": { "x": 250, "y": 220 },
+            "type": "customNode",
+            "width": 300,
+            "height": 320,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "a2aRegistry_0",
+                "label": "A2A Registry",
+                "name": "a2aRegistry",
+                "version": "1.0",
+                "type": "A2ARegistry",
+                "category": "Tools",
+                "description": "Register and discover agents with capabilities, MCP endpoints, and artifact types",
+                "icon": "a2aregistry.svg",
+                "baseClasses": ["A2ARegistry", "DynamicTool", "Tool"],
+                "inputs": {
+                    "storageBackend": "localjson",
+                    "operation": "register"
+                },
+                "inputParams": [
+                    {
+                        "label": "Storage Backend",
+                        "name": "storageBackend",
+                        "type": "options",
+                        "options": [
+                            { "label": "Local JSON", "name": "localjson" },
+                            { "label": "Supabase", "name": "supabase" },
+                            { "label": "PostgreSQL", "name": "postgres" },
+                            { "label": "SQLite", "name": "sqlite" }
+                        ],
+                        "default": "localjson",
+                        "id": "a2aRegistry_0-storageBackend"
+                    },
+                    {
+                        "label": "Operation",
+                        "name": "operation",
+                        "type": "options",
+                        "options": [
+                            { "label": "Register Agent", "name": "register" },
+                            { "label": "Get Agent", "name": "get" },
+                            { "label": "Find Agents", "name": "find" },
+                            { "label": "Update Status", "name": "updateStatus" }
+                        ],
+                        "default": "find",
+                        "id": "a2aRegistry_0-operation"
+                    },
+                    {
+                        "label": "Supabase Project URL",
+                        "name": "supabaseProjUrl",
+                        "type": "string",
+                        "optional": true,
+                        "additionalParams": true,
+                        "id": "a2aRegistry_0-supabaseProjUrl"
+                    }
+                ],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "a2aRegistry_0-output",
+                        "name": "a2aRegistry",
+                        "label": "A2A Registry",
+                        "type": "A2ARegistry",
+                        "baseClasses": ["A2ARegistry", "DynamicTool", "Tool"]
+                    }
+                ],
+                "outputs": {}
+            }
+        },
+        {
+            "id": "a2aTask_0",
+            "position": { "x": 250, "y": 590 },
+            "positionAbsolute": { "x": 250, "y": 590 },
+            "type": "customNode",
+            "width": 300,
+            "height": 370,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "a2aTask_0",
+                "label": "A2A Task/Message",
+                "name": "a2aTask",
+                "version": "1.0",
+                "type": "A2ATask",
+                "category": "Tools",
+                "description": "Manage A2A tasks with state machine (submitted→working→completed) and message exchange between agents",
+                "icon": "a2atask.svg",
+                "baseClasses": ["A2ATask", "DynamicTool", "Tool"],
+                "inputs": {
+                    "storageBackend": "localjson",
+                    "operation": "create"
+                },
+                "inputParams": [
+                    {
+                        "label": "Storage Backend",
+                        "name": "storageBackend",
+                        "type": "options",
+                        "options": [
+                            { "label": "Local JSON", "name": "localjson" },
+                            { "label": "Supabase", "name": "supabase" },
+                            { "label": "PostgreSQL", "name": "postgres" },
+                            { "label": "SQLite", "name": "sqlite" }
+                        ],
+                        "default": "localjson",
+                        "id": "a2aTask_0-storageBackend"
+                    },
+                    {
+                        "label": "Operation",
+                        "name": "operation",
+                        "type": "options",
+                        "options": [
+                            { "label": "Create Task", "name": "create" },
+                            { "label": "Get Task", "name": "get" },
+                            { "label": "Update Status", "name": "updateStatus" },
+                            { "label": "List Tasks", "name": "list" },
+                            { "label": "Send Message", "name": "sendMessage" },
+                            { "label": "Get Messages", "name": "getMessages" }
+                        ],
+                        "default": "list",
+                        "id": "a2aTask_0-operation"
+                    },
+                    {
+                        "label": "Supabase Project URL",
+                        "name": "supabaseProjUrl",
+                        "type": "string",
+                        "optional": true,
+                        "additionalParams": true,
+                        "id": "a2aTask_0-supabaseProjUrl"
+                    }
+                ],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "a2aTask_0-output",
+                        "name": "a2aTask",
+                        "label": "A2A Task/Message",
+                        "type": "A2ATask",
+                        "baseClasses": ["A2ATask", "DynamicTool", "Tool"]
+                    }
+                ],
+                "outputs": {}
+            }
+        },
+        {
+            "id": "a2aArtifact_0",
+            "position": { "x": 250, "y": 1010 },
+            "positionAbsolute": { "x": 250, "y": 1010 },
+            "type": "customNode",
+            "width": 300,
+            "height": 370,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "a2aArtifact_0",
+                "label": "A2A Artifact",
+                "name": "a2aArtifact",
+                "version": "1.0",
+                "type": "A2AArtifact",
+                "category": "Tools",
+                "description": "Register, share, and control access to A2A artifacts with ownership and permission grants",
+                "icon": "a2aartifact.svg",
+                "baseClasses": ["A2AArtifact", "DynamicTool", "Tool"],
+                "inputs": {
+                    "storageBackend": "localjson",
+                    "operation": "register"
+                },
+                "inputParams": [
+                    {
+                        "label": "Storage Backend",
+                        "name": "storageBackend",
+                        "type": "options",
+                        "options": [
+                            { "label": "Local JSON", "name": "localjson" },
+                            { "label": "Supabase", "name": "supabase" },
+                            { "label": "PostgreSQL", "name": "postgres" },
+                            { "label": "SQLite", "name": "sqlite" }
+                        ],
+                        "default": "localjson",
+                        "id": "a2aArtifact_0-storageBackend"
+                    },
+                    {
+                        "label": "Operation",
+                        "name": "operation",
+                        "type": "options",
+                        "options": [
+                            { "label": "Register", "name": "register" },
+                            { "label": "Get", "name": "get" },
+                            { "label": "List", "name": "list" },
+                            { "label": "Grant Access", "name": "grant" },
+                            { "label": "Revoke Access", "name": "revoke" },
+                            { "label": "Check Access", "name": "check" }
+                        ],
+                        "default": "list",
+                        "id": "a2aArtifact_0-operation"
+                    },
+                    {
+                        "label": "Supabase Project URL",
+                        "name": "supabaseProjUrl",
+                        "type": "string",
+                        "optional": true,
+                        "additionalParams": true,
+                        "id": "a2aArtifact_0-supabaseProjUrl"
+                    }
+                ],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "a2aArtifact_0-output",
+                        "name": "a2aArtifact",
+                        "label": "A2A Artifact",
+                        "type": "A2AArtifact",
+                        "baseClasses": ["A2AArtifact", "DynamicTool", "Tool"]
+                    }
+                ],
+                "outputs": {}
+            }
+        },
+        {
+            "id": "a2aSharedContext_0",
+            "position": { "x": 250, "y": 1430 },
+            "positionAbsolute": { "x": 250, "y": 1430 },
+            "type": "customNode",
+            "width": 300,
+            "height": 400,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "a2aSharedContext_0",
+                "label": "A2A Shared Context",
+                "name": "a2aSharedContext",
+                "version": "1.0",
+                "type": "A2ASharedContext",
+                "category": "Tools",
+                "description": "Create deliberation sessions with claims, observations, and decisions. Preserves full provenance chain.",
+                "icon": "a2asharedcontext.svg",
+                "baseClasses": ["A2ASharedContext", "DynamicTool", "Tool"],
+                "inputs": {
+                    "storageBackend": "localjson",
+                    "operation": "createSession"
+                },
+                "inputParams": [
+                    {
+                        "label": "Storage Backend",
+                        "name": "storageBackend",
+                        "type": "options",
+                        "options": [
+                            { "label": "Local JSON", "name": "localjson" },
+                            { "label": "Supabase", "name": "supabase" },
+                            { "label": "PostgreSQL", "name": "postgres" },
+                            { "label": "SQLite", "name": "sqlite" }
+                        ],
+                        "default": "localjson",
+                        "id": "a2aSharedContext_0-storageBackend"
+                    },
+                    {
+                        "label": "Operation",
+                        "name": "operation",
+                        "type": "options",
+                        "options": [
+                            { "label": "Create Session", "name": "createSession" },
+                            { "label": "Get Session", "name": "getSession" },
+                            { "label": "Add Claim", "name": "addClaim" },
+                            { "label": "Get Claims", "name": "getClaims" },
+                            { "label": "Add Observation", "name": "addObservation" },
+                            { "label": "Add Decision", "name": "addDecision" },
+                            { "label": "Get Decisions", "name": "getDecisions" }
+                        ],
+                        "default": "getClaims",
+                        "id": "a2aSharedContext_0-operation"
+                    },
+                    {
+                        "label": "Supabase Project URL",
+                        "name": "supabaseProjUrl",
+                        "type": "string",
+                        "optional": true,
+                        "additionalParams": true,
+                        "id": "a2aSharedContext_0-supabaseProjUrl"
+                    }
+                ],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "a2aSharedContext_0-output",
+                        "name": "a2aSharedContext",
+                        "label": "A2A Shared Context",
+                        "type": "A2ASharedContext",
+                        "baseClasses": ["A2ASharedContext", "DynamicTool", "Tool"]
+                    }
+                ],
+                "outputs": {}
+            }
+        },
+        {
+            "id": "a2aMemoryAdapter_0",
+            "position": { "x": 250, "y": 1880 },
+            "positionAbsolute": { "x": 250, "y": 1880 },
+            "type": "customNode",
+            "width": 300,
+            "height": 280,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "a2aMemoryAdapter_0",
+                "label": "A2A Memory Adapter",
+                "name": "a2aMemoryAdapter",
+                "version": "1.0",
+                "type": "A2AMemoryAdapter",
+                "category": "Memory",
+                "description": "Hybrid memory bridging Flowise conversation history with A2A structured context (claims, decisions, observations)",
+                "icon": "a2amemory.svg",
+                "baseClasses": ["A2AMemoryAdapter", "BufferMemory", "FlowiseMemory"],
+                "inputs": {
+                    "storageBackend": "localjson",
+                    "memoryKey": "a2a_context"
+                },
+                "inputParams": [
+                    {
+                        "label": "Storage Backend",
+                        "name": "storageBackend",
+                        "type": "options",
+                        "options": [
+                            { "label": "Local JSON", "name": "localjson" },
+                            { "label": "Supabase", "name": "supabase" },
+                            { "label": "PostgreSQL", "name": "postgres" },
+                            { "label": "SQLite", "name": "sqlite" }
+                        ],
+                        "default": "localjson",
+                        "id": "a2aMemoryAdapter_0-storageBackend"
+                    },
+                    {
+                        "label": "Session Id",
+                        "name": "sessionId",
+                        "type": "string",
+                        "description": "If not specified, the default session will be used",
+                        "default": "",
+                        "additionalParams": true,
+                        "optional": true,
+                        "id": "a2aMemoryAdapter_0-sessionId"
+                    },
+                    {
+                        "label": "Memory Key",
+                        "name": "memoryKey",
+                        "type": "string",
+                        "default": "a2a_context",
+                        "additionalParams": true,
+                        "id": "a2aMemoryAdapter_0-memoryKey"
+                    },
+                    {
+                        "label": "Supabase Project URL",
+                        "name": "supabaseProjUrl",
+                        "type": "string",
+                        "optional": true,
+                        "additionalParams": true,
+                        "id": "a2aMemoryAdapter_0-supabaseProjUrl"
+                    }
+                ],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "a2aMemoryAdapter_0-output",
+                        "name": "a2aMemoryAdapter",
+                        "label": "A2A Memory Adapter",
+                        "type": "A2AMemoryAdapter",
+                        "baseClasses": ["A2AMemoryAdapter", "BufferMemory", "FlowiseMemory"]
+                    }
+                ],
+                "outputs": {}
+            }
+        },
+        {
+            "id": "directReply_0",
+            "position": { "x": 250, "y": 2210 },
+            "positionAbsolute": { "x": 250, "y": 2210 },
+            "type": "customNode",
+            "width": 300,
+            "height": 100,
+            "selected": false,
+            "dragging": false,
+            "data": {
+                "id": "directReply_0",
+                "label": "Direct Reply",
+                "name": "directReply",
+                "version": "1.0",
+                "type": "DirectReply",
+                "category": "Utilities",
+                "description": "Returns the A2A pipeline output as the final response",
+                "icon": "directreply.svg",
+                "baseClasses": ["DirectReply"],
+                "inputs": {},
+                "inputParams": [
+                    {
+                        "label": "Reply Message",
+                        "name": "directReplyMessage",
+                        "type": "string",
+                        "default": "{{output}}",
+                        "id": "directReply_0-directReplyMessage"
+                    }
+                ],
+                "inputAnchors": [],
+                "outputAnchors": [
+                    {
+                        "id": "directReply_0-output",
+                        "name": "directReply",
+                        "label": "Direct Reply",
+                        "type": "DirectReply",
+                        "baseClasses": ["DirectReply"]
+                    }
+                ],
+                "outputs": {}
+            }
+        }
+    ],
+    "edges": [
+        {
+            "id": "edge_start-registry",
+            "source": "startNode_0",
+            "sourceHandle": "startNode_0-output",
+            "target": "a2aRegistry_0",
+            "targetHandle": "a2aRegistry_0-input-Tool",
+            "type": "buttonedge",
+            "data": { "isHumanInput": false, "sourceColor": "", "targetColor": "" }
+        },
+        {
+            "id": "edge_registry-task",
+            "source": "a2aRegistry_0",
+            "sourceHandle": "a2aRegistry_0-output",
+            "target": "a2aTask_0",
+            "targetHandle": "a2aTask_0-input-Tool",
+            "type": "buttonedge",
+            "data": { "isHumanInput": false, "sourceColor": "", "targetColor": "" }
+        },
+        {
+            "id": "edge_task-artifact",
+            "source": "a2aTask_0",
+            "sourceHandle": "a2aTask_0-output",
+            "target": "a2aArtifact_0",
+            "targetHandle": "a2aArtifact_0-input-Tool",
+            "type": "buttonedge",
+            "data": { "isHumanInput": false, "sourceColor": "", "targetColor": "" }
+        },
+        {
+            "id": "edge_artifact-sharedctx",
+            "source": "a2aArtifact_0",
+            "sourceHandle": "a2aArtifact_0-output",
+            "target": "a2aSharedContext_0",
+            "targetHandle": "a2aSharedContext_0-input-Tool",
+            "type": "buttonedge",
+            "data": { "isHumanInput": false, "sourceColor": "", "targetColor": "" }
+        },
+        {
+            "id": "edge_sharedctx-memory",
+            "source": "a2aSharedContext_0",
+            "sourceHandle": "a2aSharedContext_0-output",
+            "target": "a2aMemoryAdapter_0",
+            "targetHandle": "a2aMemoryAdapter_0-input-Memory",
+            "type": "buttonedge",
+            "data": { "isHumanInput": false, "sourceColor": "", "targetColor": "" }
+        },
+        {
+            "id": "edge_memory-directreply",
+            "source": "a2aMemoryAdapter_0",
+            "sourceHandle": "a2aMemoryAdapter_0-output",
+            "target": "directReply_0",
+            "targetHandle": "directReply_0-input-DirectReply",
+            "type": "buttonedge",
+            "data": { "isHumanInput": false, "sourceColor": "", "targetColor": "" }
+        }
+    ],
+    "viewport": { "x": 0, "y": 0, "zoom": 1 }
+}

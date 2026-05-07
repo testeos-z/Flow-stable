@@ -263,6 +263,61 @@ Before delegating to flow-ing, verify your spec has:
 | MCP catalogue    | `references/mcp-catalogue.md`         | Adding MCPs, calling tools, query language rules                           |
 | Vector DB        | `references/vector-db.md`             | Vector search, embeddings, RPC functions, debugging                        |
 
+## A2A Protocol Nodes
+
+5 reusable Tool/Memory primitives for Agent-to-Agent communication. See `docs/a2a/README.md` for operational docs.
+
+### Node Responsibility Matrix
+
+| Node               | Category | Purpose                                      | Key Operations                                            |
+| ------------------ | -------- | -------------------------------------------- | --------------------------------------------------------- |
+| A2A Registry       | Tools    | Agent discovery by capability/MCP/artifact   | register, get, find, updateStatus                         |
+| A2A Task/Message   | Tools    | Task lifecycle with state machine            | create, get, updateStatus, list, sendMessage, getMessages |
+| A2A Artifact       | Tools    | Artifact sharing with permissions            | register, get, list, grant, revoke, check                 |
+| A2A Shared Context | Tools    | Deliberation sessions with provenance        | createSession, getSession, addClaim/Decision/Observation  |
+| A2A Memory Adapter | Memory   | Hybrid BufferMemory + A2A structured context | saveA2AContext, loadA2AContext                            |
+
+### Composition Patterns
+
+| Pattern            | Nodes Used                                    | Use Case                                               |
+| ------------------ | --------------------------------------------- | ------------------------------------------------------ |
+| **Delegation**     | Registry → Task                               | Find agent by capability, create task for them         |
+| **Scatter-Gather** | Registry → N×Task → Artifact                  | Fan-out tasks to multiple agents, collect results      |
+| **Deliberation**   | SharedContext → Claims → Decisions            | Multi-agent discussion with provenance chain           |
+| **Peer Review**    | Task → Artifact → SharedContext               | One agent produces, another reviews, decision recorded |
+| **Escalation**     | Task (status: failed) → Task (new, submitted) | Transfer work between agents                           |
+
+### A2A in FlowBuildSpec
+
+```typescript
+// Example: Scatter-gather analysis
+const spec: FlowBuildSpec = {
+    name: 'Policy Analysis Scatter-Gather',
+    type: 'CHATFLOW',
+    nodes: [
+        { kind: 'a2aRegistry', params: { operation: 'find' } },
+        { kind: 'a2aTask', params: { operation: 'create' } },
+        { kind: 'a2aTask', params: { operation: 'getMessages' } },
+        { kind: 'a2aArtifact', params: { operation: 'list' } }
+    ],
+    edges: [
+        /* registry→task, task→artifact */
+    ]
+}
+```
+
+### Anti-patterns
+
+-   ❌ Creating a separate node per use case (DebateNode, PoolNode) — compose primitives instead
+-   ❌ Agent Cards without verifiable capabilities
+-   ❌ Artifact access without explicit permission grants
+-   ❌ Shared context as free-text without provenance (claim→observation→decision chain)
+
+### Storage Rules
+
+-   All A2A nodes in a single flow MUST share the same `storageBackend` value
+-   Supabase backend requires `supabaseApi` credential + `supabaseProjUrl` input
+
 ## Cross-cutting rules (apply everywhere)
 
 **Language directive — MANDATORY**

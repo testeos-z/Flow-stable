@@ -357,10 +357,43 @@ Current MVP set:
 -   HuggingFace / OpenAI embeddings
 -   `retrieverTool` (Tools)
 -   `toolAgent` (Agents)
+-   `a2aRegistry`, `a2aTask`, `a2aArtifact`, `a2aSharedContext` (A2A Tools)
+-   `a2aMemoryAdapter` (A2A Memory)
 
 Additional ChatFlow nodes are added by priority category (Chat Models → Tools → Memory → Vector Stores → Embeddings → Agents → Chains → Retrievers → Document Loaders).
 
 For unsupported ChatFlow nodes: return `valid: false` with `code: UNSUPPORTED_NODE_TYPE` and the current supported list.
+
+## A2A Node Template Catalog
+
+A2A Protocol Nodes are 5 reusable primitives for Agent-to-Agent communication.
+Templates at `templates/chatflow/a2a*.json`.
+
+| Node               | Template                | Storage  | Operations                                                |
+| ------------------ | ----------------------- | -------- | --------------------------------------------------------- |
+| A2A Registry       | `a2aRegistry.json`      | dropdown | register, get, find, updateStatus                         |
+| A2A Task/Message   | `a2aTask.json`          | dropdown | create, get, updateStatus, list, sendMessage, getMessages |
+| A2A Artifact       | `a2aArtifact.json`      | dropdown | register, get, list, grant, revoke, check                 |
+| A2A Shared Context | `a2aSharedContext.json` | dropdown | createSession, getSession, addClaim/Decision/Observation  |
+| A2A Memory Adapter | `a2aMemoryAdapter.json` | dropdown | saveA2AContext, loadA2AContext                            |
+
+### Storage Backend (all nodes)
+
+All A2A nodes share the `storageBackend` dropdown:
+
+-   `localjson` (default) — in-memory Map, zero-config
+-   `supabase` — requires `supabaseApi` credential + `supabaseProjUrl`
+-   `postgres` — requires `PostgresApi` credential
+-   `sqlite` — file path
+
+### Credential (all nodes)
+
+Optional `supabaseApi` credential (required only for supabase backend).
+
+### Validation Flow
+
+Template `a2aValidationPipeline.json` — a complete 7-node flow connecting:
+Start → A2A Registry → A2A Task → A2A Artifact → A2A Shared Context → A2A Memory Adapter → DirectReply
 
 ## Templates Reference
 

@@ -1,0 +1,79 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 300,
+    "height": 370,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "A2A Task/Message",
+        "name": "a2aTask",
+        "version": "1.0",
+        "type": "A2ATask",
+        "category": "Tools",
+        "description": "Manage A2A tasks with state machine (submitted→working→completed) and message exchange between agents",
+        "icon": "a2atask.svg",
+        "baseClasses": ["A2ATask", "DynamicTool", "Tool"],
+        "filePath": "/usr/src/flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/A2ATask/A2ATask.js",
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Storage Backend",
+                "name": "storageBackend",
+                "type": "options",
+                "options": [
+                    { "label": "Local JSON", "name": "localjson" },
+                    { "label": "Supabase", "name": "supabase" },
+                    { "label": "PostgreSQL", "name": "postgres" },
+                    { "label": "SQLite", "name": "sqlite" }
+                ],
+                "default": "localjson",
+                "id": "a2aTask-storageBackend"
+            },
+            {
+                "label": "Operation",
+                "name": "operation",
+                "type": "options",
+                "options": [
+                    { "label": "Create Task", "name": "create" },
+                    { "label": "Get Task", "name": "get" },
+                    { "label": "Update Status", "name": "updateStatus" },
+                    { "label": "List Tasks", "name": "list" },
+                    { "label": "Send Message", "name": "sendMessage" },
+                    { "label": "Get Messages", "name": "getMessages" }
+                ],
+                "default": "list",
+                "id": "a2aTask-operation"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "optional": true,
+                "additionalParams": true,
+                "id": "a2aTask-supabaseProjUrl"
+            }
+        ],
+        "credential": {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": ["supabaseApi"],
+            "optional": true
+        },
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "a2aTask-output",
+                "name": "a2aTask",
+                "label": "A2A Task/Message",
+                "type": "A2ATask",
+                "baseClasses": ["A2ATask", "DynamicTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

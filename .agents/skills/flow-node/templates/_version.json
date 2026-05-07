@@ -128,6 +128,36 @@
             "flowiseVersion": "2.2.7",
             "checksum": "5c38412857814cee723a940b3539c1cfceb3d9af057bd177b293ccad4609350a",
             "lastUpdated": "2026-05-03"
+        },
+        "a2aRegistry.json": {
+            "templateName": "a2aRegistry",
+            "flowiseVersion": "2.2.7",
+            "checksum": "sha256:placeholder",
+            "lastUpdated": "2026-05-06"
+        },
+        "a2aTask.json": {
+            "templateName": "a2aTask",
+            "flowiseVersion": "2.2.7",
+            "checksum": "sha256:placeholder",
+            "lastUpdated": "2026-05-06"
+        },
+        "a2aArtifact.json": {
+            "templateName": "a2aArtifact",
+            "flowiseVersion": "2.2.7",
+            "checksum": "sha256:placeholder",
+            "lastUpdated": "2026-05-06"
+        },
+        "a2aSharedContext.json": {
+            "templateName": "a2aSharedContext",
+            "flowiseVersion": "2.2.7",
+            "checksum": "sha256:placeholder",
+            "lastUpdated": "2026-05-06"
+        },
+        "a2aMemoryAdapter.json": {
+            "templateName": "a2aMemoryAdapter",
+            "flowiseVersion": "2.2.7",
+            "checksum": "sha256:placeholder",
+            "lastUpdated": "2026-05-06"
         }
     }
 }
