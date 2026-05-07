@@ -172,7 +172,7 @@
     },
     "mcp": {
         "flow-control": {
-            "command": ["/var/home/snor/Documents/jobs/GobernAI/Flow-stable/load-env.sh"],
+            "command": ["/home/bryan/Desktop/trabajo-programacion/latamearth/Flow-stable/load-env.sh"],
             "enabled": true,
             "type": "local"
         },

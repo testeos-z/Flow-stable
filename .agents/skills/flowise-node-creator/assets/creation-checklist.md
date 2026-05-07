@@ -18,7 +18,7 @@ before returning a node. Every item MUST pass.
     -   **Failure**: `"true"` is a string; Flowise may misinterpret it as truthy text.
     -   **Fix**: Use `true` or `false` without quotes.
 
--   [ ] **`data.inputParams` is present and non-empty**
+-   [ ] **`data.inputParams` is present (required field)**
 
     -   **Failure**: Missing `inputParams` causes validation errors in Flowise.
     -   **Fix**: Always include `data.inputParams` as an array, even if empty: `[]`.

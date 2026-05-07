@@ -15,6 +15,7 @@
         "label": "{nodeName}",
         "category": "{category_from_mcp}",
         "version": "{version_from_mcp}",
+        // Array length depends on MCP response — may be 1 or more base classes
         "baseClasses": ["{baseClass_0_from_mcp}", "{baseClass_1_from_mcp}"],
         "inputs": {
             "{inputName_0}": {
