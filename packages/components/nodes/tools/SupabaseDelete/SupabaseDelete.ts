@@ -23,7 +23,7 @@ class SupabaseDelete implements INode {
         this.category = 'Tools'
         this.description =
             'Delete rows from a Supabase table that match the provided filters. Requires a non-empty filters array for safety — prevents accidental table truncation. Use this tool to remove records from a pre-configured table.'
-        this.baseClasses = [this.type, ...getBaseClasses(DeleteTool), 'Tool']
+        this.baseClasses = [this.type, ...getBaseClasses(DeleteTool)]
         this.credential = {
             label: 'Connect Credential',
             name: 'credential',

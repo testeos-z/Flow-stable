@@ -1,0 +1,57 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 280,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Supabase Update",
+        "name": "supabaseUpdate",
+        "version": "1.0",
+        "type": "SupabaseUpdate",
+        "category": "Tools",
+        "description": "Update rows in a Supabase table that match the provided filters. Requires a non-empty filters array for safety — prevents accidental mass updates. Use this tool to modify existing records in a pre-configured table.",
+        "icon": "supabase-storage.svg",
+        "badge": "",
+        "baseClasses": ["SupabaseUpdate", "DynamicStructuredTool", "StructuredTool", "Tool"],
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["supabaseApi"],
+                "id": "supabaseUpdate-credential"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "description": "Supabase project URL (e.g., https://your-project.supabase.co)",
+                "id": "supabaseUpdate-supabaseProjUrl"
+            },
+            {
+                "label": "Table Name",
+                "name": "tableName",
+                "type": "string",
+                "description": "Name of the Supabase table to update. Immutable at runtime — the LLM cannot change this.",
+                "id": "supabaseUpdate-tableName"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "supabaseUpdate-output",
+                "name": "supabaseUpdate",
+                "label": "Supabase Update",
+                "type": "SupabaseUpdate",
+                "baseClasses": ["SupabaseUpdate", "DynamicStructuredTool", "StructuredTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

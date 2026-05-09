@@ -62,3 +62,40 @@ before returning a node. Every item MUST pass.
 -   [ ] **No required inputs are empty or undefined**
     -   **Failure**: Empty required fields crash the node at runtime.
     -   **Fix**: Verify every entry in `data.inputs` has a defined value.
+
+## Registered Node Templates
+
+Known nodes with golden templates and Zod schemas available for `flow-node`:
+
+| Node type        | Template                               | Zod schema                                | Credential    |
+| ---------------- | -------------------------------------- | ----------------------------------------- | ------------- |
+| `SupabaseSelect` | `assets/templates/SupabaseSelect.json` | `assets/schemas/SupabaseSelect.schema.ts` | `supabaseApi` |
+| `SupabaseInsert` | `assets/templates/SupabaseInsert.json` | `assets/schemas/SupabaseInsert.schema.ts` | `supabaseApi` |
+| `SupabaseUpdate` | `assets/templates/SupabaseUpdate.json` | `assets/schemas/SupabaseUpdate.schema.ts` | `supabaseApi` |
+| `SupabaseDelete` | `assets/templates/SupabaseDelete.json` | `assets/schemas/SupabaseDelete.schema.ts` | `supabaseApi` |
+| `SupabaseUpsert` | `assets/templates/SupabaseUpsert.json` | `assets/schemas/SupabaseUpsert.schema.ts` | `supabaseApi` |
+
+### Supabase CRUD Node Conventions
+
+All five nodes share:
+
+-   **Category**: `Tools`
+-   **Version**: `1.0`
+-   **Icon**: `supabase-storage.svg`
+-   **Credential**: `supabaseApi` (UUID: `0df85d26-749b-4fac-9a88-7399663a3099`)
+
+**Design-time inputs** (never exposed to LLM as tool args):
+
+1. `supabaseProjUrl` (string) — Supabase project URL
+2. `tableName` (string) — Immutable table name
+
+**BaseClasses**: `[<TypeName>, 'DynamicStructuredTool', 'StructuredTool', 'Tool']`
+
+**Output anchor handle ID**: `{nodeName}-output`
+
+**Security constraints**:
+
+-   Update and Delete require `.min(1)` on `filters` (Zod) + runtime guard
+-   Select limits are capped to `Math.min(limit, 1000)` at runtime
+-   `tableName` is hardcoded at design time, never exposed as an LLM tool arg
+-   Credential is resolved from UUID, never transmitted to the LLM

@@ -23,7 +23,7 @@ class SupabaseInsert implements INode {
         this.category = 'Tools'
         this.description =
             'Insert one or more rows into a Supabase table. Pass column:value pairs as the data argument. Use this tool to create new records in a pre-configured table.'
-        this.baseClasses = [this.type, ...getBaseClasses(InsertTool), 'Tool']
+        this.baseClasses = [this.type, ...getBaseClasses(InsertTool)]
         this.credential = {
             label: 'Connect Credential',
             name: 'credential',

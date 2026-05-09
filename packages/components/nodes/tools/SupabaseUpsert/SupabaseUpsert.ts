@@ -23,7 +23,7 @@ class SupabaseUpsert implements INode {
         this.category = 'Tools'
         this.description =
             "Insert or update rows in a Supabase table. Upserts a row: inserts if the onConflict column doesn't exist, updates if it does. Use this tool to create or modify records in a pre-configured table without checking existence first."
-        this.baseClasses = [this.type, ...getBaseClasses(UpsertTool), 'Tool']
+        this.baseClasses = [this.type, ...getBaseClasses(UpsertTool)]
         this.credential = {
             label: 'Connect Credential',
             name: 'credential',
