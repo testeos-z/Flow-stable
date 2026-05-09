@@ -1,0 +1,57 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 280,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Supabase Upsert",
+        "name": "supabaseUpsert",
+        "version": "1.0",
+        "type": "SupabaseUpsert",
+        "category": "Tools",
+        "description": "Insert or update rows in a Supabase table. Upserts a row: inserts if the onConflict column doesn't exist, updates if it does. Use this tool to create or modify records in a pre-configured table without checking existence first.",
+        "icon": "supabase-storage.svg",
+        "badge": "",
+        "baseClasses": ["SupabaseUpsert", "DynamicStructuredTool", "StructuredTool", "Tool"],
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["supabaseApi"],
+                "id": "supabaseUpsert-credential"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "description": "Supabase project URL (e.g., https://your-project.supabase.co)",
+                "id": "supabaseUpsert-supabaseProjUrl"
+            },
+            {
+                "label": "Table Name",
+                "name": "tableName",
+                "type": "string",
+                "description": "Name of the Supabase table to upsert into. Immutable at runtime — the LLM cannot change this.",
+                "id": "supabaseUpsert-tableName"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "supabaseUpsert-output",
+                "name": "supabaseUpsert",
+                "label": "Supabase Upsert",
+                "type": "SupabaseUpsert",
+                "baseClasses": ["SupabaseUpsert", "DynamicStructuredTool", "StructuredTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

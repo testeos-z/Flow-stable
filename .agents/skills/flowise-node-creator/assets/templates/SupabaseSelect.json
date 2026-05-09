@@ -1,0 +1,57 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 280,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Supabase Select",
+        "name": "supabaseSelect",
+        "version": "1.0",
+        "type": "SupabaseSelect",
+        "category": "Tools",
+        "description": "Query rows from a Supabase table with optional column selection, filters, ordering, and limit. Use this tool to read or search data from a pre-configured table.",
+        "icon": "supabase-storage.svg",
+        "badge": "",
+        "baseClasses": ["SupabaseSelect", "DynamicStructuredTool", "StructuredTool", "Tool"],
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["supabaseApi"],
+                "id": "supabaseSelect-credential"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "description": "Supabase project URL (e.g., https://your-project.supabase.co)",
+                "id": "supabaseSelect-supabaseProjUrl"
+            },
+            {
+                "label": "Table Name",
+                "name": "tableName",
+                "type": "string",
+                "description": "Name of the Supabase table to query. Immutable at runtime — the LLM cannot change this.",
+                "id": "supabaseSelect-tableName"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "supabaseSelect-output",
+                "name": "supabaseSelect",
+                "label": "Supabase Select",
+                "type": "SupabaseSelect",
+                "baseClasses": ["SupabaseSelect", "DynamicStructuredTool", "StructuredTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}

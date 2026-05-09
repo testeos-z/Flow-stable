@@ -23,7 +23,7 @@ class SupabaseSelect implements INode {
         this.category = 'Tools'
         this.description =
             'Query rows from a Supabase table with optional column selection, filters, ordering, and limit. Use this tool to read or search data from a pre-configured table.'
-        this.baseClasses = [this.type, ...getBaseClasses(SelectTool), 'Tool']
+        this.baseClasses = [this.type, ...getBaseClasses(SelectTool)]
         this.credential = {
             label: 'Connect Credential',
             name: 'credential',

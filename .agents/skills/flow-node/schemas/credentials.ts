@@ -19,7 +19,12 @@ export const CREDENTIAL_PROVIDER_MAP: Record<string, string> = {
     chatOpenAI: 'openAIApi',
     chatAnthropic: 'anthropicApi',
     huggingFaceInferenceEmbedding: 'huggingFaceApi',
-    supabase: 'supabaseApi'
+    supabase: 'supabaseApi',
+    supabaseSelect: 'supabaseApi',
+    supabaseInsert: 'supabaseApi',
+    supabaseUpdate: 'supabaseApi',
+    supabaseDelete: 'supabaseApi',
+    supabaseUpsert: 'supabaseApi'
 }
 
 /**

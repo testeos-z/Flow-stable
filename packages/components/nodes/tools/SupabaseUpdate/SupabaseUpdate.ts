@@ -23,7 +23,7 @@ class SupabaseUpdate implements INode {
         this.category = 'Tools'
         this.description =
             'Update rows in a Supabase table that match the provided filters. Requires a non-empty filters array for safety — prevents accidental mass updates. Use this tool to modify existing records in a pre-configured table.'
-        this.baseClasses = [this.type, ...getBaseClasses(UpdateTool), 'Tool']
+        this.baseClasses = [this.type, ...getBaseClasses(UpdateTool)]
         this.credential = {
             label: 'Connect Credential',
             name: 'credential',
