@@ -6,13 +6,15 @@ scrape_configs:
       static_configs:
           - targets: ['localhost:9090']
 
-    # Flowise metrics — scraped via Railway internal network
+    # Flowise metrics — scraped from Flowise service (flow env) via Railway public proxy
+    # Cross-environment: Prometheus is in logs env, Flowise is in flow env
+    # Internal DNS (.railway.internal) does NOT resolve across environments
     - job_name: 'flowise'
       scrape_interval: 15s
       metrics_path: '/api/v1/metrics'
-      scheme: http
+      scheme: https
       authorization:
           type: Bearer
           credentials_file: '/run/secrets/flowise_api_key'
       static_configs:
-          - targets: ['flow-stable-flow.railway.internal:3000']
+          - targets: ['flow-stable-flow.up.railway.app']
