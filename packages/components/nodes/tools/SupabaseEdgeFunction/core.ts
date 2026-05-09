@@ -1,6 +1,6 @@
 import { z } from 'zod/v3'
 import { DynamicStructuredTool } from '../OpenAPIToolkit/core'
-import { createSupabaseClient } from '../SupabaseStorageCommon'
+import { createSupabaseClient } from '../SupabaseCommon'
 
 const InvokeEdgeFunctionSchema = z.object({
     functionName: z.string().describe('Name of the Supabase Edge Function to invoke'),

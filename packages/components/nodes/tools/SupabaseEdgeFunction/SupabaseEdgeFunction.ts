@@ -22,7 +22,7 @@ class SupabaseEdgeFunction implements INode {
         this.icon = 'supabase-edge-function.svg'
         this.category = 'Tools'
         this.description = 'Invoke a Supabase Edge Function by name with a JSON payload'
-        this.baseClasses = [this.type, ...getBaseClasses(InvokeEdgeFunctionTool), 'Tool']
+        this.baseClasses = [this.type, ...getBaseClasses(InvokeEdgeFunctionTool)]
         this.credential = {
             label: 'Connect Credential',
             name: 'credential',
