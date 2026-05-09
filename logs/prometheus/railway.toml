@@ -1,0 +1,16 @@
+# Railway Config-as-Code for Prometheus
+# Set "Config File Path" in Railway service settings to:
+#   logs/prometheus/railway.toml
+#
+# REQUIRED env vars / secrets (set in Railway dashboard):
+#   FLOWISE_METRICS_API_KEY  = Flowise API key (mounted via Railway secret as /run/secrets/flowise_api_key)
+
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --storage.tsdb.retention.time=30d"
+healthcheckPath = "/-/healthy"
+healthcheckTimeout = 10
+restartPolicyType = "ON_FAILURE"
+numReplicas = 1

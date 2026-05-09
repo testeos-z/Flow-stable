@@ -1,0 +1,19 @@
+# Secrets — NEVER commit credentials
+*.key
+*_token
+secrets/*
+!secrets/.gitkeep
+
+# Environment files with secrets
+.env
+.env.local
+
+# Docker volumes (data persistence directories)
+data/
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

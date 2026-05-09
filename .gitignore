@@ -10,6 +10,7 @@
 
 ## logs
 **/logs
+!/logs/
 **/*.log
 
 ## pnpm
@@ -120,3 +121,4 @@ apps/*/
 .claude/plans/
 .claude/settings.local.json
 .claude/agent-memory/*
+.gitnexus

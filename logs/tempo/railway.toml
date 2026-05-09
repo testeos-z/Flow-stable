@@ -1,0 +1,13 @@
+# Railway Config-as-Code for Tempo
+# Set "Config File Path" in Railway service settings to:
+#   logs/tempo/railway.toml
+
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "/tempo -config.file=/etc/tempo/tempo.yml"
+healthcheckPath = "/ready"
+healthcheckTimeout = 60
+restartPolicyType = "ON_FAILURE"
+numReplicas = 1

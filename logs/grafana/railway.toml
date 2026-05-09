@@ -1,0 +1,21 @@
+# Railway Config-as-Code for Grafana
+# Set "Config File Path" in Railway service settings to:
+#   logs/grafana/railway.toml
+#
+# REQUIRED env vars (set in Railway dashboard):
+#   GF_SECURITY_ADMIN_USER     = Grafana admin username (default: admin)
+#   GF_SECURITY_ADMIN_PASSWORD = Grafana admin password
+#   GF_INSTALL_PLUGINS         = Comma-separated plugin list (default: grafana-clock-panel)
+#   LOKI_INTERNAL_URL          = Loki service URL (e.g., http://loki.railway.internal:3100)
+#   PROMETHEUS_INTERNAL_URL    = Prometheus service URL (e.g., http://prometheus.railway.internal:9090)
+#   TEMPO_INTERNAL_URL         = Tempo service URL (e.g., http://tempo.railway.internal:3200)
+
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "/run.sh"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+numReplicas = 1

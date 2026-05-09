@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+    prometheus:
+        build:
+            context: ./prometheus
+            dockerfile: Dockerfile
+        user: root # required for data persistence
+        ports:
+            - '9090:9090'
+        volumes:
+            - prometheus_data:/prometheus
+        secrets:
+            - flowise_api_key
+        networks:
+            - logs_network
+
+    loki:
+        build:
+            context: ./loki
+            dockerfile: Dockerfile
+        user: root # required for data persistence
+        ports:
+            - '3100:3100'
+        volumes:
+            - loki_data:/loki
+        networks:
+            - logs_network
+
+    tempo:
+        build:
+            context: ./tempo
+            dockerfile: Dockerfile
+        user: root # required for data persistence
+        ports:
+            - '3200:3200' # http server for querying
+            - '4317:4317' # grpc server for ingest
+            - '4318:4318' # http server for ingest
+        volumes:
+            - tempo_data:/var/tempo
+        networks:
+            - logs_network
+
+    grafana:
+        build:
+            context: ./grafana
+            dockerfile: Dockerfile
+        ports:
+            - '3000:3000'
+        volumes:
+            - grafana_data:/var/lib/grafana
+        environment:
+            - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER:-admin}
+            - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-yourpassword123}
+            - GF_DEFAULT_INSTANCE_NAME=${GF_DEFAULT_INSTANCE_NAME:-Grafana}
+            - GF_INSTALL_PLUGINS=${GF_INSTALL_PLUGINS:-grafana-clock-panel}
+            - LOKI_INTERNAL_URL=${LOKI_INTERNAL_URL:-http://loki:3100}
+            - PROMETHEUS_INTERNAL_URL=${PROMETHEUS_INTERNAL_URL:-http://prometheus:9090}
+            - TEMPO_INTERNAL_URL=${TEMPO_INTERNAL_URL:-http://tempo:3200}
+        networks:
+            - logs_network
+
+volumes:
+    prometheus_data:
+    loki_data:
+    grafana_data:
+    tempo_data:
+
+networks:
+    logs_network:
+        driver: bridge
+
+secrets:
+    flowise_api_key:
+        file: ./secrets/flowise_api_key

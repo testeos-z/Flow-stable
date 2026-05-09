@@ -1,0 +1,13 @@
+# Railway Config-as-Code for Loki
+# Set "Config File Path" in Railway service settings to:
+#   logs/loki/railway.toml
+
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "/usr/bin/loki -config.file=/etc/loki/loki-config.yaml"
+healthcheckPath = "/ready"
+healthcheckTimeout = 60
+restartPolicyType = "ON_FAILURE"
+numReplicas = 1
