@@ -6,15 +6,13 @@ scrape_configs:
       static_configs:
           - targets: ['localhost:9090']
 
-    # Flowise metrics — scraped from Railway Flow-stable service
+    # Flowise metrics — scraped via Railway internal network
     - job_name: 'flowise'
       scrape_interval: 15s
       metrics_path: '/api/v1/metrics'
-      scheme: https
+      scheme: http
       authorization:
           type: Bearer
           credentials_file: '/run/secrets/flowise_api_key'
       static_configs:
-          - targets: ['flow-stable-flow.up.railway.app']
-      tls_config:
-          insecure_skip_verify: false
+          - targets: ['flow-stable-flow.railway.internal:3000']
