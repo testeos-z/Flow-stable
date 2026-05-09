@@ -1,6 +1,6 @@
 import { z } from 'zod/v3'
 import { DynamicStructuredTool } from '../OpenAPIToolkit/core'
-import { createSupabaseClient, handleStorageError } from '../SupabaseStorageCommon'
+import { createSupabaseClient, handleStorageError } from '../SupabaseCommon'
 
 const DownloadSchema = z.object({
     sourcePath: z.string().describe('Path of the file to download from the bucket')
