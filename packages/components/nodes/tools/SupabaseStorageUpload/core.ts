@@ -1,6 +1,6 @@
 import { z } from 'zod/v3'
 import { DynamicStructuredTool } from '../OpenAPIToolkit/core'
-import { createSupabaseClient, handleStorageError } from '../SupabaseStorageCommon'
+import { createSupabaseClient, handleStorageError } from '../SupabaseCommon'
 
 const UploadSchema = z.object({
     destinationPath: z.string().describe('Path where the file should be stored in the bucket'),

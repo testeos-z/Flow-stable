@@ -1,6 +1,6 @@
 import { z } from 'zod/v3'
 import { DynamicStructuredTool } from '../OpenAPIToolkit/core'
-import { createSupabaseClient, handleStorageError } from '../SupabaseStorageCommon'
+import { createSupabaseClient, handleStorageError } from '../SupabaseCommon'
 
 const RenameSchema = z.object({
     sourcePath: z.string().describe('Current path of the file in the bucket'),
