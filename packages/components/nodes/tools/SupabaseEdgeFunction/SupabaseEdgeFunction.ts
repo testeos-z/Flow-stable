@@ -17,11 +17,12 @@ class SupabaseEdgeFunction implements INode {
     constructor() {
         this.label = 'Supabase Edge Function'
         this.name = 'supabaseEdgeFunction'
-        this.version = 1.0
+        this.version = 2.0
         this.type = 'SupabaseEdgeFunction'
         this.icon = 'supabase-edge-function.svg'
         this.category = 'Tools'
-        this.description = 'Invoke a Supabase Edge Function by name with a JSON payload'
+        this.description =
+            'Invoke a Supabase Edge Function like a REST client. Choose HTTP method (GET/POST/PUT/PATCH/DELETE), set custom headers, and pass an optional JSON body — similar to Postman or Bruno.'
         this.baseClasses = [this.type, ...getBaseClasses(InvokeEdgeFunctionTool)]
         this.credential = {
             label: 'Connect Credential',
@@ -40,7 +41,32 @@ class SupabaseEdgeFunction implements INode {
                 label: 'Function Name',
                 name: 'functionName',
                 type: 'string',
-                description: 'Name of the Edge Function to invoke',
+                description: 'Name of the Edge Function to invoke (e.g., hello-world)',
+                additionalParams: true,
+                optional: true
+            },
+            {
+                label: 'Default Method',
+                name: 'defaultMethod',
+                type: 'options',
+                options: [
+                    { label: 'POST', name: 'POST' },
+                    { label: 'GET', name: 'GET' },
+                    { label: 'PUT', name: 'PUT' },
+                    { label: 'PATCH', name: 'PATCH' },
+                    { label: 'DELETE', name: 'DELETE' }
+                ],
+                default: 'POST',
+                description: 'Default HTTP method. The LLM can override this per call.',
+                additionalParams: true,
+                optional: true
+            },
+            {
+                label: 'Default Headers',
+                name: 'defaultHeaders',
+                type: 'string',
+                description:
+                    'Default HTTP headers as JSON object (e.g., {"Authorization": "Bearer token"}). Overridable by the LLM per call.',
                 additionalParams: true,
                 optional: true
             },
@@ -48,7 +74,7 @@ class SupabaseEdgeFunction implements INode {
                 label: 'Request Body',
                 name: 'requestBody',
                 type: 'string',
-                description: 'JSON string to send as the request body',
+                description: 'Default JSON body. For POST, PUT, PATCH. Ignored for GET and DELETE. Overridable by the LLM per call.',
                 additionalParams: true,
                 optional: true
             }

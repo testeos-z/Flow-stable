@@ -39,4 +39,36 @@ describe('SupabaseEdgeFunction node', () => {
         const result = await node.init(nodeData, '', {})
         expect(result).toBeInstanceOf(InvokeEdgeFunctionTool)
     })
+
+    it('should have version 2.0', () => {
+        const node = new SupabaseEdgeFunction()
+        expect(node.version).toBe(2.0)
+    })
+
+    it('should expose method options input', () => {
+        const node = new SupabaseEdgeFunction()
+        const methodInput = node.inputs.find((i: any) => i.name === 'defaultMethod')
+        expect(methodInput).toBeDefined()
+        expect(methodInput.type).toBe('options')
+        expect(methodInput.options).toHaveLength(5) // GET, POST, PUT, PATCH, DELETE
+        expect(methodInput.default).toBe('POST')
+    })
+
+    it('should expose defaultHeaders input', () => {
+        const node = new SupabaseEdgeFunction()
+        const headersInput = node.inputs.find((i: any) => i.name === 'defaultHeaders')
+        expect(headersInput).toBeDefined()
+        expect(headersInput.type).toBe('string')
+        expect(headersInput.optional).toBe(true)
+    })
+
+    it('should have supabaseApi credential', () => {
+        const node = new SupabaseEdgeFunction()
+        expect(node.credential.credentialNames).toContain('supabaseApi')
+    })
+
+    it('should be in Tools category', () => {
+        const node = new SupabaseEdgeFunction()
+        expect(node.category).toBe('Tools')
+    })
 })
