@@ -1,0 +1,94 @@
+{
+    "id": "PLACEHOLDER_ID",
+    "position": { "x": 0, "y": 0 },
+    "positionAbsolute": { "x": 0, "y": 0 },
+    "type": "customNode",
+    "width": 320,
+    "height": 380,
+    "selected": false,
+    "dragging": false,
+    "data": {
+        "id": "PLACEHOLDER_ID",
+        "label": "Supabase Edge Function",
+        "name": "supabaseEdgeFunction",
+        "version": 2.0,
+        "type": "SupabaseEdgeFunction",
+        "category": "Tools",
+        "description": "Invoke a Supabase Edge Function like a REST client. Choose HTTP method (GET/POST/PUT/PATCH/DELETE), set custom headers, and pass an optional JSON body — similar to Postman or Bruno.",
+        "icon": "supabase-edge-function.svg",
+        "badge": "",
+        "baseClasses": ["SupabaseEdgeFunction", "DynamicStructuredTool", "StructuredTool", "Tool"],
+        "inputs": {},
+        "inputParams": [
+            {
+                "label": "Connect Credential",
+                "name": "credential",
+                "type": "credential",
+                "credentialNames": ["supabaseApi"],
+                "id": "supabaseEdgeFunction-credential"
+            },
+            {
+                "label": "Supabase Project URL",
+                "name": "supabaseProjUrl",
+                "type": "string",
+                "description": "Supabase project URL (e.g., https://your-project.supabase.co)",
+                "id": "supabaseEdgeFunction-supabaseProjUrl"
+            },
+            {
+                "label": "Function Name",
+                "name": "functionName",
+                "type": "string",
+                "description": "Name of the Edge Function to invoke (e.g., hello-world)",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabaseEdgeFunction-functionName"
+            },
+            {
+                "label": "Default Method",
+                "name": "defaultMethod",
+                "type": "options",
+                "options": [
+                    { "label": "POST", "name": "POST" },
+                    { "label": "GET", "name": "GET" },
+                    { "label": "PUT", "name": "PUT" },
+                    { "label": "PATCH", "name": "PATCH" },
+                    { "label": "DELETE", "name": "DELETE" }
+                ],
+                "default": "POST",
+                "description": "Default HTTP method. The LLM can override this per call.",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabaseEdgeFunction-defaultMethod"
+            },
+            {
+                "label": "Default Headers",
+                "name": "defaultHeaders",
+                "type": "string",
+                "description": "Default HTTP headers as JSON object (e.g., {\"Authorization\": \"Bearer token\"}). Overridable by the LLM per call.",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabaseEdgeFunction-defaultHeaders"
+            },
+            {
+                "label": "Request Body",
+                "name": "requestBody",
+                "type": "string",
+                "description": "Default JSON body. For POST, PUT, PATCH. Ignored for GET and DELETE. Overridable by the LLM per call.",
+                "additionalParams": true,
+                "optional": true,
+                "id": "supabaseEdgeFunction-requestBody"
+            }
+        ],
+        "inputAnchors": [],
+        "outputAnchors": [
+            {
+                "id": "supabaseEdgeFunction-output",
+                "name": "supabaseEdgeFunction",
+                "label": "Supabase Edge Function",
+                "type": "SupabaseEdgeFunction",
+                "baseClasses": ["SupabaseEdgeFunction", "DynamicStructuredTool", "StructuredTool", "Tool"]
+            }
+        ],
+        "outputs": {}
+    }
+}
