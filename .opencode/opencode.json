@@ -180,10 +180,15 @@
             "type": "remote",
             "url": "https://docs.flowiseai.com/~gitbook/mcp",
             "enabled": true
+        },
+        "gitnexus": {
+            "type": "local",
+            "command": ["gitnexus", "mcp"]
         }
     },
     "permission": {
         "flow-doc_*": "allow",
-        "flow-control_*": "allow"
+        "flow-control_*": "allow",
+        "gitnexus_*": "deny"
     }
 }

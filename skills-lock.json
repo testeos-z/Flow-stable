@@ -1,6 +1,41 @@
 {
     "version": 1,
     "skills": {
+        "accessibility": {
+            "source": "addyosmani/web-quality-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "bffe3d08cfe92ebad63699f74ce29e35c19850ebfbf474c1463183cfe34d6a09"
+        },
+        "azure-ai": {
+            "source": "microsoft/github-copilot-for-azure",
+            "sourceType": "autoskills-registry",
+            "computedHash": "487f534fcea433b6a80b40debe72371c87b212b70a6d998af78e36e182429297"
+        },
+        "azure-cost": {
+            "source": "microsoft/github-copilot-for-azure",
+            "sourceType": "autoskills-registry",
+            "computedHash": "84dafb518e1948a1ecc4120d82edfd32af34d779f4ff39736b5aec0b707e5e32"
+        },
+        "azure-deploy": {
+            "source": "microsoft/github-copilot-for-azure",
+            "sourceType": "autoskills-registry",
+            "computedHash": "bf8d2ea2e5d52aaa2f3df3ab5f708a889a3f5852715712342eead57e0f38ddc3"
+        },
+        "azure-diagnostics": {
+            "source": "microsoft/github-copilot-for-azure",
+            "sourceType": "autoskills-registry",
+            "computedHash": "9b6e89e0d0d441861e2fbe1a55f564f90cf6d562fb1f03ef3bdf343a04ed56b3"
+        },
+        "bash-defensive-patterns": {
+            "source": "wshobson/agents",
+            "sourceType": "autoskills-registry",
+            "computedHash": "1f566c2d9c3b50a784b05d08f6b08ebfeb31f038e4d4173f2d488484edb058a6"
+        },
+        "composition-patterns": {
+            "source": "vercel-labs/agent-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "c124390cc3441844903ada94cb5820b23d922f2d0ad34e01e029e410197c8a32"
+        },
         "find-skills": {
             "source": "vercel-labs/skills",
             "sourceType": "github",
@@ -11,10 +46,85 @@
             "sourceType": "github",
             "computedHash": "f357c1b1fd764e6fb5c26d24a0007e68768edd84ff2fb32ccc982af21cc3b551"
         },
+        "frontend-design": {
+            "source": "anthropics/skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "82fb11a63fb1e35ee2469516ed02d54695f783115b1540c0e783197af4240a3a"
+        },
+        "nodejs-backend-patterns": {
+            "source": "wshobson/agents",
+            "sourceType": "autoskills-registry",
+            "computedHash": "710a5e6f83c46e8f6c43356df55c143a7375c4414559a581654ce51709138c55"
+        },
+        "nodejs-best-practices": {
+            "source": "sickn33/antigravity-awesome-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "7361ab02fb6b09913e3bdd9cf61c629ed6c17de9485e6a781054e5d437ccfc29"
+        },
+        "nodejs-express-server": {
+            "source": "aj-geddes/useful-ai-prompts",
+            "sourceType": "autoskills-registry",
+            "computedHash": "b15b3e6dda23d3f3c230285a122de9df3aabae6408dc2bd52038445e60ba745e"
+        },
+        "playwright-best-practices": {
+            "source": "currents-dev/playwright-best-practices-skill",
+            "sourceType": "autoskills-registry",
+            "computedHash": "dcc414410b81cfcc5c56490a7e450e664b11d170f3c336fe475c6e0a47def574"
+        },
+        "react-best-practices": {
+            "source": "vercel-labs/agent-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "502eb06700e2c3cb1bd7f710860528f72281320bd5171a2087b05a090b573dc1"
+        },
+        "seo": {
+            "source": "addyosmani/web-quality-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "c184da724d1c61ad077f27418ea8e7e88fd54bcdf98165e18be7e4681cbd5e20"
+        },
         "skill-creator": {
             "source": "anthropics/skills",
             "sourceType": "github",
             "computedHash": "5ea13a6d9f0d4bb694405d79acd00cadec0d21bb138c4dd10fcf3c500cb835c2"
+        },
+        "stripe-best-practices": {
+            "source": "stripe/ai",
+            "sourceType": "autoskills-registry",
+            "computedHash": "0ca31a5a3c2631cd0419ba2e186e962773718799d2b281551c0e48195693350f"
+        },
+        "supabase-postgres-best-practices": {
+            "source": "supabase/agent-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "4c09c107aa64d7722369c3856ba8743ea11e7450e4f1227cb72a0d375d1e4fd5"
+        },
+        "turborepo": {
+            "source": "vercel/turborepo",
+            "sourceType": "autoskills-registry",
+            "computedHash": "341f67c77a99b473c48207db023503509de7955af1517ce39e17b21a0127d79c"
+        },
+        "typescript-advanced-types": {
+            "source": "wshobson/agents",
+            "sourceType": "autoskills-registry",
+            "computedHash": "5ca0e177c6aaaba1889255691224daafdb7d71f317cc70bede1590d3907ded42"
+        },
+        "upgrade-stripe": {
+            "source": "stripe/ai",
+            "sourceType": "autoskills-registry",
+            "computedHash": "017906619cae467ebfac534bed0dc25d1c157dd55bfb0530fb5d38d2418b426c"
+        },
+        "vite": {
+            "source": "antfu/skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "e0b52fe3ffea533e1e543ac8a8a20fccca3beed9f8bdc31a0934fe9f554439e8"
+        },
+        "vitest": {
+            "source": "antfu/skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "be7329a28a492b802061206c2d75603ab294f25f541bc5421d5de8d41abe68b1"
+        },
+        "zod": {
+            "source": "pproenca/dot-skills",
+            "sourceType": "autoskills-registry",
+            "computedHash": "aa8a97195b07763d37494b511f48be90979fd6826c031956c831cfc58f6a24b8"
         }
     }
 }
