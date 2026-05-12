@@ -172,7 +172,7 @@
     },
     "mcp": {
         "flow-control": {
-            "command": ["/home/bryan/Desktop/trabajo-programacion/latamearth/Flow-stable/load-env.sh"],
+            "command": ["load-env.sh"],
             "enabled": true,
             "type": "local"
         },
@@ -183,7 +183,8 @@
         },
         "gitnexus": {
             "type": "local",
-            "command": ["gitnexus", "mcp"]
+            "command": ["gitnexus", "mcp"],
+            "enabled": true
         }
     },
     "permission": {
