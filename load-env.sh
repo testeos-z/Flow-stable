@@ -1,5 +1,6 @@
 #!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 set -a
-source "$(dirname "$0")/packages/flowise-mcp-server/.env"
+source "$SCRIPT_DIR/packages/flowise-mcp-server/.env"
 set +a
-exec node "$(dirname "$0")/packages/flowise-mcp-server/dist/index.js"
+exec node "$SCRIPT_DIR/packages/flowise-mcp-server/dist/index.js"

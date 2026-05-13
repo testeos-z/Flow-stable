@@ -1,0 +1,173 @@
+- generic [ref=e32]:
+  - banner [ref=e33]:
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - link "GobernAI" [ref=e37] [cursor=pointer]:
+          - /url: /chatflows
+          - img "GobernAI" [ref=e39]
+        - button [ref=e40] [cursor=pointer]:
+          - img [ref=e42]
+      - checkbox [ref=e45] [cursor=pointer]
+      - button [ref=e48] [cursor=pointer]:
+        - img [ref=e50]
+  - navigation "mailbox folders" [ref=e53]:
+    - list [ref=e58]:
+      - button "Chatflows" [ref=e59] [cursor=pointer]:
+        - img [ref=e61]
+        - heading "Chatflows" [level=5] [ref=e67]
+      - button "Agentflows" [ref=e68] [cursor=pointer]:
+        - img [ref=e70]
+        - paragraph [ref=e78]: Agentflows
+      - button "Executions" [ref=e79] [cursor=pointer]:
+        - img [ref=e81]
+        - paragraph [ref=e86]: Executions
+      - button "Assistants" [ref=e87] [cursor=pointer]:
+        - img [ref=e89]
+        - paragraph [ref=e94]: Assistants
+      - button "Marketplaces" [ref=e95] [cursor=pointer]:
+        - img [ref=e97]
+        - paragraph [ref=e101]: Marketplaces
+      - button "Tools" [ref=e102] [cursor=pointer]:
+        - img [ref=e104]
+        - paragraph [ref=e107]: Tools
+      - button "Credentials" [ref=e108] [cursor=pointer]:
+        - img [ref=e110]
+        - paragraph [ref=e115]: Credentials
+      - button "Variables" [ref=e116] [cursor=pointer]:
+        - img [ref=e118]
+        - paragraph [ref=e122]: Variables
+      - button "API Keys" [ref=e123] [cursor=pointer]:
+        - img [ref=e125]
+        - paragraph [ref=e128]: API Keys
+      - button "Document Stores" [ref=e129] [cursor=pointer]:
+        - img [ref=e131]
+        - paragraph [ref=e136]: Document Stores
+  - main [ref=e137]:
+    - generic [ref=e140]:
+      - generic [ref=e142]:
+        - generic [ref=e144]:
+          - heading "Chatflows" [level=1] [ref=e145]
+          - paragraph [ref=e146]: Build single-agent systems, chatbots and simple LLM flows
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - img [ref=e150]
+            - searchbox "Search Name or Category [ Ctrl + F ]" [ref=e153]
+            - group
+          - group [ref=e154]:
+            - button "Card View" [pressed] [ref=e155] [cursor=pointer]:
+              - img [ref=e156]
+            - button "List View" [ref=e161] [cursor=pointer]:
+              - img [ref=e162]
+          - button "Add New" [ref=e163] [cursor=pointer]:
+            - img [ref=e165]
+            - text: Add New
+      - generic [ref=e166]:
+        - generic [ref=e169] [cursor=pointer]:
+          - paragraph [ref=e172]: Politeia Media Training Exterior Input
+          - generic [ref=e173]:
+            - generic "OpenRouter" [ref=e174]
+            - generic "Buffer Memory" [ref=e175]
+            - generic "Chat Prompt Template" [ref=e176]
+            - paragraph [ref=e177]: + 2 More
+        - generic [ref=e180] [cursor=pointer]:
+          - paragraph [ref=e183]: Case Five Starter
+          - generic [ref=e184]:
+            - generic "OpenRouter" [ref=e185]
+            - generic "Tool Agent" [ref=e186]
+            - generic "Custom Tool" [ref=e187]
+            - paragraph [ref=e188]: + 1 More
+        - generic [ref=e191] [cursor=pointer]:
+          - paragraph [ref=e194]: A2A Orquestador - Seguridad y Fiscal v2
+          - generic [ref=e195]:
+            - generic "OpenRouter" [ref=e196]
+            - generic "A2A Memory Adapter" [ref=e197]
+            - generic "Chat Prompt Template" [ref=e198]
+            - paragraph [ref=e199]: + 6 More
+        - generic [ref=e202] [cursor=pointer]:
+          - paragraph [ref=e205]: Security National Agent - FACTUM
+          - generic [ref=e206]:
+            - generic "OpenRouter" [ref=e207]
+            - generic "Buffer Memory" [ref=e208]
+            - generic "Chat Prompt Template" [ref=e209]
+            - paragraph [ref=e210]: + 2 More
+        - generic [ref=e213] [cursor=pointer]:
+          - paragraph [ref=e216]: Audiovisual - POLITEIA
+          - generic [ref=e217]:
+            - generic "OpenRouter" [ref=e218]
+            - generic "Buffer Memory" [ref=e219]
+            - generic "Chat Prompt Template" [ref=e220]
+            - paragraph [ref=e221]: + 2 More
+        - generic [ref=e224] [cursor=pointer]:
+          - paragraph [ref=e227]: Format Report - POLITEIA
+          - generic [ref=e228]:
+            - generic "OpenRouter" [ref=e229]
+            - generic "Buffer Memory" [ref=e230]
+            - generic "Chat Prompt Template" [ref=e231]
+            - paragraph [ref=e232]: + 2 More
+        - generic [ref=e235] [cursor=pointer]:
+          - paragraph [ref=e238]: Politeia Structured - POLITEIA
+          - generic [ref=e239]:
+            - generic "OpenRouter" [ref=e240]
+            - generic "Buffer Memory" [ref=e241]
+            - generic "Chat Prompt Template" [ref=e242]
+            - paragraph [ref=e243]: + 2 More
+        - generic [ref=e246] [cursor=pointer]:
+          - paragraph [ref=e249]: Territory Alliances - POLITEIA
+          - generic [ref=e250]:
+            - generic "OpenRouter" [ref=e251]
+            - generic "Buffer Memory" [ref=e252]
+            - generic "Chat Prompt Template" [ref=e253]
+            - paragraph [ref=e254]: + 2 More
+        - generic [ref=e257] [cursor=pointer]:
+          - paragraph [ref=e260]: Monitoring - POLITEIA
+          - generic [ref=e261]:
+            - generic "OpenRouter" [ref=e262]
+            - generic "Buffer Memory" [ref=e263]
+            - generic "Chat Prompt Template" [ref=e264]
+            - paragraph [ref=e265]: + 2 More
+        - generic [ref=e268] [cursor=pointer]:
+          - paragraph [ref=e271]: Institutional Communication - POLITEIA
+          - generic [ref=e272]:
+            - generic "OpenRouter" [ref=e273]
+            - generic "Buffer Memory" [ref=e274]
+            - generic "Chat Prompt Template" [ref=e275]
+            - paragraph [ref=e276]: + 2 More
+        - generic [ref=e279] [cursor=pointer]:
+          - paragraph [ref=e282]: Media Training - POLITEIA
+          - generic [ref=e283]:
+            - generic "OpenRouter" [ref=e284]
+            - generic "Buffer Memory" [ref=e285]
+            - generic "Chat Prompt Template" [ref=e286]
+            - paragraph [ref=e287]: + 2 More
+        - generic [ref=e290] [cursor=pointer]:
+          - paragraph [ref=e293]: Crisis Prebunking - POLITEIA
+          - generic [ref=e294]:
+            - generic "OpenRouter" [ref=e295]
+            - generic "Buffer Memory" [ref=e296]
+            - generic "Chat Prompt Template" [ref=e297]
+            - paragraph [ref=e298]: + 2 More
+      - generic [ref=e299]:
+        - generic [ref=e300]:
+          - paragraph [ref=e301]: "Items per page:"
+          - generic [ref=e303]:
+            - combobox [ref=e304] [cursor=pointer]: "12"
+            - textbox: "12"
+            - img
+            - group
+        - paragraph [ref=e305]: Items 1 to 12 of 47
+        - navigation "pagination navigation" [ref=e306]:
+          - list [ref=e307]:
+            - listitem [ref=e308]:
+              - button "Go to previous page" [disabled]:
+                - img
+            - listitem [ref=e309]:
+              - button "page 1" [ref=e310] [cursor=pointer]: "1"
+            - listitem [ref=e311]:
+              - button "Go to page 2" [ref=e312] [cursor=pointer]: "2"
+            - listitem [ref=e313]:
+              - button "Go to page 3" [ref=e314] [cursor=pointer]: "3"
+            - listitem [ref=e315]:
+              - button "Go to page 4" [ref=e316] [cursor=pointer]: "4"
+            - listitem [ref=e317]:
+              - button "Go to next page" [ref=e318] [cursor=pointer]:
+                - img [ref=e319]

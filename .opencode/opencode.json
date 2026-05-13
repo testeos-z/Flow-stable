@@ -167,12 +167,12 @@
                 "task": true,
                 "todowrite": true,
                 "write": true
-            }
+            } 
         }
     },
     "mcp": {
         "flow-control": {
-            "command": ["load-env.sh"],
+            "command": ["./load-env.sh"],
             "enabled": true,
             "type": "local"
         },
@@ -183,13 +183,13 @@
         },
         "gitnexus": {
             "type": "local",
-            "command": ["gitnexus", "mcp"],
+            "command": ["npx", "--yes", "gitnexus@latest", "mcp"],
             "enabled": true
         }
     },
     "permission": {
         "flow-doc_*": "allow",
         "flow-control_*": "allow",
-        "gitnexus_*": "deny"
+        "gitnexus_*": "allow"
     }
 }
