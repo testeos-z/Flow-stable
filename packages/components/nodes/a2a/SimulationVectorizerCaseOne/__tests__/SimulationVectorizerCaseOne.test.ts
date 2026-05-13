@@ -41,7 +41,7 @@ describe('SimulationVectorizerCaseOne — INode contract', () => {
         expect(node.version).toBe(1.0)
         expect(node.type).toBe('SimulationVectorizerCaseOne')
         expect(node.category).toBe('A2A Knowledge')
-        expect(node.author).toBe('GobernAI')
+        expect(node.author).toBeUndefined()
         expect(node.baseClasses).toContain('SimulationVectorizerCaseOne')
         expect(node.baseClasses).toContain('Tool')
         expect(node.baseClasses).toContain('DynamicStructuredTool')

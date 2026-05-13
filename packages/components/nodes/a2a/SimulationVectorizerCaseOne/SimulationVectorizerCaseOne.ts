@@ -12,7 +12,6 @@ class SimulationVectorizerCaseOne implements INode {
     type: string
     icon: string
     category: string
-    author: string
     description: string
     baseClasses: string[]
     credential: INodeParams
@@ -25,7 +24,6 @@ class SimulationVectorizerCaseOne implements INode {
         this.type = 'SimulationVectorizerCaseOne'
         this.icon = 'simulation-vectorizer-case-one.svg'
         this.category = 'A2A Knowledge'
-        this.author = 'GobernAI'
         this.description =
             'Vectorizes Case One simulation data (form + bucket documents) into Supabase pgvector tables. Reads simulationId from flow state. Idempotent — re-running replaces previous vectors.'
         this.baseClasses = [this.type, 'Tool', 'DynamicStructuredTool', ...getBaseClasses(SimulationVectorizerTool)]
