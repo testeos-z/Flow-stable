@@ -8,7 +8,7 @@ import {
     INodeParams,
     IServerSideEventStreamer
 } from '../../../src/Interface'
-import { getVars, createCodeExecutionSandbox } from '../../../src/utils'
+import { getVars, createCodeExecutionSandbox, processTemplateVariables } from '../../../src/utils'
 import { updateFlowState } from '../utils'
 
 interface ICustomFunctionInputVariables {
@@ -192,11 +192,13 @@ class CustomFunction_Agentflow implements INode {
             let finalOutput = typeof response === 'object' ? JSON.stringify(response, null, 2) : response
 
             // Debug: check spread behavior
-            let newState = state
+            let newState = JSON.parse(JSON.stringify(state))
 
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
                 newState = updateFlowState(newState, _customFunctionUpdateState)
             }
+
+            newState = processTemplateVariables(newState, finalOutput)
 
             const returnOutput = {
                 id: nodeData.id,
