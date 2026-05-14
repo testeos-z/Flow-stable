@@ -8,7 +8,7 @@ import {
     INodeParams,
     IServerSideEventStreamer
 } from '../../../src/Interface'
-import { getVars, createCodeExecutionSandbox } from '../../../src/utils'
+import { getVars, createCodeExecutionSandbox, processTemplateVariables } from '../../../src/utils'
 import { updateFlowState } from '../utils'
 
 interface ICustomFunctionInputVariables {
@@ -191,14 +191,19 @@ class CustomFunction_Agentflow implements INode {
 
             let finalOutput = typeof response === 'object' ? JSON.stringify(response, null, 2) : response
 
+            // Debug: check spread behavior
+            const manualCopy: ICommonObject = {}
+            for (const k of Object.keys(state)) {
+                manualCopy[k] = state[k]
+            }
+
             let newState = { ...state }
 
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
                 newState = updateFlowState(newState, _customFunctionUpdateState)
             }
 
-            // Bypass processTemplateVariables temporarily for debug
-            // newState = processTemplateVariables(newState, finalOutput)
+            newState = processTemplateVariables(newState, finalOutput)
 
             const returnOutput = {
                 id: nodeData.id,
@@ -210,7 +215,13 @@ class CustomFunction_Agentflow implements INode {
                 output: {
                     content: finalOutput
                 },
-                state: newState
+                state: newState,
+                _debug: JSON.stringify({
+                    state_sim: (state as ICommonObject).simulation_id,
+                    manual_sim: manualCopy.simulation_id,
+                    state_keys: Object.keys(state),
+                    state_ctor: (state as ICommonObject)?.constructor?.name
+                })
             }
 
             return returnOutput
