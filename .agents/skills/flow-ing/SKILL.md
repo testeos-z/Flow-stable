@@ -242,52 +242,52 @@ Flowise API strips some fields (notably `viewport`) via its Zod schema. After a 
 
 You have access to:
 
--   `flow-validation_create_chatflow` — Create new chatflow
--   `flow-validation_update_chatflow` — Update existing chatflow
--   `flow-validation_delete_chatflow` — Delete chatflow
--   `flow-validation_get_chatflow` — Read chatflow (for diagnostics)
--   `flow-validation_list_chatflows` — List all chatflows
+-   `flow-control_create_chatflow` — Create new chatflow
+-   `flow-control_update_chatflow` — Update existing chatflow
+-   `flow-control_delete_chatflow` — Delete chatflow
+-   `flow-control_get_chatflow` — Read chatflow (for diagnostics)
+-   `flow-control_list_chatflows` — List all chatflows
 
 ### Credentials
 
--   `flow-validation_list_credential_types` — List credential types from local registry
--   `flow-validation_resolve_credential` — Resolve credential type name → UUID
--   `flow-validation_list_credentials` — List API-managed credentials
--   `flow-validation_get_credential` / `create_credential` / `update_credential` / `delete_credential` — API credential CRUD
+-   `flow-control_list_credential_types` — List credential types from local registry
+-   `flow-control_resolve_credential` — Resolve credential type name → UUID
+-   `flow-control_list_credentials` — List API-managed credentials
+-   `flow-control_get_credential` / `create_credential` / `update_credential` / `delete_credential` — API credential CRUD
 
 ### MCP Server Config
 
--   `flow-validation_get_mcp_server_config` — Read MCP server configuration
--   `flow-validation_enable_mcp_server` / `disable_mcp_server` — Toggle MCP server
--   `flow-validation_update_mcp_server_config` — Update MCP server config
--   `flow-validation_refresh_mcp_token` — Rotate MCP server token
+-   `flow-control_get_mcp_server_config` — Read MCP server configuration
+-   `flow-control_enable_mcp_server` / `disable_mcp_server` — Toggle MCP server
+-   `flow-control_update_mcp_server_config` — Update MCP server config
+-   `flow-control_refresh_mcp_token` — Rotate MCP server token
 
 ### Custom MCP Servers
 
--   `flow-validation_list_custom_mcp_servers` / `get_custom_mcp_server` / `create_custom_mcp_server` / `update_custom_mcp_server` / `delete_custom_mcp_server` — Lifecycle CRUD
--   `flow-validation_get_custom_mcp_server_tools` — List tools discovered from authorized server
--   `flow-validation_authorize_custom_mcp_server` — Connect and authorize (5–15s operation)
+-   `flow-control_list_custom_mcp_servers` / `get_custom_mcp_server` / `create_custom_mcp_server` / `update_custom_mcp_server` / `delete_custom_mcp_server` — Lifecycle CRUD
+-   `flow-control_get_custom_mcp_server_tools` — List tools discovered from authorized server
+-   `flow-control_authorize_custom_mcp_server` — Connect and authorize (5–15s operation)
 
 ### Tools Management
 
--   `flow-validation_flow_list_tools` / `flow_get_tool` / `flow_create_tool` / `flow_update_tool` / `flow_delete_tool` — Flowise tool CRUD
+-   `flow-control_flow_list_tools` / `flow_get_tool` / `flow_create_tool` / `flow_update_tool` / `flow_delete_tool` — Flowise tool CRUD
 -   Usar para registrar custom tools que los flujos pueden invocar
 
 ### Variables
 
--   `flow-validation_list_variables` / `create_variable` / `update_variable` / `delete_variable` — Variable CRUD
+-   `flow-control_list_variables` / `create_variable` / `update_variable` / `delete_variable` — Variable CRUD
 -   Las variables pueden ser `static` (valor fijo) o `runtime` (resueltas en ejecución)
 
 ### API Keys
 
--   `flow-validation_list_api_keys` / `create_api_key` / `update_api_key` / `delete_api_key` — API key CRUD
+-   `flow-control_list_api_keys` / `create_api_key` / `update_api_key` / `delete_api_key` — API key CRUD
 -   Las API keys se usan para autenticar requests externos a los chatflows
 
 ### Assistants
 
--   `flow-validation_list_assistants` / `get_assistant` / `create_assistant` / `update_assistant` / `delete_assistant` — Assistant CRUD
--   `flow-validation_get_assistant_chat_models` / `get_assistant_doc_stores` / `get_assistant_tools` — Componentes disponibles para asistentes
--   `flow-validation_generate_assistant_instruction` — Generar instrucciones via AI (operación lenta, puede tardar varios segundos)
+-   `flow-control_list_assistants` / `get_assistant` / `create_assistant` / `update_assistant` / `delete_assistant` — Assistant CRUD
+-   `flow-control_get_assistant_chat_models` / `get_assistant_doc_stores` / `get_assistant_tools` — Componentes disponibles para asistentes
+-   `flow-control_generate_assistant_instruction` — Generar instrucciones via AI (operación lenta, puede tardar varios segundos)
 
 ## Credential Registry
 

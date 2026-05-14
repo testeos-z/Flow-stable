@@ -44,7 +44,7 @@ describe('variables handlers', () => {
             })
 
             expect(mockApi.request).toHaveBeenCalledWith('POST', '/variables', {
-                variableName: 'API_URL',
+                name: 'API_URL',
                 value: 'https://api.example.com'
             })
             expect(result.isError).toBeUndefined()

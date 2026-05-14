@@ -1,17 +1,17 @@
 ---
 name: gitnexus-refactoring
-description: 'Use when the user wants to rename, extract, split, move, or restructure code safely. Examples: "Rename this function", "Extract this into a module", "Refactor this class", "Move this to a separate file"'
+description: "Use when the user wants to rename, extract, split, move, or restructure code safely. Examples: \"Rename this function\", \"Extract this into a module\", \"Refactor this class\", \"Move this to a separate file\""
 ---
 
 # Refactoring with GitNexus
 
 ## When to Use
 
--   "Rename this function safely"
--   "Extract this into a module"
--   "Split this service"
--   "Move this to a new file"
--   Any task involving renaming, extracting, splitting, or restructuring code
+- "Rename this function safely"
+- "Extract this into a module"
+- "Split this service"
+- "Move this to a new file"
+- Any task involving renaming, extracting, splitting, or restructuring code
 
 ## Workflow
 

@@ -21,7 +21,8 @@ export async function handleCreateVariable(
     api: FlowiseApiClient,
     params: { variableName: string; value: string; type?: 'static' | 'runtime' }
 ): Promise<ToolResponse> {
-    return passthroughHandler(api, 'POST', '/variables', params, 'Error creating variable')
+    const { variableName, ...rest } = params
+    return passthroughHandler(api, 'POST', '/variables', { name: variableName, ...rest }, 'Error creating variable')
 }
 
 /** VAR-003: Update an existing variable */
@@ -30,7 +31,8 @@ export async function handleUpdateVariable(
     id: string,
     params: { variableName?: string; value?: string; type?: 'static' | 'runtime' }
 ): Promise<ToolResponse> {
-    return passthroughHandler(api, 'PUT', `/variables/${id}`, params, 'Error updating variable')
+    const { variableName, ...rest } = params
+    return passthroughHandler(api, 'PUT', `/variables/${id}`, variableName ? { name: variableName, ...rest } : rest, 'Error updating variable')
 }
 
 /** VAR-004: Delete a variable */

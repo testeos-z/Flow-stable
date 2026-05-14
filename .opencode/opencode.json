@@ -183,7 +183,7 @@
         },
         "gitnexus": {
             "type": "local",
-            "command": ["npx", "--yes", "gitnexus@latest", "mcp"],
+            "command": ["gitnexus", "mcp"],
             "enabled": true
         }
     },
