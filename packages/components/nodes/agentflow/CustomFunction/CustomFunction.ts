@@ -189,23 +189,10 @@ class CustomFunction_Agentflow implements INode {
             const asyncUserFunction = new Function(...sandboxKeys, `return (async () => {\n${javascriptFunction}\n})()`)
             const response = await asyncUserFunction(...sandboxValues)
 
-            let finalOutput = JSON.stringify(
-                {
-                    response,
-                    state_after: state,
-                    state_sim_id: state.simulation_id,
-                    state_has_context: state.has_simulation_context
-                },
-                null,
-                2
-            )
+            let finalOutput = typeof response === 'object' ? JSON.stringify(response, null, 2) : response
 
-            // The sandbox's $flow.state is the same reference as the original state
-            // object, so any modifications made via $flow.state.xxx = value inside
-            // the user code are already reflected in the original state variable.
             let newState = { ...state }
 
-            // Update flow state if needed (apply Update Flow State mappings)
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
                 newState = updateFlowState(newState, _customFunctionUpdateState)
             }
@@ -222,7 +209,12 @@ class CustomFunction_Agentflow implements INode {
                 output: {
                     content: finalOutput
                 },
-                state: newState
+                state: newState,
+                debug: JSON.stringify({
+                    orig_sim_id: state.simulation_id,
+                    new_sim_id: newState.simulation_id,
+                    is_same: state === options.agentflowRuntime?.state
+                })
             }
 
             return returnOutput
