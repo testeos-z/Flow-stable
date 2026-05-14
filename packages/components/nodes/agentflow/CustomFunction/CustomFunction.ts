@@ -8,7 +8,7 @@ import {
     INodeParams,
     IServerSideEventStreamer
 } from '../../../src/Interface'
-import { getVars, createCodeExecutionSandbox, processTemplateVariables } from '../../../src/utils'
+import { getVars, createCodeExecutionSandbox } from '../../../src/utils'
 import { updateFlowState } from '../utils'
 
 interface ICustomFunctionInputVariables {
@@ -197,7 +197,8 @@ class CustomFunction_Agentflow implements INode {
                 newState = updateFlowState(newState, _customFunctionUpdateState)
             }
 
-            newState = processTemplateVariables(newState, finalOutput)
+            // Bypass processTemplateVariables temporarily for debug
+            // newState = processTemplateVariables(newState, finalOutput)
 
             const returnOutput = {
                 id: nodeData.id,
@@ -209,12 +210,7 @@ class CustomFunction_Agentflow implements INode {
                 output: {
                     content: finalOutput
                 },
-                state: newState,
-                debug: JSON.stringify({
-                    orig_sim_id: state.simulation_id,
-                    new_sim_id: newState.simulation_id,
-                    is_same: state === options.agentflowRuntime?.state
-                })
+                state: newState
             }
 
             return returnOutput
