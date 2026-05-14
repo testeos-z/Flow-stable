@@ -8,7 +8,7 @@ import {
     INodeParams,
     IServerSideEventStreamer
 } from '../../../src/Interface'
-import { getVars, executeJavaScriptCode, createCodeExecutionSandbox, processTemplateVariables } from '../../../src/utils'
+import { getVars, createCodeExecutionSandbox, processTemplateVariables } from '../../../src/utils'
 import { updateFlowState } from '../utils'
 
 interface ICustomFunctionInputVariables {
@@ -178,20 +178,30 @@ class CustomFunction_Agentflow implements INode {
             : undefined
 
         try {
-            const response = await executeJavaScriptCode(javascriptFunction, sandbox, {
-                libraries: ['axios'],
-                streamOutput
-            })
+            // IMPORTANT: We execute user code directly with new Function instead of
+            // executeJavaScriptCode (which uses vm2/NodeVM) because NodeVM deep-clones
+            // the sandbox object. This means $flow.state mutations made inside the VM
+            // are lost when execution completes. By using new Function with the sandbox
+            // variables passed as arguments, we execute in the same V8 context so
+            // $flow.state modifications propagate back to the original state object.
+            const sandboxKeys = Object.keys(sandbox)
+            const sandboxValues = Object.values(sandbox)
+            const asyncUserFunction = new Function(...sandboxKeys, `return (async () => {\n${javascriptFunction}\n})()`)
+            const response = await asyncUserFunction(...sandboxValues)
 
             let finalOutput = response
             if (typeof response === 'object') {
                 finalOutput = JSON.stringify(response, null, 2)
             }
 
-            // Update flow state if needed
+            // The sandbox's $flow.state is the same reference as the original state
+            // object, so any modifications made via $flow.state.xxx = value inside
+            // the user code are already reflected in the original state variable.
             let newState = { ...state }
+
+            // Update flow state if needed (apply Update Flow State mappings)
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
-                newState = updateFlowState(state, _customFunctionUpdateState)
+                newState = updateFlowState(newState, _customFunctionUpdateState)
             }
 
             newState = processTemplateVariables(newState, finalOutput)

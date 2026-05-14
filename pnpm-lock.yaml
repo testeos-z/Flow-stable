@@ -38,6 +38,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      franc:
+        specifier: ^6.2.0
+        version: 6.2.0
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.19.4

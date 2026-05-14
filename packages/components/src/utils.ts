@@ -1606,9 +1606,10 @@ export const executeJavaScriptCode = async (
         libraries?: string[]
         streamOutput?: (output: string) => void
         nodeVMOptions?: ICommonObject
+        returnSandbox?: boolean
     } = {}
 ): Promise<any> => {
-    const { timeout = 300000, useSandbox = true, streamOutput, libraries = [], nodeVMOptions = {} } = options
+    const { timeout = 300000, useSandbox = true, streamOutput, libraries = [], nodeVMOptions = {}, returnSandbox = false } = options
     const shouldUseE2BSandbox = useSandbox && process.env.E2B_APIKEY
 
     let timeoutMs = timeout
@@ -1730,6 +1731,9 @@ export const executeJavaScriptCode = async (
             // Clean up sandbox
             sbx.kill()
 
+            if (returnSandbox) {
+                return { result: parseOutput(output), sandbox }
+            }
             return parseOutput(output)
         } catch (e) {
             throw new Error(`Sandbox Execution Error: ${e}`)
