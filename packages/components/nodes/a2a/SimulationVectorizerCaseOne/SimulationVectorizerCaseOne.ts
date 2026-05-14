@@ -23,7 +23,7 @@ class SimulationVectorizerCaseOne implements INode {
         this.version = 1.0
         this.type = 'SimulationVectorizerCaseOne'
         this.icon = 'simulation-vectorizer-case-one.svg'
-        this.category = 'A2A Knowledge'
+        this.category = 'Tools'
         this.description =
             'Vectorizes Case One simulation data (form + bucket documents) into Supabase pgvector tables. Reads simulationId from flow state. Idempotent — re-running replaces previous vectors.'
         this.baseClasses = [this.type, 'Tool', 'DynamicStructuredTool', ...getBaseClasses(SimulationVectorizerTool)]

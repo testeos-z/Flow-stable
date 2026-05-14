@@ -42,7 +42,7 @@ describe('apikey-management handlers', () => {
                 apiKeyName: 'ci-deploy-key'
             })
 
-            expect(mockApi.request).toHaveBeenCalledWith('POST', '/apikey', { apiKeyName: 'ci-deploy-key' })
+            expect(mockApi.request).toHaveBeenCalledWith('POST', '/apikey', { keyName: 'ci-deploy-key' })
             expect(result.isError).toBeUndefined()
             expect(result.content[0].text).toContain('ci-deploy-key')
             expect(result.content[0].text).toContain('sk-abc123def456')
@@ -69,7 +69,7 @@ describe('apikey-management handlers', () => {
                 apiKeyName: 'new-name'
             })
 
-            expect(mockApi.request).toHaveBeenCalledWith('PUT', '/apikey/key-1', { apiKeyName: 'new-name' })
+            expect(mockApi.request).toHaveBeenCalledWith('PUT', '/apikey/key-1', { keyName: 'new-name' })
             expect(result.isError).toBeUndefined()
             expect(result.content[0].text).toContain('new-name')
         })

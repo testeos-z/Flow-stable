@@ -40,7 +40,7 @@ describe('SimulationVectorizerCaseOne — INode contract', () => {
         expect(node.name).toBe('simulationVectorizerCaseOne')
         expect(node.version).toBe(1.0)
         expect(node.type).toBe('SimulationVectorizerCaseOne')
-        expect(node.category).toBe('A2A Knowledge')
+        expect(node.category).toBe('Tools')
         expect(node.author).toBeUndefined()
         expect(node.baseClasses).toContain('SimulationVectorizerCaseOne')
         expect(node.baseClasses).toContain('Tool')

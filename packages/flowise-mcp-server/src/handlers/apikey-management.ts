@@ -18,12 +18,12 @@ export async function handleListApiKeys(api: FlowiseApiClient): Promise<ToolResp
 
 /** APK-002: Create a new API key */
 export async function handleCreateApiKey(api: FlowiseApiClient, params: { apiKeyName: string }): Promise<ToolResponse> {
-    return passthroughHandler(api, 'POST', '/apikey', params, 'Error creating API key')
+    return passthroughHandler(api, 'POST', '/apikey', { keyName: params.apiKeyName }, 'Error creating API key')
 }
 
 /** APK-003: Update an existing API key (rename) */
 export async function handleUpdateApiKey(api: FlowiseApiClient, id: string, params: { apiKeyName?: string }): Promise<ToolResponse> {
-    return passthroughHandler(api, 'PUT', `/apikey/${id}`, params, 'Error updating API key')
+    return passthroughHandler(api, 'PUT', `/apikey/${id}`, params.apiKeyName ? { keyName: params.apiKeyName } : {}, 'Error updating API key')
 }
 
 /** APK-004: Delete (revoke) an API key */
