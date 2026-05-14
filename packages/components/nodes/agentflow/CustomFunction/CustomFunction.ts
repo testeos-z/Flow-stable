@@ -192,7 +192,7 @@ class CustomFunction_Agentflow implements INode {
             let finalOutput = typeof response === 'object' ? JSON.stringify(response, null, 2) : response
 
             // Debug: check spread behavior
-            let newState = { ...state }
+            let newState = state
 
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
                 newState = updateFlowState(newState, _customFunctionUpdateState)
