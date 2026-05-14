@@ -36,6 +36,13 @@ const CREDENTIAL_REGISTRY: Record<string, CredentialEntry[]> = {
             env: 'dev',
             uuid: 'aae7223f-da1b-47d5-bb26-1a2f1b2a3d5b',
             description: 'API key for HuggingFace Inference API'
+        },
+        {
+            type: 'supabaseUserAuth',
+            name: 'Supabase User Auth',
+            env: 'dev',
+            uuid: '0df85d26-749b-4fac-9a88-7399663a3099',
+            description: 'Supabase user credentials (email/password) for edge function auth'
         }
     ],
     qa: [],
