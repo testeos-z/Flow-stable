@@ -31,7 +31,7 @@ interface SupabaseStorage {
             options?: { limit?: number }
         ): Promise<{
             data: StorageItem[] | null
-            error?: { message: string } | null
+            error: { message: string; status?: number } | null
         }>
     }
 }
