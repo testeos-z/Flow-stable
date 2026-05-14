@@ -11,7 +11,7 @@ import { z } from 'zod'
 import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters'
 import { prepareCaseForVectorization, CaseOneData } from './narrative'
 import { detectLanguage, LanguageDetectionLLM } from './language'
-import { walkBucket, StorageClient, BucketFile } from './bucket-walker'
+import { walkBucket, BucketFile, StorageItem } from './bucket-walker'
 import { parseByMime } from './file-parsers'
 
 // ─── Interfaces ────────────────────────────────────────────────────
@@ -26,6 +26,13 @@ interface SupabaseFunctions {
 interface SupabaseStorage {
     from(bucket: string): {
         download(path: string): Promise<{ data: Blob | null; error?: { message: string } | null }>
+        list(
+            prefix: string,
+            options?: { limit?: number }
+        ): Promise<{
+            data: StorageItem[] | null
+            error?: { message: string } | null
+        }>
     }
 }
 
@@ -308,7 +315,7 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
             const bucketPath = `${deps.bucketBasePath}/${deps.simulationId}`
             let bucketFiles: BucketFile[] = []
             try {
-                bucketFiles = await walkBucket(deps.supabaseClient as unknown as StorageClient, deps.bucketName!, bucketPath)
+                bucketFiles = await walkBucket(deps.supabaseClient.storage, deps.bucketName!, bucketPath, { limit: 1000 })
             } catch (err) {
                 warnings.push(`Bucket walk failed: ${sanitizeError(err)} — continuing with form data only`)
             }
