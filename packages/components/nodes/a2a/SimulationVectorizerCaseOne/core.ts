@@ -380,11 +380,16 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
                 docChunks = docs.map((d) => d.pageContent)
             }
 
-            // Step 7 — Embed
+            // Step 7 — Embed (batched to avoid HuggingFace entity-too-large)
             const allChunks = [...narrativeChunks, ...docChunks]
-            let allEmbeddings: number[][]
+            let allEmbeddings: number[][] = []
+            const EMBED_BATCH_SIZE = 20
             try {
-                allEmbeddings = await deps.embeddings.embedDocuments(allChunks)
+                const batches = batchOf(allChunks, EMBED_BATCH_SIZE)
+                for (const batch of batches) {
+                    const batchEmbeddings = await deps.embeddings.embedDocuments(batch)
+                    allEmbeddings.push(...batchEmbeddings)
+                }
             } catch (err) {
                 return JSON.stringify(makeError(err, 'embed'))
             }
