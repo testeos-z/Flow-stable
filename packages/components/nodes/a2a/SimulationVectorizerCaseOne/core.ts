@@ -244,13 +244,11 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
             schemaName: 'knowledge',
             tableSimulations: 'simulations',
             tableDocumentSimulation: 'document_simulation',
-            chunkSize: 1500,
-            chunkOverlap: 200,
-            sourceFlow: 'simulation_vectorizer',
-            jwtCacheTtlMinutes: 50,
-            ...deps,
             chunkSize: Number(deps.chunkSize) || 1500,
             chunkOverlap: Number(deps.chunkOverlap) || 200,
+            sourceFlow: 'simulation_vectorizer',
+            jwtCacheTtlMinutes: 50,
+            ...deps
         }
         this.authEnv = { ...authEnv, jwtCacheTtlMinutes: this.deps.jwtCacheTtlMinutes! }
     }
