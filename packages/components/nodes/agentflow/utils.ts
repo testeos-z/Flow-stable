@@ -801,6 +801,12 @@ export const addImageArtifactsToMessages = async (messages: BaseMessageLike[], o
 export const updateFlowState = (state: ICommonObject, updateState: IFlowState[]): ICommonObject => {
     const newFlowState: Record<string, string> = {}
     for (const s of updateState) {
+        // Skip empty values that would overwrite existing non-empty state values
+        // This prevents templates like {{$flow.state.simulation_id}} resolved to ""
+        // from clearing values set by user code via direct $flow.state.xxx mutation.
+        if ((!s.value || s.value === '') && state[s.key]) {
+            continue
+        }
         newFlowState[s.key] = s.value
     }
     return { ...state, ...newFlowState }
