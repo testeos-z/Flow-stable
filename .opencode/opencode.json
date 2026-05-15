@@ -172,7 +172,10 @@
     },
     "mcp": {
         "flow-control": {
-            "command": ["./load-env.sh"],
+            "command": [
+                "/bin/bash",
+                "/home/nestico/LatamEarth/Flow-stable/load-env.sh"
+            ],
             "enabled": true,
             "type": "local"
         },

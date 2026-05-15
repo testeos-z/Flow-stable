@@ -248,7 +248,9 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
             chunkOverlap: 200,
             sourceFlow: 'simulation_vectorizer',
             jwtCacheTtlMinutes: 50,
-            ...deps
+            ...deps,
+            chunkSize: Number(deps.chunkSize) || 1500,
+            chunkOverlap: Number(deps.chunkOverlap) || 200,
         }
         this.authEnv = { ...authEnv, jwtCacheTtlMinutes: this.deps.jwtCacheTtlMinutes! }
     }
