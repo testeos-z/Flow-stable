@@ -204,6 +204,7 @@ class CustomFunction_Agentflow implements INode {
             console.log(`[TRACE-CF] After JSON deep clone: newState.simulation_id = "${newState?.simulation_id}"`)
 
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
+                console.log(`[TRACE-CF] _customFunctionUpdateState BEFORE updateFlowState: ${JSON.stringify(_customFunctionUpdateState)}`)
                 newState = updateFlowState(newState, _customFunctionUpdateState)
                 console.log(`[TRACE-CF] After updateFlowState: newState.simulation_id = "${newState?.simulation_id}"`)
             }
