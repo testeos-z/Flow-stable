@@ -301,9 +301,10 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
                 )
             }
 
-            const payload = formResponse.data as { success?: boolean; data?: CaseOneData } | undefined
+            const payload = formResponse.data as { success?: boolean; data?: CaseOneData; error?: string; message?: string } | undefined
             if (!payload || !payload.success || !payload.data) {
-                return JSON.stringify(makeError('form_case_one returned unsuccessful response', 'fetch-form'))
+                const detail = payload?.error || payload?.message || JSON.stringify(payload).slice(0, 300)
+                return JSON.stringify(makeError(`form_case_one returned unsuccessful response — detail: ${detail}`, 'fetch-form'))
             }
 
             const formData = payload.data
