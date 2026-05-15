@@ -1076,15 +1076,6 @@ const executeNode = async ({
         const nodeModule = await import(nodeInstanceFilePath)
         const newNodeInstance = new nodeModule.nodeClass()
 
-        // 🔍 DEBUG: Log state at START of each node execution
-        logger.debug(
-            `[TRACE-STATE] executeNode START for ${reactFlowNode.data.name} (${
-                reactFlowNode.data.label
-            }), agentflowRuntime.state.simulation_id = "${(agentflowRuntime.state as any)?.simulation_id}", keys: [${
-                agentflowRuntime.state ? Object.keys(agentflowRuntime.state).join(', ') : 'undefined'
-            }]`
-        )
-
         // Prepare node data
         let flowNodeData = cloneDeep(reactFlowNode.data)
 
@@ -2020,12 +2011,14 @@ export const executeAgentFlow = async ({
 
             nodeResult = executionResult.result
 
-            // 🔍 DEBUG: Track state after node execution
-            logger.debug(
-                `[TRACE-STATE] After ${reactFlowNode.data.name} (${reactFlowNode.data.label}) execution, nodeResult.state keys: ${
-                    nodeResult?.state ? Object.keys(nodeResult.state).join(', ') : 'undefined'
-                }`
-            )
+            // Add execution data
+            agentFlowExecutedData.push({
+                nodeId: currentNode.nodeId,
+                nodeLabel: reactFlowNode.data.label,
+                data: nodeResult,
+                previousNodeIds: reversedGraph[currentNode.nodeId],
+                status: 'FINISHED'
+            })
             logger.debug(`[TRACE-STATE] nodeResult.state.simulation_id = "${(nodeResult?.state as any)?.simulation_id}"`)
 
             // Add execution data
@@ -2060,14 +2053,7 @@ export const executeAgentFlow = async ({
 
             // Add to agentflow runtime state
             if (nodeResult && nodeResult.state) {
-                // 🔍 DEBUG: Check reference before assignment
-                const runtimeState = agentflowRuntime.state as any
-                const returnedState = nodeResult.state as any
-                logger.debug(
-                    `[TRACE-STATE] Assigning agentflowRuntime.state = nodeResult.state, same ref? ${runtimeState === returnedState}`
-                )
                 agentflowRuntime.state = nodeResult.state
-                logger.debug(`[TRACE-STATE] agentflowRuntime.state.simulation_id = "${(agentflowRuntime.state as any)?.simulation_id}"`)
             }
 
             if (nodeResult && nodeResult.chatHistory) {
@@ -2169,17 +2155,6 @@ export const executeAgentFlow = async ({
 
     // Only update execution record if this is not a recursive call
     if (!isRecursive) {
-        // 🔍 DEBUG: Dump state from ALL agentFlowExecutedData entries before saving
-        const stateSnapshots = agentFlowExecutedData
-            .map(
-                (d, i) =>
-                    `[${i}] ${d.nodeLabel}: simulation_id="${(d.data?.state as any)?.simulation_id}", state keys=[${
-                        d.data?.state ? Object.keys(d.data.state).join(',') : 'undefined'
-                    }]`
-            )
-            .join('\n    ')
-        logger.debug(`[TRACE-STATE] All entries before final save:\n    ${stateSnapshots}`)
-
         await updateExecution(appDataSource, newExecution.id, workspaceId, {
             executionData: JSON.stringify(agentFlowExecutedData),
             state: status

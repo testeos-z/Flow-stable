@@ -191,28 +191,13 @@ class CustomFunction_Agentflow implements INode {
 
             let finalOutput = typeof response === 'object' ? JSON.stringify(response, null, 2) : response
 
-            // 🔍 DEBUG: Track state right after user code execution
-            console.log(
-                `[TRACE-CF] After user code: state.simulation_id = "${state?.simulation_id}", state keys: [${Object.keys(state || {}).join(
-                    ', '
-                )}]`
-            )
-
             let newState = JSON.parse(JSON.stringify(state))
 
-            // 🔍 DEBUG: Track state after deep clone
-            console.log(`[TRACE-CF] After JSON deep clone: newState.simulation_id = "${newState?.simulation_id}"`)
-
             if (_customFunctionUpdateState && Array.isArray(_customFunctionUpdateState) && _customFunctionUpdateState.length > 0) {
-                console.log(`[TRACE-CF] _customFunctionUpdateState BEFORE updateFlowState: ${JSON.stringify(_customFunctionUpdateState)}`)
                 newState = updateFlowState(newState, _customFunctionUpdateState)
-                console.log(`[TRACE-CF] After updateFlowState: newState.simulation_id = "${newState?.simulation_id}"`)
             }
 
             newState = processTemplateVariables(newState, finalOutput)
-
-            // 🔍 DEBUG: Track state before return
-            console.log(`[TRACE-CF] After processTemplateVariables: newState.simulation_id = "${newState?.simulation_id}"`)
 
             const returnOutput = {
                 id: nodeData.id,
@@ -226,15 +211,6 @@ class CustomFunction_Agentflow implements INode {
                 },
                 state: newState
             }
-
-            // 🔍 DEBUG: Verify what we're returning
-            console.log(
-                `[TRACE-CF] RETURNING state keys: [${Object.keys(returnOutput.state || {}).join(', ')}], simulation_id = "${
-                    returnOutput.state?.simulation_id
-                }"`
-            )
-            console.log(`[TRACE-CF] returnOutput.state === state original? ${returnOutput.state === state}`)
-            console.log(`[TRACE-CF] returnOutput.state === newState? ${returnOutput.state === newState}`)
 
             return returnOutput
         } catch (e) {
