@@ -239,16 +239,16 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
             func: async () => this._call()
         })
         this.deps = {
-            bucketName: 'a2a',
-            bucketBasePath: 'reports/one',
-            schemaName: 'knowledge',
-            tableSimulations: 'simulations',
-            tableDocumentSimulation: 'document_simulation',
+            ...deps,
+            bucketName: deps.bucketName || 'a2a',
+            bucketBasePath: deps.bucketBasePath || 'reports/one',
+            schemaName: deps.schemaName || 'knowledge',
+            tableSimulations: deps.tableSimulations || 'simulations',
+            tableDocumentSimulation: deps.tableDocumentSimulation || 'document_simulation',
             chunkSize: Number(deps.chunkSize) || 1500,
             chunkOverlap: Number(deps.chunkOverlap) || 200,
-            sourceFlow: 'simulation_vectorizer',
-            jwtCacheTtlMinutes: 50,
-            ...deps
+            sourceFlow: deps.sourceFlow || 'simulation_vectorizer',
+            jwtCacheTtlMinutes: Number(deps.jwtCacheTtlMinutes) || 50,
         }
         this.authEnv = { ...authEnv, jwtCacheTtlMinutes: this.deps.jwtCacheTtlMinutes! }
     }
