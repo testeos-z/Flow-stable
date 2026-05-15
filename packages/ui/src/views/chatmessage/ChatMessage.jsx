@@ -92,14 +92,6 @@ import FollowUpPromptsCard from '@/ui-component/cards/FollowUpPromptsCard'
 // History
 import { ChatInputHistory } from './ChatInputHistory'
 
-const formatImageUploadHintFromRules = (rules) => {
-    if (!rules?.length) return ''
-    const maxMb = Math.max(...rules.map((r) => r.maxUploadSize || 0))
-    const types = [...new Set(rules.flatMap((r) => r.fileTypes || []).filter(Boolean))]
-    const typeLabel = types.map((t) => t.replace('image/', '').toUpperCase()).join(', ')
-    return `Imágenes: hasta ${maxMb} MB. Formatos: ${typeLabel}.`
-}
-
 const messageImageStyle = {
     width: '128px',
     height: '128px',
@@ -306,76 +298,49 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
     const isTTSActionRef = useRef(false)
     const ttsTimeoutRef = useRef(null)
 
-    const validateFileForUpload = (file) => {
+    const isFileAllowedForUpload = (file) => {
         const constraints = getAllowChatFlowUploads.data
+        /**
+         * {isImageUploadAllowed: boolean, imgUploadSizeAndTypes: Array<{ fileTypes: string[], maxUploadSize: number }>}
+         */
         let acceptFile = false
 
+        // Early return if constraints are not available yet
         if (!constraints) {
-            return 'Las restricciones de subida aún no están disponibles. Espere un momento e intente de nuevo.'
-        }
-
-        if (fullFileUpload) {
-            return null
+            console.warn('Upload constraints not loaded yet')
+            return false
         }
 
         if (constraints.isImageUploadAllowed) {
             const fileType = file.type
             const sizeInMB = file.size / 1024 / 1024
             if (constraints.imgUploadSizeAndTypes && Array.isArray(constraints.imgUploadSizeAndTypes)) {
-                for (const allowed of constraints.imgUploadSizeAndTypes) {
+                constraints.imgUploadSizeAndTypes.forEach((allowed) => {
                     if (allowed.fileTypes && allowed.fileTypes.includes(fileType) && sizeInMB <= allowed.maxUploadSize) {
                         acceptFile = true
-                        break
                     }
-                }
+                })
             }
         }
 
-        if (acceptFile) {
-            return null
-        }
-
-        if (constraints.isRAGFileUploadAllowed) {
+        if (fullFileUpload) {
+            return true
+        } else if (constraints.isRAGFileUploadAllowed) {
             const fileExt = file.name.split('.').pop()
             if (fileExt && constraints.fileUploadSizeAndTypes && Array.isArray(constraints.fileUploadSizeAndTypes)) {
-                for (const allowed of constraints.fileUploadSizeAndTypes) {
+                constraints.fileUploadSizeAndTypes.forEach((allowed) => {
                     if (allowed.fileTypes && allowed.fileTypes.length === 1 && allowed.fileTypes[0] === '*') {
                         acceptFile = true
-                        break
                     } else if (allowed.fileTypes && allowed.fileTypes.includes(`.${fileExt}`)) {
                         acceptFile = true
-                        break
                     }
-                }
+                })
             }
         }
-
-        if (acceptFile) {
-            return null
+        if (!acceptFile) {
+            alert(`Cannot upload file. Kindly check the allowed file types and maximum allowed size.`)
         }
-
-        if (constraints.isImageUploadAllowed && file.type.startsWith('image/')) {
-            const rules = constraints.imgUploadSizeAndTypes || []
-            const maxMb = Math.max(0, ...rules.map((r) => r.maxUploadSize ?? 0))
-            const allTypes = [...new Set(rules.flatMap((r) => r.fileTypes || []).filter(Boolean))]
-            const typeOk = rules.some((r) => r.fileTypes?.includes(file.type))
-            if (!typeOk) {
-                return `Formato no válido. Permitidos: ${allTypes.map((t) => t.replace('image/', '').toUpperCase()).join(', ')}.`
-            }
-            return `El archivo supera el tamaño máximo permitido (${maxMb} MB).`
-        }
-
-        return 'No se puede subir este archivo. Revise el tipo y tamaño permitidos.'
-    }
-
-    const notifyUploadRejection = (message) => {
-        enqueueSnackbar({
-            message,
-            options: {
-                variant: 'error',
-                key: new Date().getTime() + Math.random()
-            }
-        })
+        return acceptFile
     }
 
     const handleDrop = async (e) => {
@@ -389,9 +354,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
 
         if (e.dataTransfer.files.length > 0) {
             for (const file of e.dataTransfer.files) {
-                const uploadError = validateFileForUpload(file)
-                if (uploadError) {
-                    notifyUploadRejection(uploadError)
+                if (isFileAllowedForUpload(file) === false) {
                     return
                 }
                 const reader = new FileReader()
@@ -472,9 +435,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         let files = []
         let uploadedFiles = []
         for (const file of event.target.files) {
-            const uploadError = validateFileForUpload(file)
-            if (uploadError) {
-                notifyUploadRejection(uploadError)
+            if (isFileAllowedForUpload(file) === false) {
                 return
             }
             // Only add files
@@ -575,15 +536,10 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
     }
 
     const handleDeletePreview = (itemToDelete) => {
-        if (itemToDelete.type === 'file' && itemToDelete.preview) {
-            try {
-                URL.revokeObjectURL(itemToDelete.preview)
-            } catch {
-                // ignore
-            }
+        if (itemToDelete.type === 'file') {
+            URL.revokeObjectURL(itemToDelete.preview) // Clean up for file
         }
-        setPreviews((prev) => prev.filter((item) => item !== itemToDelete))
-        setUploadedFiles((prev) => prev.filter((uf) => !uf.file || uf.file.name !== itemToDelete.name))
+        setPreviews(previews.filter((item) => item !== itemToDelete))
     }
 
     const handleFileUploadClick = () => {
@@ -1055,7 +1011,7 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         if (e) e.preventDefault()
 
         if (!selectedInput && userInput.trim() === '') {
-            const containsFile = previews.filter((item) => !item.mime?.startsWith('image') && item.type !== 'audio').length > 0
+            const containsFile = previews.filter((item) => !item.mime.startsWith('image') && item.type !== 'audio').length > 0
             if (!previews.length || (previews.length && containsFile)) {
                 return
             }
@@ -2205,54 +2161,27 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
     }
 
     const previewDisplay = (item) => {
-        if (item.mime?.startsWith('image/')) {
+        if (item.mime.startsWith('image/')) {
             return (
-                <Box
-                    key={`img-prev-${item.name}`}
-                    sx={{
-                        position: 'relative',
-                        display: 'inline-flex',
-                        mr: 1,
-                        flex: '0 0 auto',
-                        alignItems: 'flex-start'
+                <ImageButton
+                    focusRipple
+                    style={{
+                        width: '48px',
+                        height: '48px',
+                        marginRight: '10px',
+                        flex: '0 0 auto'
                     }}
+                    disabled={getInputDisabled()}
+                    onClick={() => handleDeletePreview(item)}
                 >
-                    <Box
-                        component='img'
-                        src={item.data}
-                        alt=''
-                        sx={{
-                            width: 48,
-                            height: 48,
-                            objectFit: 'cover',
-                            borderRadius: 1,
-                            border: '1px solid',
-                            borderColor: 'divider'
-                        }}
-                    />
-                    <IconButton
-                        type='button'
-                        size='small'
-                        disabled={getInputDisabled()}
-                        onClick={() => handleDeletePreview(item)}
-                        title='Quitar imagen'
-                        aria-label='Quitar imagen'
-                        sx={{
-                            position: 'absolute',
-                            top: -10,
-                            right: -6,
-                            bgcolor: 'error.main',
-                            color: 'error.contrastText',
-                            width: 28,
-                            height: 28,
-                            '&:hover': { bgcolor: 'error.dark' }
-                        }}
-                    >
-                        <IconX size={16} />
-                    </IconButton>
-                </Box>
+                    <ImageSrc style={{ backgroundImage: `url(${item.data})` }} />
+                    <ImageBackdrop className='MuiImageBackdrop-root' />
+                    <ImageMarked className='MuiImageMarked-root'>
+                        <IconTrash size={20} color='white' />
+                    </ImageMarked>
+                </ImageButton>
             )
-        } else if (item.mime?.startsWith('audio/')) {
+        } else if (item.mime.startsWith('audio/')) {
             return (
                 <Card
                     sx={{

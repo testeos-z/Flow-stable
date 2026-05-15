@@ -4,7 +4,6 @@ import { ChatFlow } from '../database/entities/ChatFlow'
 import { getRunningExpressApp } from '../utils/getRunningExpressApp'
 import { IUploadFileSizeAndTypes, IReactFlowNode, IReactFlowEdge } from '../Interface'
 import { InternalFlowiseError } from '../errors/internalFlowiseError'
-import { FLOWISE_IMAGE_UPLOAD_MIME_TYPES, FLOWISE_MAX_IMAGE_UPLOAD_MB } from '../constants/uploadLimits'
 
 type IUploadConfig = {
     isSpeechToTextEnabled: boolean
@@ -106,8 +105,8 @@ export const utilGetUploadsConfig = async (chatflowid: string): Promise<IUploadC
                     node.data.inputs?.conditionAgentModelConfig?.allowImageUploads
                 ) {
                     imgUploadSizeAndTypes.push({
-                        fileTypes: [...FLOWISE_IMAGE_UPLOAD_MIME_TYPES],
-                        maxUploadSize: FLOWISE_MAX_IMAGE_UPLOAD_MB
+                        fileTypes: 'image/gif;image/jpeg;image/png;image/webp;'.split(';'),
+                        maxUploadSize: 5
                     })
                     isImageUploadAllowed = true
                 }
@@ -118,11 +117,12 @@ export const utilGetUploadsConfig = async (chatflowid: string): Promise<IUploadC
             nodes.forEach((node: IReactFlowNode) => {
                 const data = node.data
                 if (data.category === 'Chat Models' && data.inputs?.['allowImageUploads'] === true) {
+                    // TODO: for now the maxUploadSize is hardcoded to 5MB, we need to add it to the node properties
                     node.data.inputParams.map((param: INodeParams) => {
                         if (param.name === 'allowImageUploads' && node.data.inputs?.['allowImageUploads']) {
                             imgUploadSizeAndTypes.push({
-                                fileTypes: [...FLOWISE_IMAGE_UPLOAD_MIME_TYPES],
-                                maxUploadSize: FLOWISE_MAX_IMAGE_UPLOAD_MB
+                                fileTypes: 'image/gif;image/jpeg;image/png;image/webp;'.split(';'),
+                                maxUploadSize: 5
                             })
                             isImageUploadAllowed = true
                         }
