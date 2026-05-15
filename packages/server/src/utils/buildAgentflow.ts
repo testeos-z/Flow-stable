@@ -1080,7 +1080,7 @@ const executeNode = async ({
         logger.debug(
             `[TRACE-STATE] executeNode START for ${reactFlowNode.data.name} (${
                 reactFlowNode.data.label
-            }), agentflowRuntime.state.simulation_id = "${agentflowRuntime.state?.simulation_id}", keys: [${
+            }), agentflowRuntime.state.simulation_id = "${(agentflowRuntime.state as any)?.simulation_id}", keys: [${
                 agentflowRuntime.state ? Object.keys(agentflowRuntime.state).join(', ') : 'undefined'
             }]`
         )
@@ -2026,7 +2026,7 @@ export const executeAgentFlow = async ({
                     nodeResult?.state ? Object.keys(nodeResult.state).join(', ') : 'undefined'
                 }`
             )
-            logger.debug(`[TRACE-STATE] nodeResult.state.simulation_id = "${nodeResult?.state?.simulation_id}"`)
+            logger.debug(`[TRACE-STATE] nodeResult.state.simulation_id = "${(nodeResult?.state as any)?.simulation_id}"`)
 
             // Add execution data
             agentFlowExecutedData.push({
@@ -2040,11 +2040,13 @@ export const executeAgentFlow = async ({
             // 🔍 DEBUG: Verify what was pushed
             const justPushed = agentFlowExecutedData[agentFlowExecutedData.length - 1]
             logger.debug(
-                `[TRACE-STATE] After push to agentFlowExecutedData, data.state.simulation_id = "${justPushed?.data?.state?.simulation_id}"`
+                `[TRACE-STATE] After push to agentFlowExecutedData, data.state.simulation_id = "${
+                    (justPushed?.data?.state as any)?.simulation_id
+                }"`
             )
             logger.debug(
                 `[TRACE-STATE] Are nodeResult.state and agentFlowExecutedData[last].data.state SAME reference? ${
-                    nodeResult?.state === justPushed?.data?.state
+                    (nodeResult as any)?.state === (justPushed?.data as any)?.state
                 }`
             )
 
@@ -2059,13 +2061,13 @@ export const executeAgentFlow = async ({
             // Add to agentflow runtime state
             if (nodeResult && nodeResult.state) {
                 // 🔍 DEBUG: Check reference before assignment
+                const runtimeState = agentflowRuntime.state as any
+                const returnedState = nodeResult.state as any
                 logger.debug(
-                    `[TRACE-STATE] Assigning agentflowRuntime.state = nodeResult.state, same ref? ${
-                        agentflowRuntime.state === nodeResult.state
-                    }`
+                    `[TRACE-STATE] Assigning agentflowRuntime.state = nodeResult.state, same ref? ${runtimeState === returnedState}`
                 )
                 agentflowRuntime.state = nodeResult.state
-                logger.debug(`[TRACE-STATE] agentflowRuntime.state.simulation_id = "${agentflowRuntime.state?.simulation_id}"`)
+                logger.debug(`[TRACE-STATE] agentflowRuntime.state.simulation_id = "${(agentflowRuntime.state as any)?.simulation_id}"`)
             }
 
             if (nodeResult && nodeResult.chatHistory) {
@@ -2171,7 +2173,7 @@ export const executeAgentFlow = async ({
         const stateSnapshots = agentFlowExecutedData
             .map(
                 (d, i) =>
-                    `[${i}] ${d.nodeLabel}: simulation_id="${d.data?.state?.simulation_id}", state keys=[${
+                    `[${i}] ${d.nodeLabel}: simulation_id="${(d.data?.state as any)?.simulation_id}", state keys=[${
                         d.data?.state ? Object.keys(d.data.state).join(',') : 'undefined'
                     }]`
             )
