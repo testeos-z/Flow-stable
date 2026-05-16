@@ -297,9 +297,10 @@ server.tool(
     'Run smoke and integration tests on a chatflow. Creates a temporary copy, runs predictions, ' +
         'and reports results. Useful for validating flows before production use.',
     {
-        chatflowId: z.string().describe('The ID of the chatflow to test')
+        chatflowId: z.string().describe('The ID of the chatflow to test'),
+        overrideConfig: z.record(z.string(), z.any()).optional().describe('Optional configuration overrides for the chatflow')
     },
-    async ({ chatflowId }) => handleTestChatflow(flowiseApi, chatflowId)
+    async ({ chatflowId, overrideConfig }) => handleTestChatflow(flowiseApi, chatflowId, overrideConfig)
 )
 
 // Tool: Validate Chatflow

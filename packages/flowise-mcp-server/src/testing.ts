@@ -31,11 +31,12 @@ export interface TestChatflowResult {
 /**
  * Run a prediction on a chatflow
  */
-async function runPrediction(
+export async function runPrediction(
     api: FlowiseApiClient,
     flowId: string,
     question: string,
-    timeout: number = 30000
+    timeout: number = 30000,
+    overrideConfig?: Record<string, unknown>
 ): Promise<{ success: boolean; response?: unknown; error?: string }> {
     try {
         const controller = new AbortController()
@@ -43,7 +44,8 @@ async function runPrediction(
 
         const response = await api.request('POST', `/prediction/${flowId}`, {
             question,
-            history: []
+            history: [],
+            ...(overrideConfig && { overrideConfig })
         })
 
         clearTimeout(timeoutId)
@@ -79,11 +81,15 @@ async function runPrediction(
 /**
  * Run smoke test on a chatflow
  */
-export async function runSmokeTest(api: FlowiseApiClient, flowId: string): Promise<SmokeTestResult> {
+export async function runSmokeTest(
+    api: FlowiseApiClient,
+    flowId: string,
+    overrideConfig?: Record<string, unknown>
+): Promise<SmokeTestResult> {
     const startTime = Date.now()
 
     try {
-        const prediction = await runPrediction(api, flowId, 'Hello, are you working?')
+        const prediction = await runPrediction(api, flowId, 'Hello, are you working?', 30000, overrideConfig)
         const durationMs = Date.now() - startTime
 
         if (!prediction.success) {
@@ -112,7 +118,12 @@ export async function runSmokeTest(api: FlowiseApiClient, flowId: string): Promi
 /**
  * Run integration test on a chatflow
  */
-export async function runIntegrationTest(api: FlowiseApiClient, flowId: string, flowHasTools: boolean): Promise<IntegrationTestResult> {
+export async function runIntegrationTest(
+    api: FlowiseApiClient,
+    flowId: string,
+    flowHasTools: boolean,
+    overrideConfig?: Record<string, unknown>
+): Promise<IntegrationTestResult> {
     if (!flowHasTools) {
         return {
             passed: true,
@@ -124,7 +135,7 @@ export async function runIntegrationTest(api: FlowiseApiClient, flowId: string, 
     const startTime = Date.now()
 
     try {
-        const prediction = await runPrediction(api, flowId, 'Search for information and tell me what you find.', 60000)
+        const prediction = await runPrediction(api, flowId, 'Search for information and tell me what you find.', 60000, overrideConfig)
 
         const durationMs = Date.now() - startTime
 
@@ -167,7 +178,11 @@ export function flowHasTools(flowData: any): boolean {
 /**
  * Full test suite for a chatflow
  */
-export async function testChatflow(api: FlowiseApiClient, flowId: string): Promise<TestChatflowResult> {
+export async function testChatflow(
+    api: FlowiseApiClient,
+    flowId: string,
+    overrideConfig?: Record<string, unknown>
+): Promise<TestChatflowResult> {
     // Get chatflow data first
     const chatflow = (await api.request('GET', `/chatflows/${flowId}`)) as any
     const flowData = typeof chatflow.flowData === 'string' ? JSON.parse(chatflow.flowData) : chatflow.flowData
@@ -175,12 +190,12 @@ export async function testChatflow(api: FlowiseApiClient, flowId: string): Promi
     const hasTools = flowHasTools(flowData)
 
     // Run smoke test
-    const smokeTest = await runSmokeTest(api, flowId)
+    const smokeTest = await runSmokeTest(api, flowId, overrideConfig)
 
     // Run integration test only if smoke test passes and flow has tools
     let integrationTest: IntegrationTestResult | undefined
     if (smokeTest.passed && hasTools) {
-        integrationTest = await runIntegrationTest(api, flowId, hasTools)
+        integrationTest = await runIntegrationTest(api, flowId, hasTools, overrideConfig)
     }
 
     const overall = smokeTest.passed && (!integrationTest || integrationTest.passed)

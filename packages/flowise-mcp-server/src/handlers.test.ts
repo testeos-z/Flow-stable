@@ -14,6 +14,7 @@ import {
     handleListNodes,
     handleGetNodesByCategory,
     handleGetNode,
+    handleTestChatflow,
     type FlowiseSdkClient
 } from './handlers.js'
 import type { FlowiseApiClient } from './flowise-api.js'
@@ -427,6 +428,69 @@ describe('handlers', () => {
 
             expect(result.isError).toBe(true)
             expect(result.content[0].text).toContain('Error getting node')
+        })
+    })
+
+    describe('handleTestChatflow', () => {
+        it('should run smoke and integration tests and return success response', async () => {
+            const mockApi = createMockApiClient(
+                vi.fn().mockImplementation((method, endpoint) => {
+                    if (method === 'GET' && endpoint === '/chatflows/flow-123') {
+                        return {
+                            flowData: JSON.stringify({
+                                nodes: [{ data: { name: 'SimpleNode' } }]
+                            })
+                        }
+                    }
+                    if (method === 'POST' && endpoint === '/prediction/flow-123') {
+                        return { text: 'Working!' }
+                    }
+                    return {}
+                })
+            )
+
+            const result = await handleTestChatflow(mockApi, 'flow-123')
+
+            expect(result.isError).toBeUndefined()
+            expect(result.content[0].text).toContain('"flowId": "flow-123"')
+            expect(result.content[0].text).toContain('"passed": true')
+        })
+
+        it('should forward overrideConfig to test pipeline', async () => {
+            const mockApi = createMockApiClient(
+                vi.fn().mockImplementation((method, endpoint) => {
+                    if (method === 'GET' && endpoint === '/chatflows/flow-123') {
+                        return {
+                            flowData: JSON.stringify({
+                                nodes: [{ data: { name: 'SimpleNode' } }]
+                            })
+                        }
+                    }
+                    if (method === 'POST' && endpoint === '/prediction/flow-123') {
+                        return { text: 'Working!' }
+                    }
+                    return {}
+                })
+            )
+
+            const result = await handleTestChatflow(mockApi, 'flow-123', { temperature: 0.5 })
+
+            expect(result.isError).toBeUndefined()
+
+            const postCalls = vi.mocked(mockApi.request).mock.calls.filter((call) => call[0] === 'POST')
+            expect(postCalls).toHaveLength(1)
+            const body = postCalls[0][2] as Record<string, unknown>
+            expect(body.overrideConfig).toEqual({ temperature: 0.5 })
+        })
+
+        it('should return error response on failure', async () => {
+            const mockApi = createMockApiClient(vi.fn().mockRejectedValue(new Error('Network error')))
+
+            const result = await handleTestChatflow(mockApi, 'flow-123')
+
+            expect(result.isError).toBe(true)
+            expect(result.content[0].text).toContain('Error testing chatflow')
+            expect(result.content[0].text).toContain('Network error')
         })
     })
 })

@@ -436,9 +436,13 @@ export async function handleRepairChatflow(chatflowId: string): Promise<ToolResp
 /**
  * Test a chatflow by running smoke and integration tests.
  */
-export async function handleTestChatflow(api: FlowiseApiClient, chatflowId: string): Promise<ToolResponse> {
+export async function handleTestChatflow(
+    api: FlowiseApiClient,
+    chatflowId: string,
+    overrideConfig?: Record<string, unknown>
+): Promise<ToolResponse> {
     try {
-        const result = await testChatflow(api, chatflowId)
+        const result = await testChatflow(api, chatflowId, overrideConfig)
         return successResponse(result)
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error)
