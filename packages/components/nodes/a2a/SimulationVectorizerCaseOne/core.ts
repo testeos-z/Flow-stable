@@ -248,7 +248,7 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
             chunkSize: Number(deps.chunkSize) || 1500,
             chunkOverlap: Number(deps.chunkOverlap) || 200,
             sourceFlow: deps.sourceFlow || 'simulation_vectorizer',
-            jwtCacheTtlMinutes: Number(deps.jwtCacheTtlMinutes) || 50,
+            jwtCacheTtlMinutes: Number(deps.jwtCacheTtlMinutes) || 50
         }
         this.authEnv = { ...authEnv, jwtCacheTtlMinutes: this.deps.jwtCacheTtlMinutes! }
     }
@@ -390,6 +390,12 @@ export class SimulationVectorizerTool extends DynamicStructuredTool {
                 for (const batch of batches) {
                     const batchEmbeddings = await deps.embeddings.embedDocuments(batch)
                     allEmbeddings.push(...batchEmbeddings)
+                }
+                const EXPECTED_DIM = 1024
+                if (allEmbeddings.length > 0 && allEmbeddings[0].length !== EXPECTED_DIM) {
+                    throw new Error(
+                        `Dimension mismatch: expected ${EXPECTED_DIM}, got ${allEmbeddings[0].length} for model intfloat/multilingual-e5-large-instruct`
+                    )
                 }
             } catch (err) {
                 return JSON.stringify(makeError(err, 'embed'))

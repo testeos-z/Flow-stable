@@ -203,7 +203,7 @@ describe('SimulationVectorizerTool', () => {
     })
 
     const makeEmbeddings = () => ({
-        embedDocuments: jest.fn(async (texts: string[]) => texts.map(() => [0.1, 0.2, 0.3]))
+        embedDocuments: jest.fn(async (texts: string[]) => texts.map(() => new Array(1024).fill(0.1)))
     })
 
     const makeDeps = (overrides: Partial<VectorizerDeps> = {}): VectorizerDeps => ({
@@ -306,5 +306,41 @@ describe('SimulationVectorizerTool', () => {
         const tool = new SimulationVectorizerTool(makeDeps(), makeAuthEnv())
         expect(tool.name).toBe('simulation_vectorizer_case_one')
         expect(tool.description).toContain('Vectorize')
+    })
+
+    it('_call returns VectorizerError on dimension mismatch', async () => {
+        const embeddings = {
+            embedDocuments: jest.fn(async (texts: string[]) => texts.map(() => new Array(768).fill(0.1)))
+        }
+        const deps = makeDeps({ embeddings })
+        const tool = new SimulationVectorizerTool(deps, makeAuthEnv())
+        const result = JSON.parse(await (tool as any)._call())
+        expect(result.ok).toBe(false)
+        expect(result.stage).toBe('embed')
+        expect(result.error).toContain('Dimension mismatch: expected 1024, got 768')
+        expect(result.error).toContain('intfloat/multilingual-e5-large-instruct')
+    })
+
+    it('_call succeeds with 1024-dim embeddings', async () => {
+        const embeddings = {
+            embedDocuments: jest.fn(async (texts: string[]) => texts.map(() => new Array(1024).fill(0.1)))
+        }
+        const deps = makeDeps({ embeddings })
+        const tool = new SimulationVectorizerTool(deps, makeAuthEnv())
+        const result = JSON.parse(await (tool as any)._call())
+        expect(result.ok).toBe(true)
+        expect(result.rowsInserted.simulations).toBeGreaterThan(0)
+    })
+
+    it('_call skips dimension validation when embeddings array is empty', async () => {
+        const embeddings = {
+            embedDocuments: jest.fn(async () => [])
+        }
+        const deps = makeDeps({ embeddings })
+        const tool = new SimulationVectorizerTool(deps, makeAuthEnv())
+        const result = JSON.parse(await (tool as any)._call())
+        expect(result.ok).toBe(true)
+        // Dimension validation is skipped when embeddings array is empty (no crash)
+        expect(result.rowsInserted).toBeDefined()
     })
 })
